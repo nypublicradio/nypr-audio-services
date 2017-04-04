@@ -5,6 +5,7 @@ import set from 'ember-metal/set';
 import layout from '../templates/components/clear-history';
 
 export default Component.extend({
+  layout,
   listens:            service('listen-history'),
 
   isConfirming:       false,
