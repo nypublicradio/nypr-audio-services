@@ -1,14 +1,34 @@
 import Service from 'ember-service';
 import { readOnly } from 'ember-computed';
 import service from 'ember-service/inject';
+const { get } = Ember;
 
 export default Service.extend({
   session: service(),
-  items:   readOnly('session.data.listens'),
+  store  : service(),
+  items  : readOnly('session.data.listens'),
+  hifi   : service(),
+
+  init() {
+    this.listenToTrackChanges();
+    this._super(...arguments);
+  },
+
+  listenToTrackChanges() {
+    this.get('hifi').on('current-sound-changed', ({previousSound, currentSound}) => {
+      this.get('store').findRecord('story', get(currentSound, 'metadata.storyId'))
+        .then(story => {
+
+
+          this.addListen(story)
+
+        });
+    });
+  },
 
   addListen(story) {
     let session  = this.get('session');
-    let listens  = session.getWithDefault('data.listens', []).slice();
+    let listens  = Ember.A(session.getWithDefault('data.listens', []).slice());
 
     let listen = {
       id: `listen${Date.now()}-${(Math.random() * 100).toFixed()}`,
@@ -21,7 +41,7 @@ export default Service.extend({
 
   removeListenByListenId(id) {
     let session = this.get('session');
-    let listens = session.getWithDefault('data.listens', []).slice();
+    let listens = Ember.A(session.getWithDefault('data.listens', []).slice());
 
     let listen = listens.findBy('id', id);
     listens.removeObject(listen);
@@ -30,7 +50,7 @@ export default Service.extend({
 
   removeListenByStoryPk(pk) {
     let session = this.get('session');
-    let listens = session.getWithDefault('data.listens', []).slice();
+    let listens = Ember.A(session.getWithDefault('data.listens', []).slice());
 
     let listen = listens.findBy('story.id', pk);
     listens.removeObject(listen);
@@ -48,13 +68,13 @@ export default Service.extend({
 
   historyFor(id) {
     let session = this.get('session');
-    let listens = session.getWithDefault('data.listens', []);
+    let listens = Ember.A(session.getWithDefault('data.listens', []));
     return listens.filterBy('story.id', id);
   },
 
   indexByStoryPk(pk) {
     let session = this.get('session');
-    let listens = session.getWithDefault('data.listens', []);
+    let listens = Ember.A(session.getWithDefault('data.listens', []));
     let listen = listens.findBy('story.id', pk);
 
     return listens.indexOf(listen);
