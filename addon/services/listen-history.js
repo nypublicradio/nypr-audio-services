@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import Service from 'ember-service';
 import { readOnly } from 'ember-computed';
 import service from 'ember-service/inject';
@@ -10,19 +11,14 @@ export default Service.extend({
   hifi   : service(),
 
   init() {
-    this.listenToTrackChanges();
+    this.listenForTrackChanges();
     this._super(...arguments);
   },
 
-  listenToTrackChanges() {
+  listenForTrackChanges() {
     this.get('hifi').on('current-sound-changed', ({previousSound, currentSound}) => {
       this.get('store').findRecord('story', get(currentSound, 'metadata.storyId'))
-        .then(story => {
-
-
-          this.addListen(story)
-
-        });
+        .then(story => this.addListen(story));
     });
   },
 
