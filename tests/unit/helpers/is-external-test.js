@@ -1,4 +1,3 @@
-
 import { isExternal } from 'dummy/helpers/is-external';
 import { module, test } from 'qunit';
 
@@ -9,4 +8,3 @@ test('it works', function(assert) {
   let result = isExternal([42]);
   assert.ok(result);
 });
-

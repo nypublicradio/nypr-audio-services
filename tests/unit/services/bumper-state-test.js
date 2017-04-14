@@ -1,6 +1,6 @@
 import { moduleFor, test } from 'ember-qunit';
 import Ember from 'ember';
-import startMirage from 'nypr-audio-services/tests/helpers/setup-mirage-for-integration';
+import startMirage from '../../../helpers/setup-mirage-for-integration';
 import wait from 'ember-test-helpers/wait';
 import get from 'ember-metal/get';
 import set from 'ember-metal/set';

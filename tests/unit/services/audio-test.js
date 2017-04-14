@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { moduleFor, test } from 'ember-qunit';
-import startMirage from 'nypr-audio-services/tests/helpers/setup-mirage-for-integration';
+import startMirage from '../../../helpers/setup-mirage-for-integration';
 import wait from 'ember-test-helpers/wait';
 import hifiNeeds from 'nypr-audio-services/tests/helpers/hifi-needs';
 import sinon from 'sinon';
@@ -84,7 +84,7 @@ test('can switch from on demand to stream and vice versa', function(assert) {
   let audio2 = DummyConnection.create({ url: streamURL  });
   let service = this.subject();
   let done = assert.async();
-  
+
   service.get('hifi.soundCache').cache(audio1);
   service.get('hifi.soundCache').cache(audio2);
 
@@ -224,14 +224,14 @@ test('segmented audio management', function(assert) {
     url: url1,
     duration: duration1
   });
-  
+
   let url2 = '/url2.mp3';
   let duration2 = 20 * ONE_MINUTE;
   let audio2 = DummyConnection.create({
     url: url2,
     duration: duration2
   });
-  
+
   let url3 = '/url3.mp3';
   let duration3 = 20 * ONE_MINUTE;
   let audio3 = DummyConnection.create({
@@ -334,7 +334,7 @@ test('episodes played from the queue do not continue to the next item until the 
 test('can play a segmented story all the way through more than once', function(assert) {
   let url1 = '/url1.mp3';
   let audio1 = DummyConnection.create({ url: url1 });
-  
+
   let url2 = '/url2.mp3';
   let audio2 = DummyConnection.create({ url: url2 });
   let episode = server.create('story', {
@@ -386,7 +386,7 @@ test('service passes correct attrs to data pipeline to report an on_demand liste
     current_audio_position: 0,
     item_type: story.itemType,
   };
-    
+
   Ember.run(() => {
     service.play(story.id).then(() => {
       let forwardPosition = {current_audio_position: service.get('position')};
@@ -422,7 +422,7 @@ test('service passes correct attrs to data pipeline to report an on_demand liste
               ['back_15', Object.assign(expected, rewindPosition)],
               'current_audio_position should be time when action happened, not target time'
             );
-            
+
             assert.deepEqual(
               reportStub.getCall(3).args,
               ['position', Object.assign(expected, setPosition)],
@@ -449,7 +449,7 @@ test('service passes correct attrs to data pipeline to report an on_demand liste
               reportStub.getCall(7).args,
               ['start', Object.assign(expected, {cms_id: story2.id, current_audio_position: 0})]
             );
-            
+
             assert.deepEqual(
               reportStub.getCall(8).args,
               ['position', Object.assign(expected, setPosition2)],
@@ -460,7 +460,7 @@ test('service passes correct attrs to data pipeline to report an on_demand liste
               reportStub.getCall(9).args,
               ['finish', Object.assign(expected, finishedPosition)]
             );
-            
+
             done();
           });
         });
@@ -495,7 +495,7 @@ test('service reports a resume when returning to playing a story', function(asse
     current_audio_position: 0,
     item_type: story.itemType,
   };
-    
+
   Ember.run(() => {
     service.play(story.id).then(() => {
       let setPosition = {current_audio_position: service.get('position')};
@@ -531,7 +531,7 @@ test('service reports a resume when returning to playing a story', function(asse
       });
     });
   });
-  
+
 });
 
 test('service passes correct attrs to data pipeline to report a livestream listen action', function(assert) {
@@ -549,7 +549,7 @@ test('service passes correct attrs to data pipeline to report a livestream liste
     current_show: { episode_pk: currentStory.id }
   });
   let audio = DummyConnection.create({ url: stream.attrs.urls.rtsp });
-  
+
   let expected = {
     audio_type: 'livestream',
     cms_id: currentStory.id,
@@ -557,9 +557,9 @@ test('service passes correct attrs to data pipeline to report a livestream liste
     stream_id: Number(stream.id),
     current_audio_position: 0
   };
-    
+
   service.get('hifi.soundCache').cache(audio);
-  
+
   Ember.run(() => {
     service.play(stream.slug).then(() => {
       service.position = 500;
