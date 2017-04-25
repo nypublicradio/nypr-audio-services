@@ -17,8 +17,11 @@ export default Service.extend({
 
   listenForTrackChanges() {
     this.get('hifi').on('current-sound-changed', ({previousSound, currentSound}) => {
-      this.get('store').findRecord('story', get(currentSound, 'metadata.storyId'))
-        .then(story => this.addListen(story));
+      let contentId = get(currentSound, 'metadata.contentId');
+      if (contentId) {
+        this.get('store').findRecord('story', contentId)
+          .then(story => this.addListen(story));
+      }
     });
   },
 

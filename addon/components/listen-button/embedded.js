@@ -28,10 +28,10 @@ export default ListenButton.extend({
     }
   }),
 
-  layout: hbs `{{listen-button/ui type=type}}
+  layout: hbs `{{listen-button.ui type=type}}
     {{#unless content}}
-    {{#if (eq type 'blue-boss')}}Listen{{#if duration}} <span class="text--small dimmed">{{duration}}</span>{{/if}}{{/if}}
+      {{#if (eq type 'blue-boss')}}Listen{{#if duration}} <span class="text--small dimmed">{{duration}}</span>{{/if}}{{/if}}
     {{else}}
-    {{content}}
+      {{content}}
     {{/unless}}`
 });

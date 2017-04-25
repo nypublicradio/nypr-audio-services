@@ -1,11 +1,11 @@
 import Component from 'ember-component';
-import service from 'ember-service/inject';
 import computed, { readOnly, not, equal, match } from 'ember-computed';
 import get, { getProperties } from 'ember-metal/get';
 import set from 'ember-metal/set';
 import { htmlSafe } from 'ember-string';
 import { schedule } from 'ember-runloop';
 import layout from '../templates/components/listen-button';
+import service from 'ember-service/inject';
 
 const STATES = {
   PLAYING:  'is-playing',
@@ -15,18 +15,29 @@ const STATES = {
 
 export default Component.extend({
   layout,
-  audio:                service(),
+  hifi:                 service(),
+  store:                service(),
 
-  disabled:             not('audio.isReady'),
-  isPlaying:            equal('state', STATES.PLAYING),
+  disabled:             not('hifi.isReady'),
+
+  isCurrentSound:      computed('hifi.currentSound.metadata.contentId', 'itemPK', function() {
+    return get(this, 'itemPK') === get(this, 'hifi.currentSound.metadata.contentId');
+  }),
+
+  isLoading:            false,
+  isPlaying:            computed.and('hifi.isPlaying', 'isCurrentSound'),
   isExpandable:         match('type', /(blue|gray|red)-(minion|boss)/),
   'aria-label':         readOnly('title'),
   'data-test-selector': 'listen-button',
 
   tagName:              'button',
   classNames:           ['listen-button'],
-  classNameBindings:    ['isHovering', 'measurableState', 'type'],
+  classNameBindings:    ['isHovering', 'measurableState', 'type', 'isCurrentSound'],
   attributeBindings:    ['aria-label', 'title', 'disabled', 'data-test-selector', 'style'],
+
+  modelName: computed('itemPK', function() {
+    return (/^\d*$/.test(get(this, 'itemPK')) ? 'story' : 'stream');
+  }),
 
   title: computed('itemTitle', function() {
     return `Listen to ${get(this, 'itemTitle')}`;
@@ -35,6 +46,42 @@ export default Component.extend({
     let width = get(this, 'width');
     return width ? htmlSafe(`width: ${width}px;`) : null;
   }),
+
+  playState:                computed('itemPK', 'currentSound', 'hifi.isPlaying', 'hifi.isLoading', function() {
+    if (get(this, 'isCurrentSound')) {
+      if (get(this, 'hifi.isPlaying')) {
+        return STATES.PLAYING;
+      }
+      else {
+        return STATES.PAUSED;
+      }
+    }
+    if (get(this, 'isLoading')) {
+      return STATES.LOADING;
+    }
+  }),
+
+  measurableState: computed('playState', 'wasMeasured', 'isExpandable', function() {
+    if (get(this, 'isCurrentSound')) {
+      let { wasMeasured, isExpandable } = getProperties(this, 'wasMeasured', 'isExpandable');
+      if (isExpandable && !wasMeasured) {
+        return STATES.PAUSED; // consider paused until we measure so we get full width of paused state
+      } else {
+        if (get(this, 'isCurrentSound')) {
+          if (get(this, 'hifi.isPlaying')) {
+            return STATES.PLAYING;
+          }
+          else {
+            return STATES.PAUSED;
+          }
+        }
+      }
+    }
+    else if (get(this, 'isLoading')) {
+      return STATES.LOADING;
+    }
+  }),
+
   width: computed('measurableState', 'contentWidth', function() {
     if (!this.element || !get(this, 'isExpandable')) {
       return false;
@@ -47,14 +94,7 @@ export default Component.extend({
       return get(this, 'contentWidth');
     }
   }),
-  measurableState: computed('state', 'wasMeasured', 'isExpandable', function() {
-    let { state, wasMeasured, isExpandable } = getProperties(this, 'state', 'wasMeasured', 'isExpandable');
-    if (isExpandable && !wasMeasured) {
-      return (STATES.PAUSED); // consider paused until we measure so we get full width of paused state
-    } else {
-      return state;
-    }
-  }),
+
   didUpdateAttrs({ oldAttrs, newAttrs }) {
     if (newAttrs.isLive && newAttrs.isLive.value) {
       schedule('afterRender', this, () => {
@@ -73,19 +113,52 @@ export default Component.extend({
       });
     }
   },
+
+  fetchRecord(id) {
+    return get(this, 'store').findRecord(get(this, 'modelName'), id);
+  },
+
+  play() {
+    let playContext     = get(this, 'playContext') || get(this, 'region');
+    let itemPk          = get(this, 'itemPK');
+    let currentSound    = get(this, 'hifi.currentSound.metadata.contentId');
+    let newThingPlaying = (currentSound !== itemPk);
+
+    let fetch = this.fetchRecord(itemPk);
+    let audioUrlPromise = fetch.then(s => {
+      if (get(this, 'modelName') === 'story') {
+        return newThingPlaying ? s.resetSegments() : s.getCurrentSegment();
+      }
+      else {
+        return s.get('urls');
+      }
+    });
+
+    let analyticsData = fetch.then(s => s.forListenAction());
+    let metadata = {contentId: itemPk, playContext: playContext, analyticsData};
+
+    set(this, 'isLoading', true);
+    get(this, 'hifi').play(audioUrlPromise, {metadata}).then(() => {
+      set(this, 'isLoading', false);
+    }).catch(() => {
+      set(this, 'isLoading', false);
+      set(this, 'isErrored', true);
+    });
+  },
+
   click() {
     if (get(this, 'isErrored')) {
       return;
     }
-    let playContext = get(this, 'playContext') || get(this, 'region');
-    let audio = get(this, 'audio');
+
+    let hifi = get(this, 'hifi');
     if (get(this, 'isPlaying')) {
-      audio.pause();
+      hifi.pause();
     } else {
-      let pk = get(this, 'itemPK');
-      audio.play(pk, playContext);
+      this.play();
     }
   },
+
   mouseLeave() {
     set(this, 'isHovering', false);
   },

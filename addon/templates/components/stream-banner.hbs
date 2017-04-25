@@ -16,21 +16,25 @@
       {{/power-select}}
     </div>
     <div class="stream-banner-details">
-      <h3 class="stream-banner-title">
         {{yield activeStream}}
-      </h3>
     </div>
     <div class="stream-banner-controls">
       {{#listen-button
         audio=audio
         class='stream-banner-listenbutton nudge'
         type='blue-boss'
-        state=(if (eq activeStream.slug audio.currentAudio.id) audio.playState)
+        state=(if (eq activeStream.slug audio.currentId) audio.playState)
         itemPK=activeStream.slug
         itemTitle=activeStream.name}}
         Listen Live
       {{/listen-button}}
     </div>
+    {{#if (and activeStream.currentComposer.name activeStream.currentPiece)}}
+      {{#link-to 'playlist' activeStream.slug class='stream-banner-recently link--blue'}}
+        Recently played
+        {{nypr-svg className="icon rotate-minus90" icon="caret-down"}}
+      {{/link-to}}
+    {{/if}}
     {{else}}
     Loading...
     {{/if}}
