@@ -6,6 +6,11 @@ const { get, getWithDefault, set, assert } = Ember;
 export default Ember.Service.extend(Ember.Evented, {
   queues: {},
 
+  debug(message) {
+    // TODO: set up a better nypr-audio-services debugger.
+    console.log(message);
+  },
+
   addAction(thing, eventName, info, callback) {
     assert("passed in object is not Ember.Evented", (thing && thing.on && thing.trigger));
 
@@ -25,10 +30,6 @@ export default Ember.Service.extend(Ember.Evented, {
 
     set(queues, queueName, queue);
     return {queueName};
-  },
-
-  runQueue() {
-
   },
 
   _relayEvent(eventName, sound) {
@@ -53,13 +54,20 @@ export default Ember.Service.extend(Ember.Evented, {
     let queues = get(this, 'queues');
     let orderedQueue = Ember.A(getWithDefault(queues, queueName, [])).sortBy('priority').slice(); // copy, bro
 
+    this.debug(`[action-queue] Trying action queue of ${orderedQueue.length}`);
+
+    let debug = this.debug;
+    let actionIndex = 0;
     let runPromise = new RSVP.Promise((resolve) => {
       PromiseRace.start(orderedQueue, function(nextAction, returnSuccess, markFailure) {
         return RSVP.Promise.resolve(nextAction.callback(eventData)).then(result => {
+          actionIndex = actionIndex + 1;
           if (result) {
+            debug(`[action-queue] [x] ${nextAction.name} @priority ${nextAction.priority}`);
             returnSuccess(result);
           }
           else {
+            debug(`[action-queue] [ ] ${nextAction.name} @priority ${nextAction.priority}`);
             markFailure(nextAction);
           }
         }).catch(e => {
@@ -71,6 +79,9 @@ export default Ember.Service.extend(Ember.Evented, {
     });
 
     runPromise.then((results) => {
+      orderedQueue.slice(actionIndex).forEach(nextAction => {
+        this.debug(`[action-queue] [ ] ${nextAction.name} @priority ${nextAction.priority}`);
+      });
       this.trigger(`after:${queueName}`, results);
     });
 

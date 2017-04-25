@@ -90,7 +90,7 @@ test('runQueue only runs actions until one returns true', function(assert) {
   let hifiService = new TestObject();
   let called = [];
 
-  service.addAction(hifiService, 'audio-finished',{priority: 1}, function() {
+  service.addAction(hifiService, 'audio-finished', {priority: 1, name: ''}, function() {
     called.push(1);
     return true;
   });
