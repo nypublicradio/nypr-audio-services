@@ -24,15 +24,28 @@ export default Component.extend({
     return get(this, 'itemPK') === get(this, 'hifi.currentSound.metadata.contentId');
   }),
 
-  isLoading:            false,
+
+  currentSound:         computed.readOnly('hifi.currentSound'),
+
+  _hifiPaused:          computed.not('hifi.isPlaying'),
+
   isPlaying:            computed.and('hifi.isPlaying', 'isCurrentSound'),
+  isPaused:             computed.and('_hifiPaused', 'isCurrentSound'),
+  isLoading:            computed('buttonLoading', 'currentSound.isLoading', function() {
+    if (get(this, 'isCurrentSound')) {
+      return (get(this, 'buttonLoading') || get(this, 'currentSound.isLoading'));
+    }
+
+    return (get(this, 'buttonLoading'));
+  }),
+
   isExpandable:         match('type', /(blue|gray|red)-(minion|boss)/),
   'aria-label':         readOnly('title'),
   'data-test-selector': 'listen-button',
 
   tagName:              'button',
   classNames:           ['listen-button'],
-  classNameBindings:    ['isHovering', 'measurableState', 'type', 'isCurrentSound'],
+  classNameBindings:    ['isHovering', 'type', 'isCurrentSound', 'isErrored', 'isPlaying', 'isPaused', 'isLoading'],
   attributeBindings:    ['aria-label', 'title', 'disabled', 'data-test-selector', 'style'],
 
   modelName: computed('itemPK', function() {
@@ -42,43 +55,31 @@ export default Component.extend({
   title: computed('itemTitle', function() {
     return `Listen to ${get(this, 'itemTitle')}`;
   }),
+
   style: computed('width', function() {
     let width = get(this, 'width');
     return width ? htmlSafe(`width: ${width}px;`) : null;
   }),
 
-  playState:                computed('itemPK', 'currentSound', 'hifi.isPlaying', 'hifi.isLoading', function() {
-    if (get(this, 'isCurrentSound')) {
-      if (get(this, 'hifi.isPlaying')) {
-        return STATES.PLAYING;
-      }
-      else {
-        return STATES.PAUSED;
-      }
+  playState: computed('isPlaying', 'isPaused', 'isLoading', function() {
+    if (get(this, 'isPlaying')) {
+      return STATES.PLAYING;
     }
-    if (get(this, 'isLoading')) {
+    else if (get(this, 'isPaused')){
+      return STATES.PAUSED;
+    }
+    else if (get(this, 'isLoading')) {
       return STATES.LOADING;
     }
   }),
 
-  measurableState: computed('playState', 'wasMeasured', 'isExpandable', function() {
-    if (get(this, 'isCurrentSound')) {
-      let { wasMeasured, isExpandable } = getProperties(this, 'wasMeasured', 'isExpandable');
-      if (isExpandable && !wasMeasured) {
-        return STATES.PAUSED; // consider paused until we measure so we get full width of paused state
-      } else {
-        if (get(this, 'isCurrentSound')) {
-          if (get(this, 'hifi.isPlaying')) {
-            return STATES.PLAYING;
-          }
-          else {
-            return STATES.PAUSED;
-          }
-        }
-      }
+  measurableState: computed('wasMeasured', 'isExpandable', 'playState', function() {
+    let { wasMeasured, isExpandable } = getProperties(this, 'wasMeasured', 'isExpandable');
+    if (isExpandable && !wasMeasured) {
+      return STATES.PAUSED; // consider paused until we measure so we get full width of paused state
     }
-    else if (get(this, 'isLoading')) {
-      return STATES.LOADING;
+    else {
+      return get(this, 'playState');
     }
   }),
 
@@ -133,23 +134,48 @@ export default Component.extend({
         return s.get('urls');
       }
     });
-
     let analyticsData = fetch.then(s => s.forListenAction());
-    let metadata = {contentId: itemPk, playContext: playContext, analyticsData};
+    let metadata = {contentId: itemPk, contentModelType: this.get('modelName'), playContext: playContext, analyticsData};
 
-    set(this, 'isLoading', true);
+    set(this, 'buttonLoading', true);
     get(this, 'hifi').play(audioUrlPromise, {metadata}).then(() => {
-      set(this, 'isLoading', false);
+      // Stuff in the model here after it loads, so other parts of the app can get it
+      // TODO: I'd much rather keep this as dumb as possible and have the necessary story
+      // data be stuffed in here upon play. Lots of logic is tied up in nypr-player-integration
+      // that does data munging
+
+      fetch.then(story => set(metadata, 'contentModel', story));
+      set(this, 'buttonLoading', false);
     }).catch(() => {
-      set(this, 'isLoading', false);
+      set(this, 'buttonLoading', false);
       set(this, 'isErrored', true);
     });
   },
 
+  trackMetadata(recordPromise) {
+    return recordPromise.then(record => {
+      return {story: record};
+
+      // return {
+      //   showTitle             : "",
+      //   showUrl               : "",
+      //   storyTitle            : "",
+      //   storyUrl              : "",
+      //   songDetails           : "",
+      //   streamScheduleUrl     : "",
+      //   streamPlaylistUrl     : "",
+      //   streamUrl             : "",
+      //   streamName            : "",
+      //
+      //   backdropImageUrl      : ""
+      // };
+    });
+  },
+
   click() {
-    if (get(this, 'isErrored')) {
-      return;
-    }
+    // if (get(this, 'isErrored')) {
+    //   return;
+    // }
 
     let hifi = get(this, 'hifi');
     if (get(this, 'isPlaying')) {
