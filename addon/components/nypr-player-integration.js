@@ -11,8 +11,9 @@ our audio logic into dumb arguments for the player to display */
 
 export default Ember.Component.extend({
   layout,
-  audio                : service(),
+  hifi                 : service(),
   session              : service(),
+  store                : service(),
 
   /* To determine whether or not to reveal the notification bar. The messaging
     is handled by the autoplay-message component */
@@ -21,7 +22,8 @@ export default Ember.Component.extend({
   didDimiss            : false,
   didNotDismiss        : not('didDismiss'),
 
-  currentAudio         : reads('audio.currentAudio'),
+  _currentSound        : reads('hifi.currentSound'),
+  currentAudio         : reads('_currentSound.metadata.contentModel'),
   currentTitle         : or('currentAudio.title', '_currentTitleFromShow'),
   _currentTitleFromShow: computed('currentAudio', function() {
     return `${this.get('currentAudio.currentShow.showTitle')} on ${this.get('currentAudio.name')}`;
@@ -64,27 +66,27 @@ export default Ember.Component.extend({
   actions: {
     onDismissNotification() {
       this.set('didDismiss', true);
-      get(this, 'audio')._trackPlayerEvent({
-        action: 'Continuous Play Notification',
-        label: 'Click to Close Notification'
-      });
+      // get(this, 'audio')._trackPlayerEvent({
+        // action: 'Continuous Play Notification',
+        // label: 'Click to Close Notification'
+      // });
     },
     onPlay() {
-      let startingOnDemand = this.get('currentAudio.position') === 0 && !this.get('isStream');
-      let action = startingOnDemand ? 'start' : 'resume';
-      get(this, 'audio').sendListenAction(get(this, 'currentAudio'), action);
+      // let startingOnDemand = this.get('currentAudio.position') === 0 && !this.get('isStream');
+      // let action = startingOnDemand ? 'start' : 'resume';
+      // get(this, 'audio').sendListenAction(get(this, 'currentAudio'), action);
     },
     onPause() {
-      get(this, 'audio').sendListenAction(get(this, 'currentAudio'), 'pause');
+      // get(this, 'audio').sendListenAction(get(this, 'currentAudio'), 'pause');
     },
     onFastForward() {
-      get(this, 'audio').sendListenAction(get(this, 'currentAudio'), 'forward_15');
+      // get(this, 'audio').sendListenAction(get(this, 'currentAudio'), 'forward_15');
     },
     onRewind() {
-      get(this, 'audio').sendListenAction(get(this, 'currentAudio'), 'back_15');
+      // get(this, 'audio').sendListenAction(get(this, 'currentAudio'), 'back_15');
     },
     onSetPosition() {
-      get(this, 'audio').sendListenAction(get(this, 'currentAudio'), 'position');
+      // get(this, 'audio').sendListenAction(get(this, 'currentAudio'), 'position');
     }
   }
 });
