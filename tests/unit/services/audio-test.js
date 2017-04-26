@@ -1,8 +1,8 @@
 import Ember from 'ember';
 import { moduleFor, test } from 'ember-qunit';
-import startMirage from '../../../helpers/setup-mirage-for-integration';
+import startMirage from '../../helpers/setup-mirage-for-integration';
 import wait from 'ember-test-helpers/wait';
-import hifiNeeds from 'nypr-audio-services/tests/helpers/hifi-needs';
+import hifiNeeds from 'ember-hifi/tests/helpers/hifi-needs';
 import sinon from 'sinon';
 
 import DummyConnection from 'ember-hifi/hifi-connections/dummy-connection';

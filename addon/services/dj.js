@@ -26,7 +26,7 @@ export default Ember.Service.extend({
       return (/^\d*$/.test(itemIdOrItem) ? 'story' : 'stream');
     }
     else { // could be a model, detect if model or stream
-      return get(itemIdOrItem, '_internalModel.modelName');
+      return (get(itemIdOrItem, 'constructor.modelName') || get(itemIdOrItem, 'modelName'));
     }
   },
 
@@ -43,7 +43,7 @@ export default Ember.Service.extend({
     return get(this, 'hifi.currentSound.metadata.contentId') === this.itemId(itemIdOrItem);
   },
 
-  play(itemIdOrItem, {playContext}) {
+  play(itemIdOrItem, {playContext} = {}) {
     let itemModelName   = this.itemModelName(itemIdOrItem);
     let recordRequest   = this.fetchRecord(itemIdOrItem);
     let newPlay         = this.isNewPlay(itemIdOrItem);
@@ -54,7 +54,7 @@ export default Ember.Service.extend({
         return newPlay ? s.resetSegments() : s.getCurrentSegment();
       }
       else {
-        return s.get('urls');
+        return get(s, 'urls');
       }
     });
 
@@ -66,10 +66,11 @@ export default Ember.Service.extend({
       analyticsData
     };
 
-    let playRequest = get(this, 'hifi').play(audioUrlPromise, {metadata});
-    playRequest.then(() => {
-      recordRequest.then(story => set(metadata, 'contentModel', story));
 
+    let playRequest = get(this, 'hifi').play(audioUrlPromise, {metadata});
+    // This should resolve around the same time, and then set the metadata
+    recordRequest.then(story => set(metadata, 'contentModel', story));
+    playRequest.then(() => {
       //   TODO, maybe. These are the items that the persistent player needs
       //   We could extract them right here and remove all that cruft from nypr-player-integration
 
