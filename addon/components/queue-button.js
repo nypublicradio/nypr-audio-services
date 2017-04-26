@@ -8,8 +8,8 @@ import layout from '../templates/components/queue-button';
 
 export default Component.extend({
   layout,
+  queue:              service('listen-queue'),
   audio:              service(),
-
   disabled:           not('audio.isReady'),
   'aria-label':       readOnly('title'),
 
@@ -18,9 +18,9 @@ export default Component.extend({
   classNameBindings:  ['type', 'isHovering'],
   attributeBindings:  ['aria-label', 'title', 'disabled', 'data-state'],
 
-  inQueue: computed('audio.queue.items.[]', {
+  inQueue: computed('queue.items.[]', {
     get() {
-      let queue = this.getWithDefault('audio.queue.items', []);
+      let queue = this.getWithDefault('queue.items', []);
       let inQueue = queue.findBy('id', get(this, 'itemPK'));
       return inQueue ? true : false;
     },
@@ -46,14 +46,14 @@ export default Component.extend({
     let oldWidth;
 
     if (get(this, 'inQueue')) {
-      get(this, 'audio').removeFromQueue(get(this, 'itemPK'));
+      get(this, 'queue').removeFromQueueById(get(this, 'itemPK'));
       newWidth = 98;
       oldWidth = 106;
     } else {
       // TODO: addToQueue is potentially async, so we update UI synchronously,
       // but there must be a better/embery way
       set(this, 'inQueue', true);
-      get(this, 'audio').addToQueue(get(this, 'itemPK'), get(this, 'region'));
+      get(this, 'queue').addToQueueById(get(this, 'itemPK'), get(this, 'region'));
       newWidth = 106;
       oldWidth = 98;
     }

@@ -1,15 +1,34 @@
 import Service from 'ember-service';
 import service from 'ember-service/inject';
-import { readOnly } from 'ember-computed';
+import { readOnly, equal } from 'ember-computed';
 import get from 'ember-metal/get';
+import Ember from 'ember';
 
 export default Service.extend({
-  session:  service(),
-  store:    service(),
-  items:    readOnly('session.data.queue'),
+  session           : service(),
+  store             : service(),
+  actionQueue       : service(),
+  hifi              : service(),
+  dj                : service(),
+  items             : readOnly('session.data.queue'),
+  isPlayingFromQueue: equal('hifi.currentSound.metadata.playContext', 'queue'),
 
   init() {
     this.set('pending', []);
+    let actionQueue = get(this, 'actionQueue');
+    let hifi        = get(this, 'hifi');
+
+    actionQueue.addAction(hifi, 'audio-ended', {priority: 2, name: 'queue'}, Ember.run.bind(this, this.onTrackFinished));
+  },
+
+  onTrackFinished(sound) {
+    if (get(sound, 'metadata.playContext') === 'queue') {
+      this.removeFromQueueById(get(sound, 'metadata.contentId'));
+      let nextItem = this.nextItem();
+      if (nextItem) {
+        return get(this, 'dj').play(nextItem, {playContext: 'queue'});
+      }
+    }
   },
 
   addToQueueById(id) {
@@ -36,6 +55,7 @@ export default Service.extend({
 
     return findPromise;
   },
+
   removeFromQueueById(id) {
     let session = get(this, 'session');
     let queue = session.getWithDefault('data.queue', []);
@@ -47,10 +67,12 @@ export default Service.extend({
       session.set('data.queue', newQueue);
     }
   },
+
   reset(newQueue) {
     let session = get(this, 'session');
     session.set('data.queue', newQueue);
   },
+
   nextItem() {
     let session = get(this, 'session');
     let queue = session.getWithDefault('data.queue', []);

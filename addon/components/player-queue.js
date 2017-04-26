@@ -2,15 +2,15 @@ import get from 'ember-metal/get';
 import set from 'ember-metal/set';
 import service from 'ember-service/inject';
 import Component from 'ember-component';
-import computed, { equal } from 'ember-computed';
+import computed, { reads } from 'ember-computed';
 import layout from '../templates/components/player-queue';
 
 export default Component.extend({
   layout,
-  audio:              service(),
+  queue:              service('listen-queue'),
 
   isSortingEnabled:   true,
-  playingFromQueue:   equal('audio.currentContext', 'queue'),
+  playingFromQueue:   reads('queue.isPlayingFromQueue'),
 
   classNames:         ['player-queue'],
 
@@ -35,12 +35,12 @@ export default Component.extend({
 
   actions: {
     removeFromQueue(id) {
-      let audio = get(this, 'audio');
-      audio.removeFromQueue(id);
+      let audio = get(this, 'queue');
+      audio.removeFromQueueById(id);
     },
     reorderItems(reorderedItems/*, droppedItem*/) {
-      let audio = get(this, 'audio');
-      audio.resetQueue(reorderedItems);
+      let audio = get(this, 'queue');
+      audio.reset(reorderedItems);
     },
   },
 });
