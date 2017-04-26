@@ -61,15 +61,15 @@ export default Ember.Service.extend(Ember.Evented, {
     let runPromise = new RSVP.Promise((resolve) => {
       PromiseRace.start(orderedQueue, function(nextAction, returnSuccess, markFailure) {
         return RSVP.Promise.resolve(nextAction.callback(eventData)).then(result => {
-          actionIndex = actionIndex + 1;
           if (result) {
-            debug(`[action-queue] [x] ${nextAction.name} @priority ${nextAction.priority}`);
+            debug(`[action-queue] [✓] ${nextAction.name} @priority ${nextAction.priority}`);
             returnSuccess(result);
           }
           else {
-            debug(`[action-queue] [ ] ${nextAction.name} @priority ${nextAction.priority}`);
+            debug(`[action-queue] [x] ${nextAction.name} @priority ${nextAction.priority}`);
             markFailure(nextAction);
           }
+          actionIndex = actionIndex + 1;
         }).catch(e => {
           markFailure(e);
         });
