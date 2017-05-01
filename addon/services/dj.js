@@ -75,7 +75,12 @@ export default Ember.Service.extend({
       }
     });
 
-    let analyticsData = recordRequest.then(s => s.forListenAction());
+    let analyticsData = recordRequest.then(s => {
+      if (s && s.forListenAction) {
+        return s.forListenAction();
+      }
+    });
+
     let metadata = {
       contentId: this.itemId(itemIdOrItem),
       contentModelType: itemModelName,

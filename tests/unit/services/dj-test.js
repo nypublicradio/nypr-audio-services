@@ -7,7 +7,7 @@ import hifiNeeds from '../../../tests/helpers/hifi-needs';
 
 moduleFor('service:dj', 'Unit | Service | dj', {
   // Specify the other units that are required for this test.
-  needs: [...hifiNeeds, 'service:poll'],
+  needs: [...hifiNeeds, 'service:poll', 'service:action-queue'],
 
   beforeEach() {
     startMirage(this.container);
