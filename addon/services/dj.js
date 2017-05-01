@@ -20,11 +20,12 @@ export default Ember.Service.extend({
   },
 
   playSegmentedAudio(sound) {
-    /* FIXME: Is this right? */
     let story    = get(sound, 'metadata.contentModel');
 
     if (get(story, 'segmentedAudio') && story.hasNextSegment()) {
-      return this.play(story.getNextSegment(), {position: 0});
+      story.getNextSegment(); // trigger next segment
+      this.play(story, {position: 0});
+      return true;
     }
   },
 
@@ -57,7 +58,7 @@ export default Ember.Service.extend({
   },
 
   isNewPlay(itemIdOrItem) {
-    return get(this, 'hifi.currentSound.metadata.contentId') === this.itemId(itemIdOrItem);
+    return get(this, 'hifi.currentSound.metadata.contentId') !== this.itemId(itemIdOrItem);
   },
 
   play(itemIdOrItem, {playContext, position} = {}) {
