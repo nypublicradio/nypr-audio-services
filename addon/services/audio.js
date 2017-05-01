@@ -62,7 +62,7 @@ export default Service.extend({
 
     this.get('hifi').on('current-sound-changed', () => this.set('playedOnce', true));
 
-    this.get('hifi').on('audio-ended', () => this.finishedTrack());
+    // this.get('hifi').on('audio-ended', () => this.finishedTrack());
     Ember.$(window).on('beforeunload', () => {
       if (this.get('currentAudio')) {
         this.sendListenAction(this.get('currentAudio'), 'close');
