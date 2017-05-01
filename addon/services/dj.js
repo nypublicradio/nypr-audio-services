@@ -8,8 +8,25 @@ import set from 'ember-metal/set';
 // and DJ will queue it up on the hifi with the appropriate metadata inserted
 
 export default Ember.Service.extend({
-  hifi: service(),
-  store: service(),
+  hifi       : service(),
+  store      : service(),
+  actionQueue: service(),
+
+  init() {
+    let actionQueue = get(this, 'actionQueue');
+    let hifi        = get(this, 'hifi');
+
+    actionQueue.addAction(hifi, 'audio-ended', {priority: 1, name: 'segmented-audio'}, Ember.run.bind(this, this.playSegmentedAudio));
+  },
+
+  playSegmentedAudio(sound) {
+    /* FIXME: Is this right? */
+    let story    = get(sound, 'metadata.contentModel');
+
+    if (get(story, 'segmentedAudio') && story.hasNextSegment()) {
+      return this.play(story.getNextSegment(), {position: 0});
+    }
+  },
 
   fetchRecord(itemIdOrItem) {
     let modelName = this.itemModelName(itemIdOrItem);
@@ -43,7 +60,7 @@ export default Ember.Service.extend({
     return get(this, 'hifi.currentSound.metadata.contentId') === this.itemId(itemIdOrItem);
   },
 
-  play(itemIdOrItem, {playContext} = {}) {
+  play(itemIdOrItem, {playContext, position} = {}) {
     let itemModelName   = this.itemModelName(itemIdOrItem);
     let recordRequest   = this.fetchRecord(itemIdOrItem);
     let newPlay         = this.isNewPlay(itemIdOrItem);
@@ -67,7 +84,7 @@ export default Ember.Service.extend({
     };
 
 
-    let playRequest = get(this, 'hifi').play(audioUrlPromise, {metadata});
+    let playRequest = get(this, 'hifi').play(audioUrlPromise, {metadata, position});
     // This should resolve around the same time, and then set the metadata
     recordRequest.then(story => set(metadata, 'contentModel', story));
     playRequest.then(() => {

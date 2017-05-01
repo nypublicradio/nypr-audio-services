@@ -13,7 +13,6 @@ const STATES = {
   LOADING:  'is-loading'
 };
 
-
 export default Component.extend({
   layout,
   hifi:                 service(),
@@ -47,10 +46,6 @@ export default Component.extend({
   classNames:           ['listen-button'],
   classNameBindings:    ['isHovering', 'type', 'isCurrentSound', 'isErrored', 'isPlaying', 'isPaused', 'isLoading'],
   attributeBindings:    ['aria-label', 'title', 'disabled', 'data-test-selector', 'style'],
-
-  modelName: computed('itemPK', function() {
-    return (/^\d*$/.test(get(this, 'itemPK')) ? 'story' : 'stream');
-  }),
 
   title: computed('itemTitle', function() {
     return `Listen to ${get(this, 'itemTitle')}`;
@@ -98,7 +93,6 @@ export default Component.extend({
 
   didUpdateAttrs({ oldAttrs, newAttrs }) {
     if (newAttrs.isLive && newAttrs.isLive.value) {
-      console.log('scheduling after render');
       schedule('afterRender', this, () => {
         let contentWidth = this.element.scrollWidth + parseInt(this.$().css('paddingLeft'), 10) + parseInt(this.$().css('paddingRight'), 10);
         set(this, 'contentWidth', contentWidth);
