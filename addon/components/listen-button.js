@@ -44,7 +44,7 @@ export default Component.extend({
 
   tagName:              'button',
   classNames:           ['listen-button'],
-  classNameBindings:    ['isHovering', 'type', 'isCurrentSound', 'isErrored', 'isPlaying', 'isPaused', 'isLoading'],
+  classNameBindings:    ['isHovering', 'type', 'isCurrentSound', 'isErrored', 'playState'],
   attributeBindings:    ['aria-label', 'title', 'disabled', 'data-test-selector', 'style'],
 
   title: computed('itemTitle', function() {
@@ -56,7 +56,12 @@ export default Component.extend({
     return width ? htmlSafe(`width: ${width}px;`) : null;
   }),
 
-  playState: computed('isPlaying', 'isPaused', 'isLoading', function() {
+  playState: computed('isPlaying', 'isPaused', 'isLoading', 'wasMeasured', 'isExpandable', function() {
+    let { wasMeasured, isExpandable } = getProperties(this, 'wasMeasured', 'isExpandable');
+    if (isExpandable && !wasMeasured) {
+      return; // consider it stateless until we measure so we get full width of paused state
+    }
+
     if (get(this, 'isPlaying')) {
       return STATES.PLAYING;
     }
@@ -68,22 +73,12 @@ export default Component.extend({
     }
   }),
 
-  measurableState: computed('wasMeasured', 'isExpandable', 'playState', function() {
-    let { wasMeasured, isExpandable } = getProperties(this, 'wasMeasured', 'isExpandable');
-    if (isExpandable && !wasMeasured) {
-      return STATES.PAUSED; // consider paused until we measure so we get full width of paused state
-    }
-    else {
-      return get(this, 'playState');
-    }
-  }),
-
-  width: computed('measurableState', 'contentWidth', function() {
+  width: computed('playState', 'contentWidth', function() {
     if (!this.element || !get(this, 'isExpandable')) {
       return false;
     }
 
-    let state = get(this, 'measurableState');
+    let state = get(this, 'playState');
     if (state === STATES.PLAYING || state === STATES.LOADING) {
       return Math.ceil(this.element.getBoundingClientRect().height); // make it a circle, set width = height
     } else {
