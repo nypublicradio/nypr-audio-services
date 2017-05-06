@@ -58,272 +58,99 @@ export default Service.extend({
 
   /* TRACK LOGIC --------------------------------------------------------------*/
 
-  init() {
 
-    this.get('hifi').on('current-sound-changed', () => this.set('playedOnce', true));
+  // playFromPk(id, context) {
+  //   this._firstTimePlay();
+  //
+  //   let prevContext = get(this, 'currentContext');
+  //   let newStoryPlaying = get(this, 'currentId') !== id;
+  //
+  //   console.log('play from PK');
+  //   if (newStoryPlaying && this.get('isPlaying')) {
+  //     console.log('sending interrupt listen action');
+  //     this.sendListenAction(this.get('currentAudio'), 'interrupt');
+  //   }
+  //
+  //   console.log(id);
+  //
+  //   // set here so UI can update before play resolves
+  //   set(this, 'currentId', id);
+  //
+  //   let story;
+  //   let fetchStory = get(this, 'store').findRecord('story', id)
+  //
+  //   let urlPromise = fetchStory.then(s => {
+  //     story = s;
+  //     // resetSegments & getCurrentSegment return the audio value if the
+  //     // audio is not segmented
+  //     return newStoryPlaying ? s.resetSegments() : s.getCurrentSegment();
+  //   });
+  //
+  //   let analyticsData = fetchStory.then(s => {
+  //     return s.forListenAction();
+  //   });
+  //
+  //   return this.get('hifi').play(urlPromise, {metadata: {analyticsData}}).then(({sound, failures}) => {
+  //     if (newStoryPlaying) {
+  //       this._trackOnDemandPlay(story, context);
+  //       // this would be a mixin that the button would call
+  //
+  //
+  //     } else {
+  //       this.sendListenAction(story, 'resume');
+  //     }
+  //
+  //
+  //     // TODO: extract into history service, listen for track changes and then adding
+  //     // to history
+  //
+  //     // add to hifi: add data to the sound and retreive it later
+  //     // play() -- add {story: storyId}
+  //
+  //     // -- listening service
+  //     // -- on track change, get storyId of sound and log it
+  //     // need: previous sound, current sound
+  //
+  //     // play story A -
+  //     // - play event
+  //     // play story B -
+  //     // - interrupt story a
+  //     // - play story b
+  //
+  //
+  //     // independent of context, if this item is already the first item in your
+  //     // listening history, don't bother adding it again
+  //     if (get(this, 'listens').indexByStoryPk(id) !== 0) {
+  //       this.addToHistory(story);
+  //     }
+  //
+  //     // TODO: isCurrentSegment relies on `currentAudio` to compare incoming sound
+  //     // so this needs to run before _setupAudio otherwise currentAudio and sound
+  //     // will always match.
+  //     let restartingSegment = this._isCurrentSegment(sound) && newStoryPlaying;
+  //     this._setupAudio(story, context);
+  //
+  //     if (this._didJustPlayFrom('queue')) {
+  //       this.removeFromQueue(id);
+  //     }
+  //
+  //     // replay current audio from start when:
+  //     // * starting it from the queue (while already playing from elsewhere)
+  //     // * clicking a play button from earlier history (while already playing that story)
+  //     // * clicking a segment (while playing the same segment from an episode)
+  //     let restartingFromQueue = this._didJustPlayFrom('queue') && prevContext !== 'queue' && !newStoryPlaying;
+  //     let restartingFromHistory = this._didJustPlayFrom('history') && get(this, 'isPlaying') && !newStoryPlaying;
+  //
+  //     if (restartingFromQueue || restartingFromHistory || restartingSegment) {
+  //       this.setPosition(0);
+  //     }
+  //
+  //     this._trackAllCodecFailures(failures, sound);
+  //     return {sound, failures};
+  //   })
+  //   .catch(e => this._trackSoundFailure(e));
+  // },
 
-    // this.get('hifi').on('audio-ended', () => this.finishedTrack());
-    Ember.$(window).on('beforeunload', () => {
-      if (this.get('currentAudio')) {
-        this.sendListenAction(this.get('currentAudio'), 'close');
-      }
-    });
-    this._super(...arguments);
-  },
-  
-  willDestroy() {
-    Ember.$(window).off('beforeunload');
-  },
-
-  play(pk, playContext) {
-    // TODO: might be better to switch the arg order for better api design
-    // i.e. there will always be a context, but there might not always be a pk
-    let id = pk || get(this, 'currentId');
-    let context = playContext || '';
-
-    if (!id) {
-      return;
-    }
-
-    if (this._audioType(id) === 'on_demand') {
-      return this.playFromPk(id, context);
-    } else if (this._audioType(id) === 'bumper') {
-      return this.playBumper(id, context);
-    } else { //stream
-      return this.playStream(id, context);
-    }
-  },
-
-  pause() {
-    let context = get(this, 'currentContext') || '';
-    let storyOrStream = get(this, 'currentAudio');
-    this._trackPause(storyOrStream, context);
-    this.get('hifi').pause();
-  },
-
-  playFromPk(id, context) {
-    this._firstTimePlay();
-
-    let prevContext = get(this, 'currentContext');
-    let newStoryPlaying = get(this, 'currentId') !== id;
-    
-    if (newStoryPlaying && this.get('isPlaying')) {
-      this.sendListenAction(this.get('currentAudio'), 'interrupt');
-    }
-
-    // set here so UI can update before play resolves
-    set(this, 'currentId', id);
-
-    let story;
-    let urlPromise = get(this, 'store').findRecord('story', id).then(s => {
-      story = s;
-      // resetSegments & getCurrentSegment return the audio value if the
-      // audio is not segmented
-      return newStoryPlaying ? s.resetSegments() : s.getCurrentSegment();
-    });
-
-    return this.get('hifi').play(urlPromise).then(({sound, failures}) => {
-      if (newStoryPlaying) {
-        this._trackOnDemandPlay(story, context);
-      } else {
-        this.sendListenAction(story, 'resume');
-      }
-
-      // independent of context, if this item is already the first item in your
-      // listening history, don't bother adding it again
-      if (get(this, 'listens').indexByStoryPk(id) !== 0) {
-        this.addToHistory(story);
-      }
-
-      // TODO: isCurrentSegment relies on `currentAudio` to compare incoming sound
-      // so this needs to run before _setupAudio otherwise currentAudio and sound
-      // will always match.
-      let restartingSegment = this._isCurrentSegment(sound) && newStoryPlaying;
-      this._setupAudio(story, context);
-
-      if (this._didJustPlayFrom('queue')) {
-        this.removeFromQueue(id);
-      }
-
-      // replay current audio from start when:
-      // * starting it from the queue (while already playing from elsewhere)
-      // * clicking a play button from earlier history (while already playing that story)
-      // * clicking a segment (while playing the same segment from an episode)
-      let restartingFromQueue = this._didJustPlayFrom('queue') && prevContext !== 'queue' && !newStoryPlaying;
-      let restartingFromHistory = this._didJustPlayFrom('history') && get(this, 'isPlaying') && !newStoryPlaying;
-
-      if (restartingFromQueue || restartingFromHistory || restartingSegment) {
-        this.setPosition(0);
-      }
-
-      this._trackAllCodecFailures(failures, sound);
-      return {sound, failures};
-    })
-    .catch(e => this._trackSoundFailure(e));
-  },
-
-  playStream(slug, context = '') {
-    this._firstTimePlay();
-    let newStreamPlaying = get(this, 'currentId') !== slug;
-    
-    if (newStreamPlaying && this.get('isPlaying')) {
-      this.sendListenAction(this.get('currentAudio'), 'interrupt');
-    }
-
-    // set here so UI can update before play resolves
-    set(this, 'currentId', slug);
-
-    let stream;
-    let urlPromise = get(this, 'store').findRecord('stream', slug).then(s => {
-      stream = s;
-      return s.get('urls');
-    });
-
-    return this.get('hifi').play(urlPromise).then(({sound, failures}) => {
-      if (newStreamPlaying) {
-        let prevAudio = get(this, 'currentAudio');
-        this._trackStreamPlay(stream, context, prevAudio);
-      } else {
-        this.sendListenAction(stream, 'resume');
-      }
-
-      this._setupAudio(stream, context);
-      this._trackAllCodecFailures(failures, sound);
-      return {sound, failures};
-    })
-    .catch(e => this._trackSoundFailure(e));
-  },
-
-  playBumper() {
-    let bumperState = get(this, 'bumperState');
-    let url = bumperState.getBumperUrl();
-
-    set(bumperState, 'bumperStarted', true);
-
-    let context = 'Continuous Play';
-    let bumper = Ember.Object.create({
-      audioType: 'bumper',
-      id: url
-    });
-
-    return get(this, 'hifi').play(url).then(({sound, failures}) => {
-      this._trackBumperPlay();
-      this._setupAudio(bumper, context);
-      this._trackAllCodecFailures(failures, sound);
-      return {sound, failures};
-    })
-    .catch(e => this._trackSoundFailure(e));
-  },
-
-  playAutoplay() {
-    let bumperState = get(this, 'bumperState');
-    let next = bumperState.getAutoplayAudioId();
-
-    set(bumperState, 'bumperDidPlay', true);
-
-    if (this._audioType(next) === 'on_demand') {
-      this._trackAutoplayQueue();
-      return this.play(next, 'queue');
-    } else { //stream
-      return this.play(next, 'Continuous Play');
-    }
-  },
-
-  playNextSegment() {
-    let story = get(this, 'currentAudio');
-    let nextSegment = story.getNextSegment();
-    if (nextSegment) {
-      return this.get('hifi').play(nextSegment, {position: 0})
-      .then(({sound, failures}) => {
-        this._trackAllCodecFailures(failures, sound);
-        return {sound, failures};
-      })
-      .catch(e => this._trackSoundFailure(e));
-    } else {
-      return false;
-    }
-  },
-
-  setPosition(percentage) {
-    // send listenAction before setting position so we capture the timestamp where
-    // the action itself occurs
-    this.sendListenAction(this.get('currentAudio'), 'position');
-    
-    let position = (percentage * get(this, 'duration')) || 0;
-    set(this, 'position', position);
-  },
-
-  rewind() {
-    // send listenAction before setting position so we capture the timestamp where
-    // the action itself occurs
-    this.sendListenAction(this.get('currentAudio'), 'back_15');
-    
-    let currentPosition = get(this, 'position');
-    set(this, 'position', currentPosition - FIFTEEN_SECONDS);
-
-    this._trackPlayerEvent({
-      action: 'Skip Fifteen Seconds Back',
-      withAnalytics: true
-    });
-  },
-
-  fastForward() {
-    // send listenAction before setting position so we capture the timestamp where
-    // the action itself occurs
-    this.sendListenAction(this.get('currentAudio'), 'forward_15');
-    
-    let currentPosition = get(this, 'position');
-    set(this, 'position', currentPosition + FIFTEEN_SECONDS);
-
-    this._trackPlayerEvent({
-      action: 'Skip Fifteen Seconds Ahead',
-      withAnalytics: true
-    });
-  },
-
-  toggleMute() {
-    get(this, 'hifi').toggleMute();
-  },
-
-
-  /* QUEUEING LOGIC -----------------------------------------------------------*/
-
-  addToQueue(id, region) {
-    get(this, 'queue').addToQueueById(id)
-    .then(story => {
-      this._trackPlayerEvent({
-        action: 'Add Story to Queue',
-        withRegion: true,
-        region,
-        withAnalytics: true,
-        story
-      });
-    });
-  },
-
-  removeFromQueue(id) {
-    get(this, 'queue').removeFromQueueById(id);
-  },
-
-  resetQueue(newQueue) {
-    get(this, 'queue').reset(newQueue);
-  },
-
-  queueHasNext() {
-    return get(this, 'queue').nextItem();
-  },
-
-  playNextInQueue() {
-    let queue = get(this, 'queue');
-    let nextUp = queue.nextItem();
-
-    if (nextUp) {
-      this.play(nextUp.get('id'), 'queue');
-      return true;
-    } else {
-      return this._flushContext();
-    }
-  },
 
   /* DISCOVER QUEUE -----------------------------------------------------------*/
 
@@ -605,53 +432,4 @@ export default Service.extend({
     }
   },
 
-  _didJustPlayFrom(context) {
-    return context === get(this, 'currentContext');
-  },
-
-  _flushContext() {
-    set(this, 'currentContext', null);
-  },
-
-  _firstTimePlay() {
-    if (get(this, 'playedOnce')) {
-      // already setup
-      return;
-    }
-
-    set(this, 'playedOnce', true); // opens the player
-    get(this, 'poll').addPoll({
-      interval: get(this, 'sessionPing'),
-      callback: bind(this, this._trackPing),
-      label: 'playerPing'
-    });
-  },
-
-  _setupAudio(audio, context) {
-    // use when we played a new piece of audio.
-    // clear errors, set currentAudio and currentContext.
-    set(this, 'hasErrors', false);
-    set(this, 'currentAudio', audio);
-    set(this, 'currentContext', context);
-  },
-
-  _audioType(id) {
-    if (/^\d*$/.test(id)) {
-      return 'on_demand';
-    } else if (/^http|^https/.test(id)) {
-      return 'bumper';
-    } else {
-      return 'livestream';
-    }
-  },
-
-  _formatContext(context) {
-    if (context === 'Continuous Play') {
-      return context;
-    } else if (context === 'nav') {
-      return 'Navigation';
-    } else {
-      return upperCamelize(context);
-    }
-  },
 });

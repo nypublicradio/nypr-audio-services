@@ -31,7 +31,7 @@ export default Service.extend({
     }
   },
 
-  addToQueueById(id) {
+  addToQueueById(id, region) {
     let pending = this.get('pending');
     pending.push(id);
 
@@ -49,6 +49,8 @@ export default Service.extend({
 
       queue.pushObject(story);
       session.set('data.queue', queue);
+
+      this.get('listenAnalytics').trackAddToQueue(story, region);
 
       return story;
     });

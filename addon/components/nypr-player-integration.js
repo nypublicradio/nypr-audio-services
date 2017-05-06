@@ -12,6 +12,7 @@ our audio logic into dumb arguments for the player to display */
 export default Ember.Component.extend({
   layout,
   hifi                 : service(),
+  listenAnalytics      : service(),
   session              : service(),
   store                : service(),
 
@@ -22,8 +23,8 @@ export default Ember.Component.extend({
   didDimiss            : false,
   didNotDismiss        : not('didDismiss'),
 
-  _currentSound        : reads('hifi.currentSound'),
-  currentAudio         : reads('_currentSound.metadata.contentModel'),
+  currentSound         : reads('hifi.currentSound'),
+  currentAudio         : reads('currentSound.metadata.contentModel'),
   currentTitle         : or('currentAudio.title', '_currentTitleFromShow'),
   _currentTitleFromShow: computed('currentAudio', function() {
     return `${this.get('currentAudio.currentShow.showTitle')} on ${this.get('currentAudio.name')}`;
@@ -66,27 +67,22 @@ export default Ember.Component.extend({
   actions: {
     onDismissNotification() {
       this.set('didDismiss', true);
-      // get(this, 'audio')._trackPlayerEvent({
-        // action: 'Continuous Play Notification',
-        // label: 'Click to Close Notification'
-      // });
+      get(this, 'listenAnalytics').trackDismissAutoplayNotification();
     },
     onPlay() {
-      // let startingOnDemand = this.get('currentAudio.position') === 0 && !this.get('isStream');
-      // let action = startingOnDemand ? 'start' : 'resume';
-      // get(this, 'audio').sendListenAction(get(this, 'currentAudio'), action);
+      // handled by listen analytics
     },
     onPause() {
-      // get(this, 'audio').sendListenAction(get(this, 'currentAudio'), 'pause');
+      // handled by listen analytics
     },
     onFastForward() {
-      // get(this, 'audio').sendListenAction(get(this, 'currentAudio'), 'forward_15');
+      get(this, 'listenAnalytics').trackFastForward(get(this, 'currentSound'));
     },
     onRewind() {
-      // get(this, 'audio').sendListenAction(get(this, 'currentAudio'), 'back_15');
+      get(this, 'listenAnalytics').trackRewind(get(this, 'currentSound'));
     },
     onSetPosition() {
-      // get(this, 'audio').sendListenAction(get(this, 'currentAudio'), 'position');
+      get(this, 'listenAnalytics').trackPositionChange(get(this, 'currentSound'));
     }
   }
 });

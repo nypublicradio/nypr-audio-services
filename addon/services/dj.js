@@ -4,17 +4,20 @@ import RSVP from 'rsvp';
 import get from 'ember-metal/get';
 import set from 'ember-metal/set';
 
-// DJ knows how to play anything. Pass it a stream/story PK, or pass it a stream/story model
-// and DJ will queue it up on the hifi with the appropriate metadata inserted
+/* DJ knows how to play anything. Pass it a stream/story PK, or pass it a
+stream/story model and DJ will queue it up on the hifi with the appropriate
+metadata inserted */
 
 export default Ember.Service.extend({
-  hifi       : service(),
-  store      : service(),
-  actionQueue: service(),
+  hifi           : service(),
+  store          : service(),
+  actionQueue    : service(),
+  listenAnalytics: service(),
 
   init() {
     let actionQueue = get(this, 'actionQueue');
     let hifi        = get(this, 'hifi');
+    hifi.on('current-sound-changed', () => this.set('playedOnce', true));
 
     actionQueue.addAction(hifi, 'audio-ended', {priority: 1, name: 'segmented-audio'}, Ember.run.bind(this, this.playSegmentedAudio));
   },
@@ -82,6 +85,8 @@ export default Ember.Service.extend({
       }
     });
 
+    let listenAnalytics = get(this, 'listenAnalytics');
+
     let metadata = {
       contentId: this.itemId(itemIdOrItem),
       contentModelType: itemModelName,
@@ -89,27 +94,14 @@ export default Ember.Service.extend({
       analyticsData
     };
 
-
     let playRequest = get(this, 'hifi').play(audioUrlPromise, {metadata, position});
     // This should resolve around the same time, and then set the metadata
     recordRequest.then(story => set(metadata, 'contentModel', story));
-    playRequest.then(() => {
-      //   TODO, maybe. These are the items that the persistent player needs
-      //   We could extract them right here and remove all that cruft from nypr-player-integration
-
-      // {
-      //   showTitle             : "",
-      //   showUrl               : "",
-      //   storyTitle            : "",
-      //   storyUrl              : "",
-      //   songDetails           : "",
-      //   streamScheduleUrl     : "",
-      //   streamPlaylistUrl     : "",
-      //   streamUrl             : "",
-      //   streamName            : "",
-      //   backdropImageUrl      : ""
-      // };
-
+    playRequest.then(({sound, failures}) => {
+      listenAnalytics.trackAllCodecFailures(failures, sound);
+    }).catch(e => {
+      this.set('hasErrors', true);
+      listenAnalytics.trackSoundFailure(e);
     });
 
     return playRequest;

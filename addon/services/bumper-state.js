@@ -16,12 +16,12 @@ export default Ember.Service.extend({
     get(this, 'store').findAll('stream');
   },
 
-  actionQueue  : service(),
-  queue        : service('listen-queue'),
-  session      : service(),
-  store        : service(),
-  hifi         : service(),
-  dj           : service(),
+  actionQueue    : service(),
+  queue          : service('listen-queue'),
+  session        : service(),
+  store          : service(),
+  hifi           : service(),
+  dj             : service(),
 
   __autoplayPref : readOnly('session.data.user-prefs-active-autoplay'),
   __autoplaySlug : readOnly('session.data.user-prefs-active-stream.slug'),
