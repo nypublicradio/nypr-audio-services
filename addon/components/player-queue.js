@@ -35,12 +35,10 @@ export default Component.extend({
 
   actions: {
     removeFromQueue(id) {
-      let audio = get(this, 'queue');
-      audio.removeFromQueueById(id);
+      get(this, 'queue').removeFromQueueById(id);
     },
     reorderItems(reorderedItems/*, droppedItem*/) {
-      let audio = get(this, 'queue');
-      audio.reset(reorderedItems);
+      get(this, 'queue').reset(reorderedItems);
     },
   },
 });
