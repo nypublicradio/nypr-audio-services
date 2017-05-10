@@ -66,7 +66,7 @@ test('on initialize it listens to hifi track changes', function(assert) {
     return RSVP.Promise.resolve({storyId: id});
   });
 
-  hifi.trigger('current-sound-changed', {currentSound: dummySound, previousSound: {}});
+  hifi.trigger('current-sound-changed', dummySound, {});
 });
 
 test('item can get added to history', function(assert) {
