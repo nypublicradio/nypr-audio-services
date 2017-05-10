@@ -8,8 +8,13 @@ module.exports = {
   //     foo: options.entity.options.foo
   //   };
   // }
-
   afterInstall: function() {
-    return this.addAddonToProject('ember-hifi');
+    return this.addAddonsToProject({
+       // a packages array defines the addons to install
+       packages: [
+         {name: 'ember-hifi'},
+         {name: 'nypr-player'}
+       ]
+     });
   }
 };

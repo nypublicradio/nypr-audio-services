@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import { moduleFor } from 'ember-qunit';
 import test from 'ember-sinon-qunit/test-support/test';
-import sinon from 'sinon';
 import RSVP from 'rsvp';
 
 moduleFor('service:listen-history', 'Unit | Service | listen-history', {

@@ -1,7 +1,7 @@
 {
   "name": "nypr-audio-services",
   "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "NYPR audio services.",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -37,12 +37,23 @@
     "ember-get-config": "0.2.1",
     "ember-hifi": "^1.7.0",
     "ember-load-initializers": "^0.5.1",
+    "ember-lumberjack": "*",
     "ember-resolver": "^2.0.3",
+    "ember-responsive": "2.0.2",
+    "ember-simple-auth": "1.3.0",
     "ember-sinon": "0.7.0",
     "ember-sinon-qunit": "1.5.0",
     "ember-sortable": "1.9.0",
     "ember-truth-helpers": "1.3.0",
-    "loader.js": "^4.0.10"
+    "liquid-fire": "0.27.2",
+    "loader.js": "^4.0.10",
+    "nypr-player": "nypublicradio/nypr-player",
+    "nypr-ui": "nypublicradio/nypr-ui#feature/nypr-audio-services"
+  },
+  "dependencies": {
+    "ember-cli-htmlbars": "^1.0.10",
+    "ember-cli-htmlbars-inline-precompile": "^0.3.3",
+    "ember-cli-babel": "^5.1.7"
   },
   "keywords": [
     "ember-addon"
@@ -50,11 +61,6 @@
   "before": [
     "nypr-player"
   ],
-  "dependencies": {
-    "ember-cli-htmlbars": "^1.0.10",
-    "ember-cli-htmlbars-inline-precompile": "^0.3.3",
-    "ember-cli-babel": "^5.1.7"
-  },
   "ember-addon": {
     "configPath": "tests/dummy/config"
   }
