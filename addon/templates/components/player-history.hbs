@@ -6,10 +6,9 @@
 {{#each props.listens as |listen index|}}
   <div class='list-item'>
    {{queue-listitem
-     isCurrent=(and (eq index 0) (eq listen.story.id audio.currentId))
+     isCurrent=(and (eq index 0) (eq listen.story.id dj.currentContentId))
      dataId=listen.id
      story=listen.story
-     playState=audio.playState
      playContext='history'
      removeAction=(action 'removeFromHistory' listen.story.id)}}
   </div>

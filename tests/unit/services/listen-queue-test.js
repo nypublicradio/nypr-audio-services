@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { moduleFor, test } from 'ember-qunit';
-import startMirage from '../../../helpers/setup-mirage-for-integration';
+import { startMirage } from 'nypr-audio-services/initializers/ember-cli-mirage';
 import wait from 'ember-test-helpers/wait';
 
 moduleFor('service:listen-queue', 'Unit | Service | listen queue', {

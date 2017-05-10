@@ -19,15 +19,22 @@ export default Service.extend({
     let actionQueue = get(this, 'actionQueue');
     let hifi        = get(this, 'hifi');
 
-    actionQueue.addAction(hifi, 'audio-ended', {priority: 2, name: 'queue'}, Ember.run.bind(this, this.onTrackFinished));
+    actionQueue.addAction(hifi, 'audio-ended', {priority: 2, name: 'queue'},Ember.run.bind(this, this.onTrackFinished));
+
+    hifi.on('audio-played', (sound) => {
+      let playContext = get(sound, 'metadata.playContext');
+      if (playContext === 'queue') {
+        this.removeFromQueueById(get(sound, 'metadata.contentId'));
+      }
+    });
   },
 
   onTrackFinished(sound) {
     if (get(sound, 'metadata.playContext') === 'queue') {
-      this.removeFromQueueById(get(sound, 'metadata.contentId'));
       let nextItem = this.nextItem();
       if (nextItem) {
-        return get(this, 'dj').play(nextItem, {playContext: 'queue'});
+        get(this, 'dj').play(nextItem, {playContext: 'queue'});
+        return true; // stop the following action queues from running
       }
     }
   },

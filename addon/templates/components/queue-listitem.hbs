@@ -30,7 +30,7 @@
           region=region}}
         {{#if removeAction}}
           <button class="btn btn--blank btn--playerlight queueitem-deletebutton" {{action removeAction story.id}}>
-            {{wnyc-svg className="icon" icon="trash"}}
+            {{nypr-svg className="icon" icon="trash"}}
           </button>
         {{/if}}
       </div>
@@ -41,6 +41,7 @@
     <div class="btn-group">
       {{listen-button
         type='blue-hollow'
+        isCurrentSound=isCurrent
         playContext=playContext
         itemPK=story.id
         itemTitle=story.title}}
@@ -50,11 +51,11 @@
 
 {{#if (and isCurrent (eq playContext 'queue'))}}
   <div class="queueitem-playingicon">
-    {{wnyc-svg className="icon" icon="speaker"}}
+    {{nypr-svg className="icon" icon="speaker"}}
   </div>
 {{/if}}
 {{#if draggable}}
   <div class="queueitem-draghandle">
-    {{wnyc-svg className="icon" icon="reorder"}}
+    {{nypr-svg className="icon" icon="reorder"}}
   </div>
 {{/if}}

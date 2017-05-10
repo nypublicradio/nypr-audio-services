@@ -1,13 +1,16 @@
-{{#liquid-bind (hash queue=queue.items currentAudio=audio.currentAudio playingFromQueue=playingFromQueue) as |props|}}
+{{#liquid-bind (hash queue=queue.items
+  currentSound=dj.currentSound
+  currentContentModel=dj.currentContentModel
+  currentContentId=dj.currentContentId
+  playingFromQueue=playingFromQueue) as |props|}}
 
-{{#if (and props.playingFromQueue props.currentAudio)}}
+{{#if (and props.playingFromQueue props.currentContentModel)}}
   <div class='list'>
     <div class='list-item' data-test-name="now-playing-item">
       {{queue-listitem
-        dataId=props.currentAudio.id
+        dataId=props.currentContentId
         isCurrent=true
-        story=props.currentAudio
-        state=(if (eq props.currentAudio.id audio.currentId) audio.playState)
+        story=props.currentContentModel
         playContext='queue'}}
     </div>
   </div>
