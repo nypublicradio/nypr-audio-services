@@ -5,12 +5,13 @@ import computed, { readOnly, not } from 'ember-computed';
 import get from 'ember-metal/get';
 import set from 'ember-metal/set';
 import layout from '../templates/components/queue-button';
+import Ember from 'ember';
 
 export default Component.extend({
   layout,
   queue:              service('listen-queue'),
-  audio:              service(),
-  disabled:           not('audio.isReady'),
+  dj:                 service(),
+  disabled:           not('dj.isReady'),
   'aria-label':       readOnly('title'),
 
   tagName:            'button',
@@ -20,7 +21,7 @@ export default Component.extend({
 
   inQueue: computed('queue.items.[]', {
     get() {
-      let queue = this.getWithDefault('queue.items', []);
+      let queue = Ember.A(this.getWithDefault('queue.items', []));
       let inQueue = queue.findBy('id', get(this, 'itemPK'));
       return inQueue ? true : false;
     },

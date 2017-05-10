@@ -21,9 +21,9 @@ export default Ember.Service.extend({
 
   /* So components can just depend on DJ, and not DJ + hifi (for better testing)*/
   currentSound        : reads('hifi.currentSound'),
-  currentContentModel : reads('hifi.currentSound.metadata.contentModel'),
-  currentContentId    : reads('hifi.currentSound.metadata.contentId'),
-  currentContentType  : reads('hifi.currentSound.metadata.contentModelType'),
+  currentContentModel : reads('currentSound.metadata.contentModel'),
+  currentContentId    : reads('currentSound.metadata.contentId'),
+  currentContentType  : reads('currentSound.metadata.contentModelType'),
 
   isReady             : reads('hifi.isReady'),
   isPlaying           : reads('hifi.isPlaying'),

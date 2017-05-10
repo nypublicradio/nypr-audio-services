@@ -50,13 +50,11 @@ moduleFor('service:bumper-state', 'Unit | Service | bumper state', {
   }
 });
 
-
 // Replace this with your real tests.
 test('it exists', function(assert) {
   let service = this.subject();
   assert.ok(service);
 });
-
 
 test('getBumperUrl returns the queue bumper url for the queue when pref is set to queue', function(assert) {
   const [first, second] = server.createList('story', 2);

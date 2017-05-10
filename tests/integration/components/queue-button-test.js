@@ -3,17 +3,16 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('queue-button', 'Integration | Component | queue button', {
-  integration: true, 
+  integration: true,
   beforeEach() {
-    const audioStub = Ember.Service.extend({
-      isReady: true,
-      queue: {
-        items: []
-      },
+    const queueStub = Ember.Service.extend({
+      items: [],
+      removeFromQueueById() {},
+      addToQueueById() {}
     });
 
-    this.register('service:audio', audioStub);
-    this.inject.service('audio', { as: 'audio' });
+    this.register('service:listen-queue', queueStub);
+    this.inject.service('listen-queue', { as: 'queue' });
   },
 });
 
@@ -27,9 +26,8 @@ test('it renders', function(assert) {
 });
 
 test('queue button "unqueued" state', function(assert) {
-  this.set('audio.addToQueue', () => assert.ok('calls addToQueue on click'));
-
-  this.render(hbs`{{queue-button}}`);
+  this.set('addToQueue', () => assert.ok('calls addToQueue on click'));
+  this.render(hbs`{{queue-button queue=queue}}`);
 
   assert.equal(this.$('button').attr('data-state'), undefined);
 
@@ -37,7 +35,7 @@ test('queue button "unqueued" state', function(assert) {
 });
 
 test('queue button "queued" state', function(assert) {
-  this.set('audio.removeFromQueue', () => assert.ok('calls removeFromQueue on click'));
+  this.set('removeFromQueueById', () => assert.ok('calls removeFromQueue on click'));
 
   this.render(hbs`{{queue-button inQueue=true}}`);
 
@@ -52,7 +50,7 @@ test('queue buttons inQueue prop updates', function(assert) {
   assert.equal(this.$('button').attr('data-state'), undefined);
 
   Ember.run(() => {
-    this.get('audio.queue.items').pushObject({id: 1});
+    this.get('queue.items').pushObject({id: 1});
   });
   Ember.run(() => {
     assert.equal(this.$('button').attr('data-state'), 'in-queue');

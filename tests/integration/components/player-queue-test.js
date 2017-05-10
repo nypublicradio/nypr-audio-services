@@ -19,7 +19,6 @@ const queueWithItems = {
 };
 
 const nowPlayingEmpty = {
-  currentAudio: {id: 1, title: 'listitem-a'},
   queue: { items: []}
 };
 
@@ -30,6 +29,15 @@ const nowPlayingWithItems = {
     {id: 3, title: 'listitem-c'}
   ]
 };
+
+let story = {id: 1, title: 'listitem-a'}
+
+let DJ = {
+  isPlaying: true,
+  currentContentModel : story,
+  currentContentId    : story.id,
+  currentContentType  : 'story'
+}
 
 test('it renders', function(assert) {
   this.render(hbs`{{player-queue}}`);
@@ -58,7 +66,8 @@ test('it renders a list of items', function(assert) {
 
 test('it renders the now playing item when playing from queue', function(assert) {
   this.set('queue', nowPlayingWithItems);
-  this.render(hbs`{{player-queue queue=queue playingFromQueue=true}}`);
+  this.set('dj', DJ);
+  this.render(hbs`{{player-queue queue=queue dj=dj playingFromQueue=true}}`);
 
   assert.equal(this.$('.list-item[data-test-name="now-playing-item"]').length, 1, 'should render one now playing item');
   assert.equal(this.$('.list-item[data-test-name="now-playing-item"]:contains(listitem-a)').length, 1, 'should render title of the now playing item');
@@ -68,14 +77,16 @@ test('it renders the now playing item when playing from queue', function(assert)
 
 test('it does not render the now playing item when not playing from queue', function(assert) {
   this.set('queue', nowPlayingWithItems);
-  this.render(hbs`{{player-queue queue=queue playingFromQueue=false}}`);
+  this.set('dj', DJ);
+  this.render(hbs`{{player-queue queue=queue dj=dj playingFromQueue=false}}`);
 
   assert.equal(this.$('.list-item[data-test-name="now-playing-item"]').length, 0, 'should not render now playing item');
 });
 
 test('it does not render the empty message when list is empty but now playing from queue', function(assert) {
   this.set('queue', nowPlayingEmpty);
-  this.render(hbs`{{player-queue queue=queue playingFromQueue=true}}`);
+  this.set('dj', DJ);
+  this.render(hbs`{{player-queue queue=queue dj=dj playingFromQueue=true}}`);
 
   assert.equal(this.$('.list-item[data-test-name="now-playing-item"]').length, 1, 'should render now playing item');
   assert.notOk(this.$('.queuelist-empty').length, 'should not render an empty queue message div');
@@ -84,12 +95,12 @@ test('it does not render the empty message when list is empty but now playing fr
 test('it should call removeFromQueue action with the correct id', function(assert) {
   assert.expect(1);
   let myQueueWithItems = copy(queueWithItems);
-  myQueueWithItems.removeFromQueue = function(id) {
+  myQueueWithItems.removeFromQueueById = function(id) {
      assert.equal(id, 2, 'should pass 2nd item id');
   };
 
   this.set('queue', myQueueWithItems);
-  this.render(hbs`{{player-queue audio=audio}}`);
+  this.render(hbs`{{player-queue queue=queue}}`);
 
   this.$('.queueitem-deletebutton')[1].click();
 });

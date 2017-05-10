@@ -27,7 +27,7 @@
       removeAction=(action 'removeFromQueue')}}
   {{/sortable-item}}
 {{else}}
-  {{#unless (and props.playingFromQueue props.currentAudio)}}
+  {{#unless (and props.playingFromQueue props.currentContentModel)}}
     <div class="queuelist-empty">Your queue is empty! Add audio by selecting the “+ Queue” button next to the pieces that you want to add.</div>
   {{/unless}}
 {{/each}}
