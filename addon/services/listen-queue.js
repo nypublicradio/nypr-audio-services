@@ -10,6 +10,7 @@ export default Service.extend({
   actionQueue       : service(),
   hifi              : service(),
   dj                : service(),
+  listenAnalytics   : service(),
   items             : readOnly('session.data.queue'),
   isPlayingFromQueue: equal('hifi.currentSound.metadata.playContext', 'queue'),
 
