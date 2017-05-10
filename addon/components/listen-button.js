@@ -15,24 +15,19 @@ const STATES = {
 
 export default Component.extend({
   layout,
-  hifi:                 service(),
   dj:                   service(),
-  store:                service(),
+  disabled:             not('dj.isReady'),
 
-  disabled:             not('hifi.isReady'),
-
-  isCurrentSound:      computed('hifi.currentSound.metadata.contentId', 'itemPK', function() {
-    return get(this, 'itemPK') === get(this, 'hifi.currentSound.metadata.contentId');
+  isCurrentSound:       computed('dj.currentContentId', 'itemPK', function() {
+    return get(this, 'itemPK') === get(this, 'dj.currentContentId');
   }),
 
-  currentSound:         computed.readOnly('hifi.currentSound'),
-
-  _hifiPaused:          computed.not('hifi.isPlaying'),
-  isPlaying:            computed.and('hifi.isPlaying', 'isCurrentSound'),
-  isPaused:             computed.and('_hifiPaused', 'isCurrentSound'),
-  isLoading:            computed('buttonLoading', 'currentSound.isLoading', function() {
+  isPlaying:            and('dj.isPlaying', 'isCurrentSound'),
+  _hifiPaused:          not('dj.isPlaying'),
+  isPaused:             and('_hifiPaused', 'isCurrentSound'),
+  isLoading:            computed('isCurrentSound', 'buttonLoading', 'dj.currentSound.isLoading', function() {
     if (get(this, 'isCurrentSound')) {
-      return (get(this, 'buttonLoading') || get(this, 'currentSound.isLoading'));
+      return (get(this, 'buttonLoading') || get(this, 'dj.currentSound.isLoading'));
     }
 
     return (get(this, 'buttonLoading'));
@@ -59,21 +54,21 @@ export default Component.extend({
   playState: computed('isPlaying', 'isPaused', 'isLoading', 'wasMeasured', 'isExpandable', function() {
     let { wasMeasured, isExpandable } = getProperties(this, 'wasMeasured', 'isExpandable');
     if (isExpandable && !wasMeasured) {
-      return; // consider it stateless until we measure so we get full width of paused state
+      return; // consider it stateless until we measure so we get full width of natural state
     }
 
-    if (get(this, 'isPlaying')) {
+    if (get(this, 'isLoading')) {
+      return STATES.LOADING;
+    }
+    else if (get(this, 'isPlaying')) {
       return STATES.PLAYING;
     }
     else if (get(this, 'isPaused')){
       return STATES.PAUSED;
     }
-    else if (get(this, 'isLoading')) {
-      return STATES.LOADING;
-    }
   }),
 
-  width: computed('playState', 'contentWidth', function() {
+  width: computed('playState', 'contentWidth', 'isExpandable', function() {
     if (!this.element || !get(this, 'isExpandable')) {
       return false;
     }
@@ -122,10 +117,9 @@ export default Component.extend({
     // if (get(this, 'isErrored')) {
     //   return;
     // }
-
-    let hifi = get(this, 'hifi');
+    let dj = get(this, 'dj');
     if (get(this, 'isPlaying')) {
-      hifi.pause();
+      dj.pause();
     } else {
       this.play();
     }

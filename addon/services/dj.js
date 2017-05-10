@@ -3,16 +3,30 @@ import service from 'ember-service/inject';
 import RSVP from 'rsvp';
 import get from 'ember-metal/get';
 import set from 'ember-metal/set';
+import { and, not, reads } from 'ember-computed';
 
 /* DJ knows how to play anything. Pass it a stream/story PK, or pass it a
 stream/story model and DJ will queue it up on the hifi with the appropriate
 metadata inserted */
 
 export default Ember.Service.extend({
-  hifi           : service(),
-  store          : service(),
-  actionQueue    : service(),
-  listenAnalytics: service(),
+  hifi                : service(),
+  store               : service(),
+  actionQueue         : service(),
+  listenAnalytics     : service(),
+
+  noErrors            : not('hasErrors'),
+  showPlayer          : and('noErrors', 'playedOnce'),
+  playedOnce          : false,
+
+  /* So components can just depend on DJ, and not DJ + hifi (for better testing)*/
+  currentSound        : reads('hifi.currentSound'),
+  currentContentModel : reads('hifi.currentSound.metadata.contentModel'),
+  currentContentId    : reads('hifi.currentSound.metadata.contentId'),
+  currentContentType  : reads('hifi.currentSound.metadata.contentModelType'),
+
+  isReady             : reads('hifi.isReady'),
+  isPlaying           : reads('hifi.isPlaying'),
 
   init() {
     let actionQueue = get(this, 'actionQueue');
@@ -79,19 +93,12 @@ export default Ember.Service.extend({
       }
     });
 
-    let analyticsData = recordRequest.then(s => {
-      if (s && s.forListenAction) {
-        return s.forListenAction();
-      }
-    });
-
     let listenAnalytics = get(this, 'listenAnalytics');
 
     let metadata = {
       contentId: this.itemId(itemIdOrItem),
       contentModelType: itemModelName,
-      playContext: playContext,
-      analyticsData
+      playContext: playContext
     };
 
     let playRequest = get(this, 'hifi').play(audioUrlPromise, {metadata, position});
@@ -105,5 +112,9 @@ export default Ember.Service.extend({
     });
 
     return playRequest;
+  },
+
+  pause() {
+    get(this, 'hifi').pause();
   }
 });

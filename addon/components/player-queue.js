@@ -7,6 +7,7 @@ import layout from '../templates/components/player-queue';
 
 export default Component.extend({
   layout,
+  dj:                 service(),
   queue:              service('listen-queue'),
 
   isSortingEnabled:   true,

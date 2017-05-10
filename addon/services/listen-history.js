@@ -16,7 +16,7 @@ export default Service.extend({
   },
 
   listenForTrackChanges() {
-    this.get('hifi').on('current-sound-changed', (currentSound, previousSound) => {
+    this.get('hifi').on('current-sound-changed', (currentSound) => {
       let contentModelType = get(currentSound, 'metadata.contentModelType');
       let contentModel     = get(currentSound, 'metadata.contentModel');
 

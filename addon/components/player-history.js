@@ -5,7 +5,7 @@ import layout from '../templates/components/player-history';
 
 export default Component.extend({
   layout,
-  audio:          service(),
+  dj:             service(),
   listenHistory:  service(),
 
   listens:        readOnly('listenHistory.items'),
