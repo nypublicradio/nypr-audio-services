@@ -1,6 +1,7 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import { copy } from 'ember-metal/utils';
 import hbs from 'htmlbars-inline-precompile';
+import wait from 'ember-test-helpers/wait';
 
 moduleForComponent('player-queue', 'Integration | Component | player queue', {
   integration: true
@@ -103,4 +104,28 @@ test('it should call removeFromQueue action with the correct id', function(asser
   this.render(hbs`{{player-queue queue=queue}}`);
 
   this.$('.queueitem-deletebutton')[1].click();
+});
+
+test('it sends the share action up', function(assert) {
+  let receivedFrom, receivedInfo
+  let shareAction = function(info, from) {
+    receivedInfo = info;
+    receivedFrom = from;
+  }
+  this.set('queue', nowPlayingEmpty);
+  this.set('dj', DJ);
+  this.set('shareAction', shareAction)
+
+  this.render(hbs`{{player-queue queue=queue dj=dj playingFromQueue=true shareAction=(action shareAction)}}`);
+
+  this.$('.nypr-popupmenu-button')[0].click();
+
+  wait().then(() => {
+    this.$('button:contains(Twitter)')[0].click();
+  });
+
+  return wait().then(() => {
+    assert.equal(receivedFrom, 'Twitter', "should have received from Twitter");
+    assert.ok(receivedInfo, "should have received info");
+  });
 });

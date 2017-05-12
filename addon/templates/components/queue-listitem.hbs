@@ -23,11 +23,12 @@
         </div>
       {{/if}}
       <div class="queueitem-controls">
-        {{share-button
+        {{nypr-share-button
           classNames="queueitem-sharebutton"
-          story=story
-          type="on_demand"
-          region=region}}
+          shareText = story.shareMetadata.shareText
+          shareUrl  = story.shareMetadata.shareUrl
+          onShare   = (action (optional shareAction))
+        }}
         {{#if removeAction}}
           <button class="btn btn--blank btn--playerlight queueitem-deletebutton" {{action removeAction story.id}}>
             {{nypr-svg className="icon" icon="trash"}}

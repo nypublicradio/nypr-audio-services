@@ -56,4 +56,3 @@ test('it shows the now playing if it is the current item when playing from queue
 
   assert.equal(this.$('.queueitem-playingicon').length, 1);
 });
-

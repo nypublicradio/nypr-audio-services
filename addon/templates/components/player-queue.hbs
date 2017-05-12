@@ -11,6 +11,10 @@
         dataId=props.currentContentId
         isCurrent=true
         story=props.currentContentModel
+        shareAction=(action (optional shareAction)
+          (hash
+            story = story
+          ))
         playContext='queue'}}
     </div>
   </div>
@@ -24,7 +28,13 @@
       story=story
       playContext='queue'
       draggable=true
-      removeAction=(action 'removeFromQueue')}}
+      removeAction=(action 'removeFromQueue')
+      shareAction=(action (optional shareAction)
+        (hash
+          story = story
+        ))
+
+    }}
   {{/sortable-item}}
 {{else}}
   {{#unless (and props.playingFromQueue props.currentContentModel)}}
