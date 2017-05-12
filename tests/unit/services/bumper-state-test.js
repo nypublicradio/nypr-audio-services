@@ -5,19 +5,14 @@ import wait from 'ember-test-helpers/wait';
 import get from 'ember-metal/get';
 import set from 'ember-metal/set';
 const { A, Service } = Ember;
-import '../../helpers/with-feature';
+import hifiNeeds from 'dummy/tests/helpers/hifi-needs';
 
 moduleFor('service:bumper-state', 'Unit | Service | bumper state', {
   // Specify the other units that are required for this test.
   needs: [
-    'service:audio',
+    ...hifiNeeds,
     'service:listen-queue',
-    'model:stream',
-    'adapter:stream',
-    'serializer:stream',
-    'model:story',
-    'adapter:story',
-    'serializer:story'
+    'service:action-queue'
   ],
 
   beforeEach() {

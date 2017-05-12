@@ -7,7 +7,7 @@ import hifiNeeds from '../../../tests/helpers/hifi-needs';
 
 moduleFor('service:dj', 'Unit | Service | dj', {
   // Specify the other units that are required for this test.
-  needs: [...hifiNeeds, 'service:poll', 'service:action-queue', 'service:listen-analytics'],
+  needs: [...hifiNeeds, 'service:poll', 'service:action-queue'],
 
   beforeEach() {
     startMirage(this.container);
@@ -78,6 +78,7 @@ test('play request sets contentModel after load', function(assert) {
 
   Ember.run(() => {
     service.set('hifi', hifiStub);
+    service.set('listenAnalytics', listenAnalyticsStub);
 
     stream.forListenAction = function() {};
 

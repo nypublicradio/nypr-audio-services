@@ -68,7 +68,7 @@ export default Service.extend({
 
   removeFromQueueById(id) {
     let session = get(this, 'session');
-    let queue = session.getWithDefault('data.queue', []);
+    let queue = Ember.A(session.getWithDefault('data.queue', []));
     let newQueue = queue.rejectBy('id', id);
 
     this._removePending(id);

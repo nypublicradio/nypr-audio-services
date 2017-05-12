@@ -1,14 +1,14 @@
 import Ember from 'ember';
 import { moduleFor, test } from 'ember-qunit';
-import { startMirage } from 'nypr-audio-services/initializers/ember-cli-mirage';
+import startMirage from 'dummy/tests/helpers/setup-mirage-for-integration';
 import wait from 'ember-test-helpers/wait';
+import hifiNeeds from 'dummy/tests/helpers/hifi-needs';
 
 moduleFor('service:listen-queue', 'Unit | Service | listen queue', {
   needs: [
+    ...hifiNeeds,
     'service:session',
-    'model:story',
-    'adapter:story',
-    'serializer:story'
+    'service:action-queue'
   ],
   beforeEach() {
     startMirage(this.container);

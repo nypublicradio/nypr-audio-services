@@ -23,11 +23,11 @@ export default Ember.Service.extend({
   hifi           : service(),
   dj             : service(),
 
-  __autoplayPref : readOnly('session.data.user-prefs-active-autoplay'),
-  __autoplaySlug : readOnly('session.data.user-prefs-active-stream.slug'),
+  _autoplayPref : readOnly('session.data.user-prefs-active-autoplay'),
+  _autoplaySlug : readOnly('session.data.user-prefs-active-stream.slug'),
 
-  autoplayPref : or('__autoplayPref', 'default_stream'),
-  autoplaySlug : or('__autoplaySlug', 'wnyc-fm939'),
+  autoplayPref : or('_autoplayPref', 'default_stream'),
+  autoplaySlug : or('_autoplaySlug', 'wnyc-fm939'),
 
   durationLoaded: computed.gt('hifi.currentSound.duration', 0),
   audioLoaded : not('hifi.isLoading'),

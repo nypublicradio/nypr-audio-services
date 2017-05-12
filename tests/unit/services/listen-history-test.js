@@ -2,10 +2,11 @@ import Ember from 'ember';
 import { moduleFor } from 'ember-qunit';
 import test from 'ember-sinon-qunit/test-support/test';
 import RSVP from 'rsvp';
+import hifiNeeds from 'dummy/tests/helpers/hifi-needs';
 
 moduleFor('service:listen-history', 'Unit | Service | listen-history', {
   // Specify the other units that are required for this test.
-  needs: ['service:hifi'],
+  needs: [...hifiNeeds],
 
   beforeEach() {
     const sessionStub = Ember.Service.extend({
@@ -49,15 +50,20 @@ test('on initialize it listens to hifi track changes', function(assert) {
   let store     = service.get('store');
 
   let storyId = 11;
+
+  let story = Ember.Object.create();
+
   let dummySound = new Ember.Object({
     metadata: {
-      storyId
+      contentModel: story,
+      contentModelType: 'story',
+      contentModelId: storyId
     }
   });
 
-  this.stub(service, 'addListen', function(story) {
-    assert.ok(story, "should have been called once");
-    assert.equal(story.storyId, storyId, "story id gets passed in");
+  this.stub(service, 'addListen', function(s) {
+    assert.ok(s, "should have been called once");
+    assert.equal(s, story, "story gets passed in");
     done();
   });
 
@@ -65,7 +71,7 @@ test('on initialize it listens to hifi track changes', function(assert) {
     return RSVP.Promise.resolve({storyId: id});
   });
 
-  hifi.trigger('current-sound-changed', dummySound, {});
+  hifi.trigger('current-sound-changed', dummySound, undefined);
 });
 
 test('item can get added to history', function(assert) {
