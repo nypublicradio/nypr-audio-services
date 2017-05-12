@@ -6,10 +6,12 @@ const { get, getWithDefault, set, assert } = Ember;
 export default Ember.Service.extend(Ember.Evented, {
   queues: {},
 
+  /* eslint-disable */
   debug(message) {
     // TODO: set up a better nypr-audio-services debugger.
-    console.log(message);
+    // console.log(message);
   },
+  /* eslint-enable */
 
   addAction(thing, eventName, info, callback) {
     assert("passed in object is not Ember.Evented", (thing && thing.on && thing.trigger));

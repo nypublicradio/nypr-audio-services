@@ -1,5 +1,5 @@
 import Component from 'ember-component';
-import computed, { readOnly, not, match, and, alias } from 'ember-computed';
+import computed, { readOnly, not, match, and } from 'ember-computed';
 import get, { getProperties } from 'ember-metal/get';
 import set from 'ember-metal/set';
 import { htmlSafe } from 'ember-string';
@@ -81,7 +81,7 @@ export default Component.extend({
     }
   }),
 
-  didUpdateAttrs({ oldAttrs, newAttrs }) {
+  didUpdateAttrs({ newAttrs }) {
     if (newAttrs.isLive && newAttrs.isLive.value) {
       schedule('afterRender', this, () => {
         let contentWidth = this.element.scrollWidth + parseInt(this.$().css('paddingLeft'), 10) + parseInt(this.$().css('paddingRight'), 10);
