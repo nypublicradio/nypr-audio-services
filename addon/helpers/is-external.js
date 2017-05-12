@@ -1,7 +1,10 @@
-import Ember from 'ember';
+import { helper } from 'ember-helper';
 
-export function isExternal(params/*, hash*/) {
-  return params;
+export function isExternal([ url ]) {
+  let urlParser = document.createElement('a');
+  url = url || '';
+  urlParser.href = url;
+  return (urlParser.host !== window.location.host);
 }
 
-export default Ember.Helper.helper(isExternal);
+export default helper(isExternal);

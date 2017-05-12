@@ -4,7 +4,8 @@
     <a href='{{showUrl}}'
        title='{{showTitle}}'
        class='nypr-player-link'
-       target={{is-external showUrl}}
+       target={{if (is-external showUrl) '_blank'}}
+       rel={{if (is-external showUrl) 'noopener'}}
        data-tracking-category='Persistent Player'
        data-tracking-action='Click Through to Show "{{showTitle}}"'
        data-tracking-region='Player'
@@ -17,7 +18,8 @@
     <a href='{{storyUrl}}'
        title='{{storyTitle}}'
        class='nypr-player-link'
-       target={{is-external storyUrl}}
+       target={{if (is-external storyUrl) '_blank'}}
+       rel={{if (is-external storyUrl) 'noopener'}}
        data-test-selector="nypr-player-story-title"
        data-tracking-category='Persistent Player'
        data-tracking-action='Click Through to Story'
@@ -35,7 +37,8 @@
     <a href='{{showUrl}}'
        title='{{showTitle}}'
        class='nypr-player-link'
-       target={{is-external showUrl}}
+       target={{if (is-external showUrl) '_blank'}}
+       rel={{if (is-external showUrl) 'noopener'}}
        data-tracking-category='Persistent Player'
        data-tracking-action='Click Through to Show "{{showTitle}}"'
        data-tracking-region='Player'

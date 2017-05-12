@@ -1,6 +1,7 @@
 <span class="nypr-player-stream-info-station-info">
   LIVE NOW on <a href={{streamScheduleUrl}}
-   target={{is-external streamScheduleUrl}}
+   target={{if (is-external streamScheduleUrl) '_blank'}}
+   rel={{if (is-external streamScheduleUrl) 'noopener'}}
    data-tracking-category='Persistent Player'
    data-tracking-action='Click Through to Schedule'
    data-tracking-label='{{streamName}}'>{{streamName}}</a>
@@ -8,7 +9,8 @@
 <span class="nypr-player-stream-info-station-links">
   <a href={{streamScheduleUrl}}
      title='Schedule'
-     target={{is-external streamScheduleUrl}}
+     target={{if (is-external streamScheduleUrl) '_blank'}}
+     rel={{if (is-external streamScheduleUrl) 'noopener'}}
      data-tracking-category='Persistent Player'
      data-tracking-action='Click Through to Schedule'
      data-tracking-label='{{streamName}}'>SCHEDULE</a>
