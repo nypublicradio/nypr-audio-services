@@ -4,16 +4,20 @@ import computed, { readOnly, not, or} from 'ember-computed';
 import get, { getProperties } from 'ember-metal/get';
 import ENV from 'ember-get-config';
 
+/* TODO: this needs a refactor. */
+
 export default Ember.Service.extend({
   init() {
     this._super(...arguments);
 
     let actionQueue = get(this, 'actionQueue');
     let hifi = get(this, 'hifi');
-    actionQueue.addAction(hifi, 'audio-ended', {priority: 4, name: 'bumper-play'}, Ember.run.bind(this, this.playBumper));
-    actionQueue.addAction(hifi, 'audio-ended', {priority: 5, name: 'continuous-play'}, Ember.run.bind(this, this.autoPlayNextTrack));
+    actionQueue.addAction(hifi, 'audio-ended', {priority: 4, name: 'bumper-play'}, Ember.run.bind(this, this.playBumperAction));
+    actionQueue.addAction(hifi, 'audio-ended', {priority: 5, name: 'continuous-play'}, Ember.run.bind(this, this.autoplayAction));
 
-    get(this, 'store').findAll('stream');
+    Ember.run.next(() => {
+      this.cacheStreamsInStore();
+    })
   },
 
   actionQueue    : service(),
@@ -30,8 +34,8 @@ export default Ember.Service.extend({
   autoplaySlug : or('_autoplaySlug', 'wnyc-fm939'),
 
   durationLoaded: computed.gt('hifi.currentSound.duration', 0),
-  audioLoaded : not('hifi.isLoading'),
-  bumperLoaded: computed.and('durationLoaded', 'audioLoaded'),
+  audioLoaded   : not('hifi.isLoading'),
+  bumperLoaded  : computed.and('durationLoaded', 'audioLoaded'),
   bumperPlaying: computed.and('bumperLoaded', 'bumperStarted'),
   bumperDidPlay: false,
   bumperStarted: false,
@@ -52,15 +56,16 @@ export default Ember.Service.extend({
   autoplayChoice: computed('autoplayPref', 'autoplaySlug', function() {
     const autoplaySlug = get(this, 'autoplaySlug');
     const autoplayPref = get(this, 'autoplayPref');
+
     if (autoplayPref === 'default_stream') {
-      let stream = get(this, 'store').peekRecord('stream', autoplaySlug);
+      let stream = this.getStream(autoplaySlug);
       return get(stream, 'name');
     } else {
       return 'Queue';
     }
   }),
 
-  playBumper(sound) {
+  playBumperAction(sound) {
     let playContext = get(sound, 'metadata.playContext');
 
     if (this.get('autoplayEnabled') && playContext !== 'Continuous Play') {
@@ -73,20 +78,20 @@ export default Ember.Service.extend({
     }
   },
 
-  autoPlayNextTrack(sound) {
+  autoplayAction(sound) {
     let playContext = get(sound, 'metadata.playContext');
     const autoplayPref = get(this, 'autoplayPref');
 
     if (this.get('autoplayEnabled') && playContext === 'Continuous Play'){
       this.set('bumperDidPlay', true);
       let playContext = autoplayPref === 'default_stream' ? 'Continuous Play' : 'queue';
-      let nextItem    = this.getAutoplayAudioId();
+      let nextItem    = this.getAutoplayItem();
       get(this, 'dj').play(nextItem, {playContext});
       return true;
     }
   },
 
-  getAutoplayAudioId() {
+  getAutoplayItem() {
     const autoplaySlug = get(this, 'autoplaySlug');
     const autoplayPref = get(this, 'autoplayPref');
 
@@ -105,15 +110,22 @@ export default Ember.Service.extend({
 
     let nextItem;
     if (autoplayPref === 'default_stream') {
-      let stream = get(this, 'store').peekRecord('stream', autoplaySlug);
+      let stream = this.getStream(autoplaySlug);
       if (stream) {
         nextItem = get(stream, 'audioBumper');
-      } else {
-        nextItem = ENV.queueAudioBumperURL;
+        return nextItem;
       }
-    } else {
-      nextItem = ENV.queueAudioBumperURL;
     }
-    return nextItem;
+    
+    // default
+    return ENV.queueAudioBumperURL;
   },
+
+  getStream(slug) {
+    return get(this, 'store').peekRecord('stream', slug);
+  },
+
+  cacheStreamsInStore() {
+    get(this, 'store').findAll('stream');
+  }
 });

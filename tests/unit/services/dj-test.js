@@ -1,6 +1,6 @@
 import { moduleFor, test } from 'ember-qunit';
 import Ember from 'ember';
-import startMirage from '../../helpers/setup-mirage-for-integration';
+import { startMirage } from 'dummy/initializers/ember-cli-mirage';
 import sinon from 'sinon';
 import RSVP from 'rsvp';
 import hifiNeeds from '../../../tests/helpers/hifi-needs';
@@ -10,15 +10,19 @@ moduleFor('service:dj', 'Unit | Service | dj', {
   needs: [...hifiNeeds, 'service:poll', 'service:action-queue'],
 
   beforeEach() {
-    startMirage(this.container);
+    this.server = startMirage();
   },
 
   afterEach() {
-    server.shutdown();
+    this.server.shutdown();
   }
 });
 
-let dummySound = new Ember.Object({});
+let dummySound = new Ember.Object({
+  metadata: {
+    contentId: "111"
+  }
+});
 
 const hifiStub = {
   play(urls, {metadata}) {
@@ -26,6 +30,11 @@ const hifiStub = {
     return Ember.RSVP.Promise.resolve({sound: dummySound});
   },
   pause() {}
+};
+
+const listenAnalyticsStub = {
+  trackAllCodecFailures: () => {},
+  trackSoundFailure: () => {}
 };
 
 test('it exists', function(assert) {

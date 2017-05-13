@@ -53,7 +53,7 @@ export default Service.extend({
         this._removePending(id);
       }
       let session = get(this, 'session');
-      let queue = session.getWithDefault('data.queue', []).slice();
+      let queue = Ember.A(session.getWithDefault('data.queue', []).slice());
 
       queue.pushObject(story);
       session.set('data.queue', queue);
@@ -95,7 +95,7 @@ export default Service.extend({
   },
 
   _removePending(id) {
-    let pending = this.get('pending');
+    let pending = Ember.A(this.get('pending'));
     let pendingIndex = pending.indexOf(id);
     if (pendingIndex !== -1) {
       pending.removeAt(pendingIndex);

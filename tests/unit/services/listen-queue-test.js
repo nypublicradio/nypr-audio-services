@@ -1,27 +1,53 @@
 import Ember from 'ember';
 import { moduleFor, test } from 'ember-qunit';
-import startMirage from 'dummy/tests/helpers/setup-mirage-for-integration';
+import { startMirage } from 'dummy/initializers/ember-cli-mirage';
 import wait from 'ember-test-helpers/wait';
 import hifiNeeds from 'dummy/tests/helpers/hifi-needs';
+import RSVP from 'rsvp';
 
 moduleFor('service:listen-queue', 'Unit | Service | listen queue', {
   needs: [
     ...hifiNeeds,
     'service:session',
-    'service:action-queue'
+    'service:action-queue',
+    'service:listen-analytics',
+    'service:bumper-state'
   ],
   beforeEach() {
-    startMirage(this.container);
+    this.server = startMirage();
+
+    let server = this.server;
+
     const sessionStub = Ember.Service.extend({
       data: {},
       authorize: function() {}
     });
 
+    const dummyStub = Ember.Service.extend({
+
+    });
+
+    const storeStub = Ember.Service.extend({
+      findRecord: function(model, id) {
+        return RSVP.Promise.resolve(Ember.Object.create(server.create(model, {id: id, title: `title-${id}`}).attrs));
+      }
+    });
+
+    this.register('service:data-pipeline', dummyStub);
+    this.inject.service('data-pipeline', { as: 'dataPipeline'  });
+
+    this.register('service:metrics', dummyStub);
+    this.inject.service('metrics', { as: 'metrics'  });
+
     this.register('service:session', sessionStub);
     this.inject.service('session', { as: 'session'  });
+
+    this.register('service:store', storeStub);
+    this.inject.service('store', { as: 'store'  });
+
   },
   afterEach() {
-    server.shutdown();
+    this.server.shutdown();
   }
 });
 
@@ -34,7 +60,7 @@ test('it exists', function(assert) {
 test('a story can be added to the queue by id', function(assert) {
   let service = this.subject();
 
-  server.createList('story', 2);
+  this.server.createList('story', 2);
 
   Ember.run(() => {
     service.addToQueueById(1);
@@ -47,10 +73,10 @@ test('a story can be added to the queue by id', function(assert) {
 test('addToQueueById returns a Promise that resolves to the added story', function(assert) {
   let service = this.subject();
 
-  server.create('story', {title: 'foo story'});
+  this.server.create('story', {title: 'foo story'});
   Ember.run(() => {
     service.addToQueueById(1)
-      .then(story => assert.equal(story.get('title'), 'foo story'));
+      .then(story => assert.equal(story.get('title'), 'title-1'));
   });
   return wait();
 });
@@ -58,7 +84,7 @@ test('addToQueueById returns a Promise that resolves to the added story', functi
 test('a story can be removed from the queue by id', function(assert) {
   let service = this.subject();
 
-  let [ story1, story2 ] = server.createList('story', 2);
+  let [ story1, story2 ] = this.server.createList('story', 2);
 
   Ember.run(() => {
     service.addToQueueById(story1.id);
@@ -84,7 +110,7 @@ test('a story already loaded can be removed from the queue by id', function(asse
 test('hyperactive adds and removes should still work', function(assert) {
   let service = this.subject();
 
-  let [s1, s2, s3, s4, s5] = server.createList('story', 5);
+  let [s1, s2, s3, s4, s5] = this.server.createList('story', 5);
 
   Ember.run(() => {
     service.addToQueueById(s1.id);
@@ -110,7 +136,7 @@ test('hyperactive adds and removes should still work', function(assert) {
 test('can replace the queue in one action', function(assert) {
   let service = this.subject();
 
-  let [ story1, story2, story3 ] = server.createList('story', 3);
+  let [ story1, story2, story3 ] = this.server.createList('story', 3);
   let newOrder = [ story3, story2, story1 ];
 
   Ember.run(() => {
@@ -127,13 +153,12 @@ test('can replace the queue in one action', function(assert) {
 });
 
 test('can retrieve the next item', function(assert) {
+  this.server.logging = true;
   let service = this.subject();
 
-  let story1 = server.create('story');
+  let story1 = this.server.create('story');
 
-  Ember.run(() => {
-    service.addToQueueById(story1.id);
-  });
+  service.addToQueueById(story1.id);
 
   return wait().then(() => {
     let nextUp = service.nextItem();
