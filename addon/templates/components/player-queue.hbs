@@ -11,7 +11,7 @@
         dataId=props.currentContentId
         isCurrent=true
         story=props.currentContentModel
-        shareAction=(action (optional shareAction)
+        shareAction=(action 'trackShare'
           (hash
             story = story
           ))
@@ -29,7 +29,7 @@
       playContext='queue'
       draggable=true
       removeAction=(action 'removeFromQueue')
-      shareAction=(action (optional shareAction)
+      shareAction=(action 'trackShare'
         (hash
           story = story
         ))
