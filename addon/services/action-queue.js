@@ -4,7 +4,10 @@ import PromiseRace from 'ember-hifi/utils/promise-race';
 const { get, getWithDefault, set, assert } = Ember;
 
 export default Ember.Service.extend(Ember.Evented, {
-  queues: {},
+  init() {
+    this.set('queues', {});
+    this._super(...arguments);
+  },
 
   /* eslint-disable */
   debug(message) {
@@ -57,24 +60,30 @@ export default Ember.Service.extend(Ember.Evented, {
     let orderedQueue = Ember.A(getWithDefault(queues, queueName, [])).sortBy('priority').slice(); // copy, bro
 
     this.debug(`[action-queue] Trying action queue of ${orderedQueue.length}`);
-
     let _this = this;
     let actionIndex = 0;
     let runPromise = new RSVP.Promise((resolve) => {
       PromiseRace.start(orderedQueue, function(nextAction, returnSuccess, markFailure) {
-        return RSVP.Promise.resolve(nextAction.callback(eventData)).then(result => {
-          if (!!result) {
-            _this.debug(`[action-queue] [✓] ${nextAction.name} @priority ${nextAction.priority}`);
-            returnSuccess(result);
-          }
-          else {
-            _this.debug(`[action-queue] [x] ${nextAction.name} @priority ${nextAction.priority}`);
-            markFailure(nextAction);
-          }
-          actionIndex = actionIndex + 1;
-        }).catch(e => {
-          markFailure(e);
-        });
+
+        try {
+          return RSVP.Promise.resolve(nextAction.callback(eventData)).then(result => {
+            if (result) {
+              _this.debug(`[action-queue] [✓] ${nextAction.name} @priority ${nextAction.priority}`);
+              returnSuccess(result);
+            }
+            else {
+              _this.debug(`[action-queue] [x] ${nextAction.name} @priority ${nextAction.priority}`);
+              markFailure(nextAction);
+            }
+            actionIndex = actionIndex + 1;
+          }).catch(e => {
+            _this.debug(`[action-queue] [!] ${nextAction.name} @priority ${nextAction.priority} ${e}`);
+            markFailure(e);
+          });
+        }
+        catch(e) {
+          _this.debug(`[action-queue] [!] ${nextAction.name} @priority ${nextAction.priority} ${e}`);
+        }
       })
       .then((results) => resolve(results))
       .catch((results) => resolve(results));
