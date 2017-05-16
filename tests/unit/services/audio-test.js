@@ -1,25 +1,24 @@
 import Ember from 'ember';
 import { moduleFor, test } from 'ember-qunit';
-import startMirage from '../../helpers/setup-mirage-for-integration';
+import { startMirage } from 'dummy/initializers/ember-cli-mirage';
 import wait from 'ember-test-helpers/wait';
 import hifiNeeds from 'dummy/tests/helpers/hifi-needs';
 import sinon from 'sinon';
 
 import DummyConnection from 'ember-hifi/hifi-connections/dummy-connection';
 
-moduleFor('service:audio', 'Unit | Service | audio', {
+
+let server;
+
+moduleFor('service:dj', 'Unit | Service | audio', {
   // Specify the other units that are required for this test.
   needs: [...hifiNeeds,
-          'model:story','adapter:story','serializer:story',
-          'model:stream','adapter:stream','serializer:stream',
-          'model:discover/stories',
-          'service:features',
+          'service:dj',
           'service:bumper-state',
           'service:poll',
-          'service:metrics',
-          'service:data-pipeline',
           'service:listen-queue',
-          'service:listen-history'],
+          'service:listen-history',
+          'service:action-queue'],
 
   beforeEach() {
     const sessionStub = Ember.Service.extend({
@@ -32,19 +31,35 @@ moduleFor('service:audio', 'Unit | Service | audio', {
     const bumperStub = Ember.Service.extend({
       autoplayEnabled: false
     });
-    startMirage(this.container);
+
+    const dummyStub = Ember.Service.extend({
+
+    });
+
+    const featuresStub = Ember.Service.extend({
+
+    });
+
+    this.register('service:data-pipeline', dummyStub);
+    this.inject.service('data-pipeline', { as: 'dataPipeline'  });
 
     this.register('service:session', sessionStub);
     this.inject.service('session');
+
+    this.register('service:features', featuresStub);
+    this.inject.service('features');
 
     this.register('service:metrics', metricsStub);
     this.inject.service('metrics');
 
     this.register('service:bumper-state', bumperStub);
     this.inject.service('bumper-state');
+
+    this.server = startMirage();
+    server = this.server;
   },
   afterEach() {
-    server.shutdown();
+    this.server.shutdown();
   }
 });
 
@@ -58,19 +73,6 @@ const hifiStub = {
 test('it exists', function(assert) {
   let service = this.subject();
   assert.ok(service);
-});
-
-test('passing a pk to play calls playFromPk', function(assert) {
-  let done = assert.async();
-  let service = this.subject();
-
-  function playFromPk() {
-    assert.ok(true, "should have called playFromPk");
-    done();
-  }
-
-  service.set('playFromPk', playFromPk);
-  service.play(1);
 });
 
 test('can switch from on demand to stream and vice versa', function(assert) {
@@ -330,7 +332,6 @@ test('episodes played from the queue do not continue to the next item until the 
 
 });
 
-
 test('can play a segmented story all the way through more than once', function(assert) {
   let url1 = '/url1.mp3';
   let audio1 = DummyConnection.create({ url: url1 });
@@ -577,31 +578,6 @@ test('service passes correct attrs to data pipeline to report a livestream liste
   });
 });
 
-test('it only sets up the player ping once', function(assert) {
-  assert.expect(2);
-
-  let counter = 0;
-  let service = this.subject();
-  let story = server.create('story');
-  let pollStub = {
-    addPoll({interval, callback, label}) {
-      counter++;
-      assert.equal(label, 'playerPing', 'the correct poll was added');
-    }
-  };
-
-  Ember.run(() => {
-    service.set('poll', pollStub);
-    service.set('hifi', hifiStub);
-    service.play(story.id);
-  });
-
-  return wait().then(() => {
-    assert.equal(counter, 1, 'service should only call addPoll once');
-  });
-
-});
-
 test('it calls the GoogleAnalytics ping event', function(assert) {
   let done = assert.async();
   let service = this.subject();
@@ -619,30 +595,7 @@ test('it calls the GoogleAnalytics ping event', function(assert) {
   Ember.run(() => service.play(story.id));
 });
 
-test('with the bumper-state enabled, the bumper will act on a finished track event', function(assert) {
-  let url = '/audio.mp3';
-  let story = server.create('story', { audio: url });
-  let audio = DummyConnection.create({ url });
-  let done = assert.async();
-  const service = this.subject({
-    currentContext: 'home-page',
-    _trackPlayerEvent() {},
-    sendCompleteListenAction() {},
-    playBumper() {
-      assert.ok('playBumper is called');
-      done();
-    }
-  });
-  service.get('hifi.soundCache').cache(audio);
-  service.set('bumperState.autoplayEnabled', true);
 
-  Ember.run(() => {
-    service.play(story.id).then(() => {
-      audio.trigger('audio-ended');
-    });
-  });
-  return wait();
-});
 
 
 // TODO: skip until we merge in stream mirage factories

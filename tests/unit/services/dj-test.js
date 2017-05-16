@@ -3,7 +3,8 @@ import Ember from 'ember';
 import { startMirage } from 'dummy/initializers/ember-cli-mirage';
 import sinon from 'sinon';
 import RSVP from 'rsvp';
-import hifiNeeds from '../../../tests/helpers/hifi-needs';
+import hifiNeeds from 'dummy/tests/helpers/hifi-needs';
+import { dummyHifi } from 'dummy/tests/helpers/hifi-integration-helpers';
 
 moduleFor('service:dj', 'Unit | Service | dj', {
   // Specify the other units that are required for this test.
@@ -11,26 +12,14 @@ moduleFor('service:dj', 'Unit | Service | dj', {
 
   beforeEach() {
     this.server = startMirage();
+    this.register('service:hifi', dummyHifi);
+    this.inject.service('hifi');
   },
 
   afterEach() {
     this.server.shutdown();
   }
 });
-
-let dummySound = new Ember.Object({
-  metadata: {
-    contentId: "111"
-  }
-});
-
-const hifiStub = {
-  play(urls, {metadata}) {
-    dummySound.set('metadata', metadata);
-    return Ember.RSVP.Promise.resolve({sound: dummySound});
-  },
-  pause() {}
-};
 
 const listenAnalyticsStub = {
   trackAllCodecFailures: () => {},
@@ -86,7 +75,7 @@ test('play request sets contentModel after load', function(assert) {
   let stream = server.create('stream', {urls: ['/path/to/nothing', '/path/to/nothing/2']});
 
   Ember.run(() => {
-    service.set('hifi', hifiStub);
+    // service.set('hifi', hifiStub);
     service.set('listenAnalytics', listenAnalyticsStub);
 
     stream.forListenAction = function() {};

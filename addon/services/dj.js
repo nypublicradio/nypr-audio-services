@@ -39,7 +39,7 @@ export default Ember.Service.extend({
   playSegmentedAudio(sound) {
     let story    = get(sound, 'metadata.contentModel');
 
-    if (get(story, 'segmentedAudio') && story.hasNextSegment()) {
+    if (story && get(story, 'segmentedAudio') && story.hasNextSegment()) {
       story.getNextSegment(); // trigger next segment
       this.play(story, {position: 0});
       return true;
