@@ -67,18 +67,15 @@ test('a story can be added to the queue by id', function(assert) {
     service.addToQueueById(2);
   });
 
-  return wait().then(() => assert.equal(service.get('items').length, 2));
+  assert.equal(service.get('items').length, 2);
 });
 
 test('addToQueueById returns a Promise that resolves to the added story', function(assert) {
   let service = this.subject();
 
   this.server.create('story', {title: 'foo story'});
-  Ember.run(() => {
-    service.addToQueueById(1)
+  return service.addToQueueById(1)
       .then(story => assert.equal(story.get('title'), 'title-1'));
-  });
-  return wait();
 });
 
 test('a story can be removed from the queue by id', function(assert) {
@@ -92,8 +89,7 @@ test('a story can be removed from the queue by id', function(assert) {
     service.removeFromQueueById(story1.id);
   });
 
-  return wait().then(() => assert.equal(service.get('items').length, 1));
-
+  assert.equal(service.get('items').length, 1);
 });
 
 test('a story already loaded can be removed from the queue by id', function(assert) {
@@ -102,7 +98,9 @@ test('a story already loaded can be removed from the queue by id', function(asse
   let session = service.get('session');
   session.set('data.queue', [ {id: 1} ]);
 
-  service.removeFromQueueById(1);
+  Ember.run(() => {
+    service.removeFromQueueById(1);
+  });
 
   assert.equal(service.get('items').length, 0);
 });
@@ -158,10 +156,10 @@ test('can retrieve the next item', function(assert) {
 
   let story1 = this.server.create('story');
 
-  service.addToQueueById(story1.id);
-
-  return wait().then(() => {
-    let nextUp = service.nextItem();
-    assert.equal(nextUp.id, story1.id);
+  Ember.run(() => {
+    service.addToQueueById(story1.id);
   });
+
+  let nextUp = service.nextItem();
+  assert.equal(nextUp.id, story1.id);
 });

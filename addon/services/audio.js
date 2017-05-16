@@ -1,14 +1,8 @@
 import Service from 'ember-service';
 import service from 'ember-service/inject';
 import get from 'ember-metal/get';
-import set from 'ember-metal/set';
 import computed, { readOnly, alias, or } from 'ember-computed';
-import { bind } from 'ember-runloop';
 import RSVP from 'rsvp';
-import { classify as upperCamelize } from 'ember-string';
-import Ember from 'ember';
-
-const FIFTEEN_SECONDS = 1000 * 15;
 const TWO_MINUTES     = 1000 * 60 * 2;
 
 export default Service.extend({
