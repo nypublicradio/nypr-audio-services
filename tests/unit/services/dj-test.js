@@ -220,3 +220,18 @@ test('pausing segmented audio picks up from where it left off', function(assert)
     });
   });
 });
+
+test('can play a segmented story all the way through more than once', function(assert) {
+  let service = this.subject();
+  let hifi = service.get('hifi');
+  assert.expect(1);
+
+  return service.play(dummySegmentedStory).then(({sound}) => {
+    hifi.set('position', ONE_MINUTE/2);
+    sound.stop();
+      // play a different sound so it's not the current sound
+    return service.play(dummySegmentedStory).then((results) => {
+      assert.equal(sound.get('url'), results.sound.get('url'), 'can play twice')
+    });
+  });
+});
