@@ -145,13 +145,11 @@ test('can replace the queue in one action', function(assert) {
 
   Ember.run(() => {
     service.reset(newOrder);
-    assert.deepEqual(service.get('items'), newOrder);
   });
-  return wait();
+  assert.deepEqual(service.get('items'), newOrder);
 });
 
 test('can retrieve the next item', function(assert) {
-  this.server.logging = true;
   let service = this.subject();
 
   let story1 = this.server.create('story');

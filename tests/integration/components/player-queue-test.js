@@ -1,7 +1,6 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import { copy } from 'ember-metal/utils';
 import hbs from 'htmlbars-inline-precompile';
-import wait from 'ember-test-helpers/wait';
 
 moduleForComponent('player-queue', 'Integration | Component | player queue', {
   integration: true
