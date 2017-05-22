@@ -43,6 +43,20 @@ test('it shows as playing only when current sound', function(assert) {
   assert.equal(this.$('.is-paused').length,  0, 'button should not have is-paused if not current sound');
 });
 
+test('it shows as loading when in djs list of loading ids', function(assert) {
+  let DJ = Ember.Object.create({
+    isReady: true,
+    currentlyLoadingIds: ["6444"]
+  });
+
+  this.set('dj', DJ);
+
+  this.render(hbs`{{listen-button dj=dj itemPK=6444}}`);
+  assert.equal(this.$('.is-playing').length,  0, 'button should have is-playing class if playing and current sound');
+  assert.equal(this.$('.is-paused').length,  0, 'button should not have is-paused class if playing and current sound');
+  assert.equal(this.$('.is-loading').length,  1, 'button should not have is-loading class if playing and current sound');
+});
+
 test('button can be set to inactive manually, where it will not change state on the current sound', function(assert) {
   let DJ = Ember.Object.create({
     isReady: true,

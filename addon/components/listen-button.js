@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import Component from 'ember-component';
 import computed, { readOnly, not, match, and } from 'ember-computed';
 import get, { getProperties } from 'ember-metal/get';
@@ -25,12 +26,12 @@ export default Component.extend({
   isPlaying:            and('dj.isPlaying', 'isCurrentSound'),
   _hifiPaused:          not('dj.isPlaying'),
   isPaused:             and('_hifiPaused', 'isCurrentSound'),
-  isLoading:            computed('isCurrentSound', 'buttonLoading', 'dj.currentSound.isLoading', function() {
-    if (get(this, 'isCurrentSound')) {
-      return (get(this, 'buttonLoading') || get(this, 'dj.currentSound.isLoading'));
-    }
+  isLoading:            computed('isCurrentSound', 'buttonLoading', 'dj.currentSound.isLoading', 'dj.currentlyLoadingIds', function() {
+    let currentlyLoadingIds = Ember.A(get(this, 'dj.currentlyLoadingIds'));
 
-    return (get(this, 'buttonLoading'));
+    return get(this, 'buttonLoading') || 
+           currentlyLoadingIds.includes(String(get(this, 'itemPK'))) ||
+           (get(this, 'isCurrentSound') && get(this, 'dj.currentSound.isLoading'));
   }),
 
   isExpandable:         match('type', /(blue|gray|red)-(minion|boss)/),

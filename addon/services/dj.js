@@ -25,6 +25,8 @@ export default Ember.Service.extend({
   currentContentId    : reads('currentSound.metadata.contentId'),
   currentContentType  : reads('currentSound.metadata.contentModelType'),
 
+  currentlyLoadingIds : [], // so loading buttons can get updated when the request starts
+
   isReady             : reads('hifi.isReady'),
   isPlaying           : reads('hifi.isPlaying'),
 
@@ -34,6 +36,26 @@ export default Ember.Service.extend({
     hifi.on('current-sound-changed', () => this.set('playedOnce', true));
 
     actionQueue.addAction(hifi, 'audio-ended', {priority: 1, name: 'segmented-audio'}, Ember.run.bind(this, this.playSegmentedAudio));
+
+    this.set('currentlyLoadingIds', []);
+    this.initCurrentLoadingIdsWatcher();
+  },
+
+  initCurrentLoadingIdsWatcher() {
+    let hifi = get(this, 'hifi');
+    hifi.on('new-load-request', ({loadPromise, options}) => {
+      let currentlyLoadingIds = Ember.A(get(this, 'currentlyLoadingIds'));
+      let id = String(get(options, 'metadata.contentId'));
+
+      if (id) {
+        currentlyLoadingIds.push(id);
+        set(this, 'currentlyLoadingIds', currentlyLoadingIds.uniq());
+      }
+
+      loadPromise.finally(() => {
+        set(this, 'currentlyLoadingIds', currentlyLoadingIds.without(id));
+      });
+    });
   },
 
   playSegmentedAudio(sound) {
