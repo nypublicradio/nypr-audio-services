@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import service from 'ember-service/inject';
-import computed, { readOnly, not, or} from 'ember-computed';
+import computed, { readOnly, not, or, and} from 'ember-computed';
 import get, { getProperties } from 'ember-metal/get';
 import ENV from 'ember-get-config';
 
@@ -30,25 +30,29 @@ export default Ember.Service.extend({
   _autoplayPref : readOnly('session.data.user-prefs-active-autoplay'),
   _autoplaySlug : readOnly('session.data.user-prefs-active-stream.slug'),
 
-  autoplayPref : or('_autoplayPref', 'default_stream'),
-  autoplaySlug : or('_autoplaySlug', 'wnyc-fm939'),
+  _autoplayPrefDefault: 'default_stream',
+  _autoplaySlugDefault: 'wnyc-fm939',
+
+  autoplayPref : or('_autoplayPref', '_autoplayPrefDefault'),
+  autoplaySlug : or('_autoplaySlug', '_autoplaySlugDefault'),
 
   durationLoaded: computed.gt('hifi.currentSound.duration', 0),
   audioLoaded   : not('hifi.isLoading'),
-  bumperLoaded  : computed.and('durationLoaded', 'audioLoaded'),
+  bumperLoaded  : and('durationLoaded', 'audioLoaded'),
   bumperPlaying: computed.and('bumperLoaded', 'bumperStarted'),
   bumperDidPlay: false,
   bumperStarted: false,
   revealNotificationBar: computed.or('bumperPlaying', 'bumperDidPlay'),
   autoplayEnabled: computed('autoplayPref', 'queue.items.length', function() {
     const { autoplayPref, queue } = getProperties(this, 'autoplayPref', 'queue');
-    // if there is nothing left in the queue, then it is redundant/unecessary to
-    // play the bumper file. The `play` function will still be called on the audio,
-    // but will not play anything, anyway, because it won't recognize the `id`
-    // parameter
-    if (autoplayPref === 'queue' && !(queue && queue.nextItem())) {
-      return false;
-    } else {
+    // only play the bumper and the continuous play if autoplay pref is enabled
+    // and option is stream, or if auto play pref is enabled, option is queue,
+    // and there are items in the queue
+
+    if (autoplayPref === 'queue') {
+      return (queue && queue.nextItem()); // only enable if there are items left
+    }
+    else {
       return autoplayPref !== 'no_autoplay';
     }
   }),
@@ -116,7 +120,7 @@ export default Ember.Service.extend({
         return nextItem;
       }
     }
-    
+
     // default
     return ENV.queueAudioBumperURL;
   },

@@ -14,7 +14,6 @@ export default Ember.Component.extend({
   hifi                 : service(),
   listenAnalytics      : service(),
   session              : service(),
-  store                : service(),
 
   /* To determine whether or not to reveal the notification bar. The messaging
     is handled by the autoplay-message component */
@@ -25,6 +24,9 @@ export default Ember.Component.extend({
 
   currentSound         : reads('hifi.currentSound'),
   currentAudio         : reads('currentSound.metadata.contentModel'),
+  currentAudioType     : reads('currentSound.metadata.contentModelType'),
+  currentAudioId       : reads('currentSound.metadata.contentId'),
+
   currentTitle         : or('currentAudio.title', '_currentTitleFromShow'),
   _currentTitleFromShow: computed('currentAudio', function() {
     return `${this.get('currentAudio.currentShow.showTitle')} on ${this.get('currentAudio.name')}`;

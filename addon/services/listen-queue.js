@@ -1,8 +1,11 @@
 import Service from 'ember-service';
 import service from 'ember-service/inject';
-import { readOnly, equal } from 'ember-computed';
+import { readOnly, equal, alias } from 'ember-computed';
 import get from 'ember-metal/get';
 import Ember from 'ember';
+const {
+  A:emberArray
+} = Ember;
 
 export default Service.extend({
   session           : service(),
@@ -11,13 +14,15 @@ export default Service.extend({
   hifi              : service(),
   dj                : service(),
   listenAnalytics   : service(),
-  items             : readOnly('session.data.queue'),
+  items             : alias('session.data.queue'),
   isPlayingFromQueue: equal('hifi.currentSound.metadata.playContext', 'queue'),
 
   init() {
     this.set('pending', []);
     let actionQueue = get(this, 'actionQueue');
     let hifi        = get(this, 'hifi');
+
+    this.set('items', this.getWithDefault('session.data.queue', emberArray()));
 
     actionQueue.addAction(hifi, 'audio-ended', {priority: 2, name: 'queue'},Ember.run.bind(this, this.onTrackFinished));
 

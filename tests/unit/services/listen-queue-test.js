@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import { moduleFor, test } from 'ember-qunit';
 import { startMirage } from 'dummy/initializers/ember-cli-mirage';
-import wait from 'ember-test-helpers/wait';
 import hifiNeeds from 'dummy/tests/helpers/hifi-needs';
 import RSVP from 'rsvp';
 
@@ -122,13 +121,12 @@ test('hyperactive adds and removes should still work', function(assert) {
     service.addToQueueById(s2.id);
   });
 
-  return wait().then(() => {
-    let queue = service.get('items');
-    assert.equal(queue.length, 3);
-    // assert.equal(queue[0].id, s4.id)
-    // assert.equal(queue[1].id, s5.id)
-    // assert.equal(queue[2].id, s2.id)
-  });
+
+  let queue = service.get('items');
+  assert.equal(queue.length, 3);
+  // assert.equal(queue[0].id, s4.id)
+  // assert.equal(queue[1].id, s5.id)
+  // assert.equal(queue[2].id, s2.id)
 });
 
 test('can replace the queue in one action', function(assert) {

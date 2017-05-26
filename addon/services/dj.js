@@ -127,6 +127,7 @@ export default Ember.Service.extend({
     // This should resolve around the same time, and then set the metadata
     recordRequest.then(story => set(metadata, 'contentModel', story));
     playRequest.then(({sound, failures}) => {
+      this.set('hasErrors', false);
       listenAnalytics.trackAllCodecFailures(failures, sound);
     }).catch(e => {
       this.set('hasErrors', true);
