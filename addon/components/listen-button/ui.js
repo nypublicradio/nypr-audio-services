@@ -2,7 +2,9 @@ import Component from 'ember-component';
 import computed from 'ember-computed';
 import get from 'ember-metal/get';
 import layout from '../../templates/components/listen-button/ui';
+
 const ICON_SUFFIXES = {
+  'red-hollow':  '-circle',
   'blue-hollow':  '-circle',
   'white-hollow': '-circle',
   'white-hollow-small': '-hollow-small',
