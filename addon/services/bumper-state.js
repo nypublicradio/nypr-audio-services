@@ -50,7 +50,7 @@ export default Ember.Service.extend({
     // and there are items in the queue
 
     if (autoplayPref === 'queue') {
-      return (queue && queue.nextItem()); // only enable if there are items left
+      return !!(queue && queue.nextItem()); // only enable if there are items left
     }
     else {
       return autoplayPref !== 'no_autoplay';

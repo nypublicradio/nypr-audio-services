@@ -1,10 +1,29 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import { copy } from 'ember-metal/utils';
 import hbs from 'htmlbars-inline-precompile';
+import Ember from 'ember';
 
 moduleForComponent('player-queue', 'Integration | Component | player queue', {
-  integration: true
+  integration: true,
+  beforeEach() {
+
+    const sessionStub = Ember.Service.extend({
+      data: {},
+    });
+
+    const metricsStub = Ember.Service.extend({
+      trackEvent() {}
+    });
+
+    this.register('service:session', sessionStub);
+    this.inject.service('session');
+
+    this.register('service:metrics', metricsStub);
+    this.inject.service('metrics');
+  }
+
 });
+
 
 const emptyQueue = {
   items: []

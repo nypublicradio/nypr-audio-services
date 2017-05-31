@@ -1,6 +1,6 @@
 import Service from 'ember-service';
 import service from 'ember-service/inject';
-import { readOnly, equal, alias } from 'ember-computed';
+import { equal, alias } from 'ember-computed';
 import get from 'ember-metal/get';
 import Ember from 'ember';
 const {
