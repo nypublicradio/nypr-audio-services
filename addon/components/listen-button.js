@@ -7,6 +7,7 @@ import { htmlSafe } from 'ember-string';
 import { schedule } from 'ember-runloop';
 import layout from '../templates/components/listen-button';
 import service from 'ember-service/inject';
+const { getWithDefault } = Ember;
 
 const STATES = {
   PLAYING:  'is-playing',
@@ -27,9 +28,9 @@ export default Component.extend({
   _hifiPaused:          not('dj.isPlaying'),
   isPaused:             and('_hifiPaused', 'isCurrentSound'),
   isLoading:            computed('isCurrentSound', 'buttonLoading', 'dj.currentSound.isLoading', 'dj.currentlyLoadingIds', function() {
-    let currentlyLoadingIds = Ember.A(get(this, 'dj.currentlyLoadingIds'));
+    let currentlyLoadingIds = Ember.A(getWithDefault(this, 'dj.currentlyLoadingIds', []));
 
-    return get(this, 'buttonLoading') || 
+    return get(this, 'buttonLoading') ||
            currentlyLoadingIds.includes(String(get(this, 'itemPK'))) ||
            (get(this, 'isCurrentSound') && get(this, 'dj.currentSound.isLoading'));
   }),

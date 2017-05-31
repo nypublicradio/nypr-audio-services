@@ -4,7 +4,8 @@ import hbs from 'htmlbars-inline-precompile';
 import RSVP from 'rsvp';
 
 const djStub = Ember.Service.extend({
-  isReady: true
+  isReady: true,
+  currentlyLoadingIds: []
 });
 
 moduleForComponent('listen-button', 'Integration | Component | listen button', {
