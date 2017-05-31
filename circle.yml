@@ -1,6 +1,6 @@
 machine:
   node:
-    version: 7.10.0
+    version: 6.10.2
 
 dependencies:
   override:
@@ -13,4 +13,5 @@ dependencies:
 test:
   override:
     - yarn test:
-        timeout: 1200
+        environment:
+          PATH: "/usr/bin:${PATH}"
