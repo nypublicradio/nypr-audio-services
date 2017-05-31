@@ -1,0 +1,14 @@
+machine:
+  node:
+    version: 7.10.0
+
+dependencies:
+  override:
+    - yarn global add bower
+    - bower install
+    - yarn
+
+test:
+  override:
+    - yarn test:
+        timeout: 1200
