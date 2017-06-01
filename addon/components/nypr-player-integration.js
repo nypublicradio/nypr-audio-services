@@ -78,13 +78,13 @@ export default Ember.Component.extend({
       // handled by listen analytics
     },
     onFastForward() {
-      get(this, 'listenAnalytics').trackFastForward(get(this, 'currentSound'));
+      // get(this, 'listenAnalytics').trackFastForward(get(this, 'currentSound'));
     },
     onRewind() {
-      get(this, 'listenAnalytics').trackRewind(get(this, 'currentSound'));
+      // get(this, 'listenAnalytics').trackRewind(get(this, 'currentSound'));
     },
     onSetPosition() {
-      get(this, 'listenAnalytics').trackPositionChange(get(this, 'currentSound'));
+      // get(this, 'listenAnalytics').trackPositionChange(get(this, 'currentSound'));
     }
   }
 });
