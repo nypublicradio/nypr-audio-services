@@ -10,7 +10,8 @@ moduleFor('service:listen-queue', 'Unit | Service | listen queue', {
     'service:session',
     'service:action-queue',
     'service:listen-analytics',
-    'service:bumper-state'
+    'service:bumper-state',
+    'service:dj'
   ],
   beforeEach() {
     this.server = startMirage();
