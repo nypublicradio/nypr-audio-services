@@ -120,7 +120,7 @@ test('it correctly returns the item identifier for a model', function(assert) {
 test('play request sets contentModel after load', function(assert) {
   let done    = assert.async();
   let service = this.subject();
-  let stream = server.create('stream', {urls: ['/path/to/nothing', '/path/to/nothing/2']});
+  let stream = server.create('stream', {urls: ['/good/stream/1', '/good/stream/2']});
 
   Ember.run(() => {
     stream.forListenAction = function() {};
