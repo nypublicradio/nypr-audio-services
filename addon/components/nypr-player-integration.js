@@ -11,7 +11,9 @@ our audio logic into dumb arguments for the player to display */
 
 export default Ember.Component.extend({
   layout,
+
   hifi                 : service(),
+  dj                   : service(),
   listenAnalytics      : service(),
   session              : service(),
 
@@ -22,10 +24,10 @@ export default Ember.Component.extend({
   didDimiss            : false,
   didNotDismiss        : not('didDismiss'),
 
-  currentSound         : reads('hifi.currentSound'),
-  currentAudio         : reads('currentSound.metadata.contentModel'),
-  currentAudioType     : reads('currentSound.metadata.contentModelType'),
-  currentAudioId       : reads('currentSound.metadata.contentId'),
+  currentSound         : reads('dj.currentSound'),
+  currentAudio         : reads('dj.currentContentModel'),
+  currentAudioType     : reads('dj.currentContentType'),
+  currentAudioId       : reads('dj.currentContentId'),
 
   currentTitle         : or('currentAudio.title', '_currentTitleFromShow'),
   _currentTitleFromShow: computed('currentAudio', function() {
