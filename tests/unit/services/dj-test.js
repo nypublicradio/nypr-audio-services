@@ -23,8 +23,8 @@ moduleFor('service:dj', 'Unit | Service | dj', {
     this.server = startMirage();
 
     const listenAnalyticsStub = Ember.Service.extend({
-      trackAllCodecFailures: () => {},
-      trackSoundFailure: () => {}
+      trackAllCodecFailures() {},
+      trackSoundFailure() {}
     });
 
     /* TODO: Revisit this. This doesn't feel great, but DJ knows about stories
