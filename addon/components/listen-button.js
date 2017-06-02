@@ -8,6 +8,7 @@ import { schedule } from 'ember-runloop';
 import layout from '../templates/components/listen-button';
 import service from 'ember-service/inject';
 const { getWithDefault } = Ember;
+import diffAttrs from 'ember-diff-attrs';
 
 const STATES = {
   PLAYING:  'is-playing',
@@ -83,14 +84,18 @@ export default Component.extend({
     }
   }),
 
-  didUpdateAttrs({ newAttrs }) {
-    if (newAttrs.isLive && newAttrs.isLive.value) {
-      schedule('afterRender', this, () => {
-        let contentWidth = this.element.scrollWidth + parseInt(this.$().css('paddingLeft'), 10) + parseInt(this.$().css('paddingRight'), 10);
-        set(this, 'contentWidth', contentWidth);
-      });
+  didUpdateAttrs: diffAttrs('isLive', function(changedAttrs, ...args) {
+    this._super(...args);
+
+    if(changedAttrs && changedAttrs.isLive) {
+      if (changedAttrs.isLive[1]) { // new attr
+        schedule('afterRender', this, () => {
+          let contentWidth = this.element.scrollWidth + parseInt(this.$().css('paddingLeft'), 10) + parseInt(this.$().css('paddingRight'), 10);
+          set(this, 'contentWidth', contentWidth);
+        });
+      }
     }
-  },
+  }),
 
   didRender() {
     let { wasMeasured, isExpandable } = getProperties(this, 'wasMeasured', 'isExpandable');

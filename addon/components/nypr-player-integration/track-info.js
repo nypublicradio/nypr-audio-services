@@ -1,5 +1,7 @@
 import Ember from 'ember';
 import layout from '../../templates/components/nypr-player-integration/track-info';
+import diffAttrs from 'ember-diff-attrs';
+
 export default Ember.Component.extend({
   layout,
   tagName       : '',
@@ -13,13 +15,17 @@ export default Ember.Component.extend({
   audioId       : null,
   songDetails   : null,
 
-  didReceiveAttrs({oldAttrs, newAttrs}) {
-    this._super(...arguments);
-    if (!this.get('isStream')) { return; }
-    if (oldAttrs && oldAttrs.showTitle.value === newAttrs.showTitle.value) { return; }
+  didReceiveAttrs: diffAttrs('showTitle', function(changedAttrs, ...args) {
+     this._super(...args);
 
-    if (this.attrs.trackStreamData) {
-      this.attrs.trackStreamData();
-    }
-  }
+     if(changedAttrs && changedAttrs.showTitle) {
+       let oldTitle = changedAttrs.showTitle[0],
+           newTitle = changedAttrs.showTitle[1];
+       if (newTitle === oldTitle) { return; }
+
+       if (this.attrs.trackStreamData) {
+         this.attrs.trackStreamData();
+       }
+     }
+   })
 });

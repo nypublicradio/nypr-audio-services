@@ -61,13 +61,13 @@ test('on initialize it listens to hifi track changes', function(assert) {
     }
   });
 
-  this.stub(service, 'addListen', function(s) {
+  this.stub(service, 'addListen').callsFake(function(s) {
     assert.ok(s, "should have been called once");
     assert.equal(s, story, "story gets passed in");
     done();
   });
 
-  this.stub(store, 'findRecord', function(model, id) {
+  this.stub(store, 'findRecord').callsFake(function(model, id) {
     return RSVP.Promise.resolve({storyId: id});
   });
 

@@ -125,7 +125,7 @@ test('play request sets contentModel after load', function(assert) {
   Ember.run(() => {
     stream.forListenAction = function() {};
 
-    sinon.stub(service, 'fetchRecord', function() {
+    sinon.stub(service, 'fetchRecord').callsFake(function() {
       return RSVP.Promise.resolve(stream);
     });
 
