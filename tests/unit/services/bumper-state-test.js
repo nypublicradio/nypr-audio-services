@@ -67,8 +67,8 @@ test('getBumperUrl returns the queue bumper url for the queue when pref is set t
   const bumper = this.subject({});
   sinon.stub(bumper, 'cacheStreamsInStore').callsFake(function() {});
 
-  server.createList('stream', 2);
-  const [first, second] = server.createList('story', 2);
+  this.server.createList('stream', 2);
+  const [first, second] = this.server.createList('story', 2);
 
   return wait().then(() => {
     set(bumper, 'session.data.queue', [Ember.Object.create(first), Ember.Object.create(second)]);
@@ -137,7 +137,7 @@ test('if the queue is empty and the preference is set to queue, the bumper servi
   const bumper = this.subject({});
   sinon.stub(bumper, 'cacheStreamsInStore').callsFake(function() {});
 
-  server.createList('stream', 2);
+  this.server.createList('stream', 2);
 
   set(bumper, 'session.data.user-prefs-active-autoplay', 'queue');
   set(bumper, 'session.data.queue', []);
@@ -149,7 +149,7 @@ test('if the queue is undefined and the preference is set to queue, the bumper s
   const bumper = this.subject({});
   sinon.stub(bumper, 'cacheStreamsInStore').callsFake(function() {});
 
-  server.createList('stream', 2);
+  this.server.createList('stream', 2);
   set(bumper, 'session.data.user-prefs-active-autoplay', 'queue');
   set(bumper, 'session.data.queue', undefined);
   return wait().then(() => {

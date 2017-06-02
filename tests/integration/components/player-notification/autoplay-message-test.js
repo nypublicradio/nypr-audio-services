@@ -1,5 +1,5 @@
 import { moduleForComponent, test } from 'ember-qunit';
-import startMirage from '../../../helpers/setup-mirage-for-integration';
+import { startMirage } from 'dummy/initializers/ember-cli-mirage';
 import hbs from 'htmlbars-inline-precompile';
 import Ember from 'ember';
 
@@ -15,16 +15,16 @@ moduleForComponent('player-notification/autoplay-message', 'Integration | Compon
   beforeEach() {
     this.register('service:session', sessionStub);
     this.inject.service('session');
-    startMirage(this.container);
+    this.server = startMirage();
   },
 
   afterEach() {
-    window.server.shutdown();
+    this.server.shutdown();
   }
 });
 
 test('it renders with the bumper duration countdown with stream message if stream is enabled', function(assert) {
-  server.create('stream', { slug: 'wnyc-fm939', name: 'WNYC 93.9FM', audioBumper: 'blergh' });
+  this.server.create('stream', { slug: 'wnyc-fm939', name: 'WNYC 93.9FM', audioBumper: 'blergh' });
   this.setProperties({
     duration: 15000,
     position: 0,
@@ -47,7 +47,7 @@ test('it renders with the bumper duration countdown with stream message if strea
 });
 
 test('it renders after the bumper duration countdown with stream message if stream is enabled', function(assert) {
-  server.create('stream', { slug: 'wnyc-fm939', name: 'WNYC 93.9FM', audioBumper: 'blerg' });
+  this.server.create('stream', { slug: 'wnyc-fm939', name: 'WNYC 93.9FM', audioBumper: 'blerg' });
   this.setProperties({
     duration: 15000,
     position: 15500,
@@ -70,7 +70,7 @@ test('it renders after the bumper duration countdown with stream message if stre
 });
 
 test('it renders with the bumper duration countdown with queue message if stream is disabled', function(assert) {
-  server.create('stream', { slug: 'wnyc-fm939', name: 'WNYC 93.9FM', audioBumper: 'blergh' });
+  this.server.create('stream', { slug: 'wnyc-fm939', name: 'WNYC 93.9FM', audioBumper: 'blergh' });
   this.setProperties({
     duration: 15000,
     position: 0,
@@ -93,7 +93,7 @@ test('it renders with the bumper duration countdown with queue message if stream
 });
 
 test('it renders after the bumper duration countdown with queue message if stream is disabled', function(assert) {
-  server.create('stream', { slug: 'wnyc-fm939', name: 'WNYC 93.9FM', audioBumper: 'blerg' });
+  this.server.create('stream', { slug: 'wnyc-fm939', name: 'WNYC 93.9FM', audioBumper: 'blerg' });
   this.setProperties({
     duration: 15000,
     position: 15500,
@@ -116,7 +116,7 @@ test('it renders after the bumper duration countdown with queue message if strea
 });
 
 test('it renders with the bumper duration countdown with stream message if stream is enabled when logged in', function(assert) {
-  server.create('stream', { slug: 'wnyc-fm939', name: 'WNYC 93.9FM', audioBumper: 'blergh' });
+  this.server.create('stream', { slug: 'wnyc-fm939', name: 'WNYC 93.9FM', audioBumper: 'blergh' });
   this.setProperties({
     isLoggedIn: true,
     duration: 15000,

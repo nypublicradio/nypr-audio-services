@@ -23,19 +23,23 @@ moduleFor('service:listen-queue', 'Unit | Service | listen queue', {
       authorize: function() {}
     });
 
+    const dummyStub = Ember.Service.extend({
+
+    });
+
     const storeStub = Ember.Service.extend({
       findRecord: function(model, id) {
         return RSVP.Promise.resolve(Ember.Object.create(server.create(model, {id: id, title: `title-${id}`}).attrs));
       }
     });
 
-    this.register('service:dj', Ember.Service.extend({}));
+    this.register('service:dj', dummyStub);
     this.inject.service('dj', { as: 'dj'  });
 
-    this.register('service:data-pipeline',  Ember.Service.extend({}));
+    this.register('service:data-pipeline', dummyStub);
     this.inject.service('data-pipeline', { as: 'dataPipeline'  });
 
-    this.register('service:metrics', Ember.Service.extend({}));
+    this.register('service:metrics', dummyStub);
     this.inject.service('metrics', { as: 'metrics'  });
 
     this.register('service:session', sessionStub);
@@ -72,10 +76,8 @@ test('addToQueueById returns a Promise that resolves to the added story', functi
   let service = this.subject();
 
   this.server.create('story', {title: 'foo story'});
-  Ember.run(() => {
-    service.addToQueueById(1)
-        .then(story => assert.equal(story.get('title'), 'title-1'));
-  });
+  service.addToQueueById(1)
+      .then(story => assert.equal(story.get('title'), 'title-1'));
 });
 
 test('a story can be removed from the queue by id', function(assert) {
@@ -145,7 +147,6 @@ test('can replace the queue in one action', function(assert) {
   Ember.run(() => {
     service.reset(newOrder);
   });
-
   assert.deepEqual(service.get('items'), newOrder);
 });
 

@@ -81,13 +81,13 @@ test('it exists', function(assert) {
 
 test('it correctly identifies a story model', function(assert) {
   let service = this.subject();
-  let story = server.create('story');
+  let story = this.server.create('story');
   assert.equal(service.itemModelName(story), 'story');
 });
 
 test('it correctly identifies a stream model', function(assert) {
   let service = this.subject();
-  let stream = server.create('stream');
+  let stream = this.server.create('stream');
   assert.equal(service.itemModelName(stream), 'stream');
 });
 
@@ -113,14 +113,14 @@ test('it correctly returns the item identifier', function(assert) {
 
 test('it correctly returns the item identifier for a model', function(assert) {
   let service = this.subject();
-  let story = server.create('story');
+  let story = this.server.create('story');
   assert.equal(service.itemId(story), story.id);
 });
 
 test('play request sets contentModel after load', function(assert) {
   let done    = assert.async();
   let service = this.subject();
-  let stream = server.create('stream', {urls: ['/good/stream/1', '/good/stream/2']});
+  let stream = this.server.create('stream', {urls: ['/good/stream/1', '/good/stream/2']});
 
   Ember.run(() => {
     stream.forListenAction = function() {};
@@ -148,8 +148,8 @@ test('can switch from on demand to stream and vice versa', function(assert) {
   const onDemandUrl = '/good/12500/ok';
   const streamUrl = '/good/stream/yeah'
 
-  let stream = server.create('stream', {urls: [streamUrl]});
-  let story  = Ember.Object.create(Ember.assign(server.create('story').attrs, {
+  let stream = this.server.create('stream', {urls: [streamUrl]});
+  let story  = Ember.Object.create(Ember.assign(this.server.create('story').attrs, {
     modelName: 'story',
     resetSegments: () => onDemandUrl,
     getCurrentSegment: () => onDemandUrl
