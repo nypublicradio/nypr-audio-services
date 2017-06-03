@@ -1,31 +1,3 @@
 import DS from 'ember-data';
-import attr from 'ember-data/attr';
-
 export default DS.Model.extend({
-  analyticsCode: attr('string'),
-  audio: attr(),
-  audioType: 'on_demand',
-  audioAvailable: attr('boolean'),
-  audioDurationReadable: attr('string'),
-  audioEventually: attr('boolean'),
-  audioMayDownload: attr('boolean'),
-  audioMayEmbed: attr('boolean'),
-  audioShowOptions: attr('boolean'),
-  commentsCount: attr('number'),
-  commentsEnabled: attr('boolean'),
-  cmsPK: attr('string'),
-  dateLine: attr('string'),
-  dateLineDatetime: attr('string'),
-  editLink: attr('string'),
-  headers: attr(),
-  imageMain: attr(),
-  itemType: attr('string'),
-  itemTypeId: attr('number'),
-  isLatest: attr('boolean'),
-  largeTeaseLayout: attr('boolean'),
-  slug: attr('string'),
-  tease: attr('string'),
-  title: attr('string'),
-  url: attr('string'),
-  extendedStory: attr(),
 });

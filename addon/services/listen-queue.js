@@ -44,12 +44,15 @@ export default Service.extend({
     }
   },
 
+  findRecord(id) {
+    return get(this, 'store').findRecord('story', id);
+  },
+
   addToQueueById(id, region) {
     let pending = this.get('pending');
     pending.push(id);
 
-    let findPromise = get(this, 'store').findRecord('story', id);
-
+    let findPromise = this.findRecord(id);
     findPromise.then(story => {
       if (!pending.includes(id)) {
         // story was removed from the queue before it could be resolved

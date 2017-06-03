@@ -1,7 +1,7 @@
 /*jshint node:true*/
 'use strict';
 
-module.exports = function(environment, appConfig) {
+module.exports = function(environment /* , appConfig */) {
   if (environment === 'test') {
     return {
       queueAudioBumperURL: 'http://audio-bumper.com/thucyides.mp3'

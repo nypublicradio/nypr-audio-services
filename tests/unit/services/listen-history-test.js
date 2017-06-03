@@ -18,23 +18,11 @@ moduleFor('service:listen-history', 'Unit | Service | listen-history', {
     const hifiStub = Ember.Service.extend(Ember.Evented, {
     });
 
-    const storeStub = Ember.Service.extend({
-      findRecord() {
-
-      }
-    });
-
-    this.register('service:store', storeStub);
-    this.inject.service('store', { as: 'store' });
-
     this.register('service:hifi', hifiStub);
     this.inject.service('hifi', { as: 'hifi' });
 
     this.register('service:session', sessionStub);
     this.inject.service('session', { as: 'session' });
-
-  },
-  afterEach() {
   }
 });
 
