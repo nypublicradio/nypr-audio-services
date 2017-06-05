@@ -94,7 +94,7 @@
   margin: 0 ;
 }
 
-.stream-banner .stream-banner-dropdown {
+.stream-banner .stream-banner-dropdown.ember-power-select-dropdown {
   @include fontsize(16);
   font-weight: normal;
   background-color: white;
