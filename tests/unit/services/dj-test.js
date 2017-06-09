@@ -235,3 +235,15 @@ test('can play a segmented story all the way through more than once', function(a
     });
   });
 });
+
+test('can pass extra metadata in a play request along to hifi', function(assert) {
+  let service = this.subject();
+  assert.expect(3);
+
+  return service.play(dummySegmentedStory, {playContext: 'queue', metadata: {contentModelType: undefined, customInfo: 'secret'}}).then(({sound}) => {
+      // play a different sound so it's not the current sound
+    assert.equal(sound.get('metadata.playContext'), 'queue', "play context should have been set");
+    assert.equal(sound.get('metadata.customInfo'), 'secret', "extra metadata should have been set");
+    assert.ok(sound.get('metadata.contentModelType') !== undefined, "it should not overwrite dj's options");
+  });
+});

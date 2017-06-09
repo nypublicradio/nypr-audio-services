@@ -71,13 +71,13 @@ export default Ember.Service.extend({
 
   playBumperAction(sound) {
     let playContext = get(sound, 'metadata.playContext');
-
+    let autoPlayChoice = get(this, 'autoplayChoice');
     if (this.get('autoplayEnabled') && playContext !== 'Continuous Play') {
       let bumperUrl = this.getBumperUrl();
       let playContext = 'Continuous Play';
       this.set('bumperStarted', true);
       let bumper = Ember.Object.create({modelName: 'bumper', urls: bumperUrl});
-      get(this, 'dj').play(bumper, {playContext});
+      get(this, 'dj').play(bumper, {playContext, autoPlayChoice});
       return true;
     }
   },

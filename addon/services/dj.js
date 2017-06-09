@@ -100,10 +100,13 @@ export default Ember.Service.extend({
     return get(this, 'hifi.currentSound.metadata.contentId') !== this.itemId(itemIdOrItem);
   },
 
-  play(itemIdOrItem, {playContext, position} = {}) {
+  play(itemIdOrItem, options = {}) {
     let itemModelName   = this.itemModelName(itemIdOrItem);
+    let itemId          = this.itemId(itemIdOrItem);
     let recordRequest   = this.fetchRecord(itemIdOrItem);
     let newPlay         = this.isNewPlay(itemIdOrItem);
+
+    let { playContext, position, metadata = {} } = options;
 
     let audioUrlPromise = recordRequest.then(s => {
       // TODO: Make this consistent between models
@@ -117,11 +120,9 @@ export default Ember.Service.extend({
 
     let listenAnalytics = get(this, 'listenAnalytics');
 
-    let metadata = {
-      contentId: this.itemId(itemIdOrItem),
-      contentModelType: itemModelName,
-      playContext: playContext
-    };
+    metadata.contentId = itemId;
+    metadata.contentModelType = itemModelName;
+    metadata.playContext = playContext;
 
     let playRequest = get(this, 'hifi').play(audioUrlPromise, {metadata, position});
     // This should resolve around the same time, and then set the metadata

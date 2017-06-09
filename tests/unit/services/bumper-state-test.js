@@ -190,6 +190,7 @@ test('with the bumper-state enabled, the bumper will act on a finished track eve
   let bumper = this.subject({});
 
   sinon.stub(bumper, 'cacheStreamsInStore').callsFake(function() {});
+  sinon.stub(bumper, 'getStream').callsFake(function() { return {name: 'wnyc-stream '}});
   let playSpy = sinon.stub(bumper.get('dj'), 'play').callsFake(function() {});
 
   bumper.set('autoplayEnabled', true);
@@ -220,6 +221,8 @@ test('after a bumper plays, continuous play will start', function(assert) {
   let bumper = this.subject({});
 
   sinon.stub(bumper, 'cacheStreamsInStore').callsFake(function() {});
+  sinon.stub(bumper, 'getStream').callsFake(function() { return {name: 'wnyc-stream '}});
+
   let playSpy = sinon.stub(bumper.get('dj'), 'play').callsFake(function() {});
 
   bumper.set('autoplayEnabled', true);
