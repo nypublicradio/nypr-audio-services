@@ -124,9 +124,6 @@ export default Component.extend({
   },
 
   click() {
-    // if (get(this, 'isErrored')) {
-    //   return;
-    // }
     let dj = get(this, 'dj');
     if (get(this, 'isPlaying')) {
       dj.pause();
