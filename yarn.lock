@@ -2430,7 +2430,7 @@ ember-get-config@0.2.1:
     broccoli-file-creator "^1.1.1"
     ember-cli-babel "^5.1.6"
 
-ember-getowner-polyfill@^1.0.0, ember-getowner-polyfill@^1.0.1, ember-getowner-polyfill@^1.1.0, ember-getowner-polyfill@^1.1.1, ember-getowner-polyfill@^1.2.2:
+ember-getowner-polyfill@^1.0.1, ember-getowner-polyfill@^1.1.0, ember-getowner-polyfill@^1.1.1, ember-getowner-polyfill@^1.2.2:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/ember-getowner-polyfill/-/ember-getowner-polyfill-1.2.3.tgz#ea70f4a48b1c05b91056371d1878bbafe018222e"
   dependencies:
@@ -2445,7 +2445,7 @@ ember-hash-helper-polyfill@^0.1.2:
     ember-cli-babel "^5.1.7"
     ember-cli-version-checker "^1.2.0"
 
-ember-hifi@^1.10.0, ember-hifi@^1.10.1:
+ember-hifi@^1.10.1:
   version "1.10.1"
   resolved "https://registry.yarnpkg.com/ember-hifi/-/ember-hifi-1.10.1.tgz#98e2c5b4ca6315f0e400c22107d2ed639b385b24"
   dependencies:
@@ -2489,15 +2489,6 @@ ember-maybe-import-regenerator@^0.1.5:
     broccoli-merge-trees "^1.0.0"
     ember-cli-babel "^6.0.0-beta.4"
     regenerator-runtime "^0.9.5"
-
-ember-metrics@0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/ember-metrics/-/ember-metrics-0.10.0.tgz#b3400aa8f001af5f39691266bea1d10b943c3cf6"
-  dependencies:
-    broccoli-funnel "^1.0.1"
-    ember-cli-babel "^5.1.6"
-    ember-getowner-polyfill "^1.0.0"
-    ember-runtime-enumerable-includes-polyfill "^1.0.1"
 
 ember-native-dom-helpers@^0.4.0:
   version "0.4.2"
@@ -2554,13 +2545,6 @@ ember-router-generator@^1.0.0:
   resolved "https://registry.yarnpkg.com/ember-router-generator/-/ember-router-generator-1.2.3.tgz#8ed2ca86ff323363120fc14278191e9e8f1315ee"
   dependencies:
     recast "^0.11.3"
-
-ember-runtime-enumerable-includes-polyfill@^1.0.1:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/ember-runtime-enumerable-includes-polyfill/-/ember-runtime-enumerable-includes-polyfill-1.0.4.tgz#16a7612e347a2edf07da8b2f2f09dbfee70deba0"
-  dependencies:
-    ember-cli-babel "^5.1.6"
-    ember-cli-version-checker "^1.1.6"
 
 ember-runtime-enumerable-includes-polyfill@^2.0.0:
   version "2.0.0"
@@ -4649,26 +4633,24 @@ number-is-nan@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
 
-nypr-metrics@nypublicradio/nypr-metrics:
+"nypr-metrics@git+ssh://git@github.com/nypublicradio/nypr-metrics":
   version "0.0.0"
-  resolved "git+ssh://git@github.com/nypublicradio/nypr-metrics.git#d258b1de95f5e5222f32db156c1124acab3d1c05"
+  resolved "git+ssh://git@github.com/nypublicradio/nypr-metrics#b66612d647c1fc85e5b1d636a0796d97bf86607b"
   dependencies:
     ember-cli-babel "^6.0.0"
     ember-cli-htmlbars "^1.1.1"
     ember-cli-htmlbars-inline-precompile "^0.4.0"
-    ember-hifi "^1.10.0"
-    ember-metrics "0.10.0"
 
-nypr-player@nypublicradio/nypr-player:
+"nypr-player@git+ssh://git@github.com/nypublicradio/nypr-player":
   version "0.0.2"
-  resolved "https://codeload.github.com/nypublicradio/nypr-player/tar.gz/5547a3e0d4535bd8b767b7aafa68ad46202a9dd0"
+  resolved "git+ssh://git@github.com/nypublicradio/nypr-player#5547a3e0d4535bd8b767b7aafa68ad46202a9dd0"
   dependencies:
     ember-cli-babel "^5.1.7"
     ember-cli-htmlbars "^1.0.10"
 
-nypr-ui@nypublicradio/nypr-ui#nypr-audio-services:
+"nypr-ui@git+ssh://git@github.com/nypublicradio/nypr-ui#nypr-audio-services":
   version "0.0.0"
-  resolved "https://codeload.github.com/nypublicradio/nypr-ui/tar.gz/66dfbb3d45184afbf636030a71949ee91406e67e"
+  resolved "git+ssh://git@github.com/nypublicradio/nypr-ui#66dfbb3d45184afbf636030a71949ee91406e67e"
   dependencies:
     ember-cli-babel "^5.1.7"
     ember-cli-compass-compiler "^0.5.0"
