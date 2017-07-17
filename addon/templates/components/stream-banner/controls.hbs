@@ -1,0 +1,11 @@
+{{#if hasBlock}}
+  {{yield}}
+{{else}}
+  {{#listen-button
+    class='stream-banner-listenbutton nudge'
+    type='blue-boss'
+    itemPK=activeStream.slug
+    itemTitle=activeStream.name}}
+    Listen Live
+  {{/listen-button}}
+{{/if}}
