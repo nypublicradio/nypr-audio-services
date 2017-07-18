@@ -93,17 +93,12 @@ test('it correctly identifies a stream model', function(assert) {
 
 test('it correctly identifies a stream id', function(assert) {
   let service = this.subject();
-  assert.equal(service.itemModelName('wnyc-fm'), 'stream');
+  assert.equal(service.itemModelName('wnyc-fm939'), 'stream');
 });
 
 test('it correctly identifies a story id', function(assert) {
   let service = this.subject();
   assert.equal(service.itemModelName('125125'), 'story');
-});
-
-test('it correctly identifies a stream id', function(assert) {
-  let service = this.subject();
-  assert.equal(service.itemModelName('wnyc-fm393'), 'stream');
 });
 
 test('it correctly returns the item identifier', function(assert) {
@@ -129,12 +124,12 @@ test('play request sets contentModel after load', function(assert) {
       return RSVP.Promise.resolve(stream);
     });
 
-    let itemPK  = "fake-stream";
+    let itemPK  = "wnyc-fm939";
 
     service.play(itemPK).then(({sound}) => {
       assert.equal(sound.get('metadata.contentModel'), stream, "should have content model stuffed in there");
       assert.equal(sound.get('metadata.contentModelType'), 'stream', "should have content model type");
-      assert.equal(sound.get('metadata.contentId'), 'fake-stream', "should have content id");
+      assert.equal(sound.get('metadata.contentId'), itemPK, "should have content id");
       done();
     });
   });
