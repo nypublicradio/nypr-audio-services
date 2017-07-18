@@ -1,10 +1,8 @@
 .stream-banner-station {
   @include fontsize(14);
-  @include flexbox((
-    display: flex,
-    align-items: center,
-    justify-content: center
-  ));
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   @include mq($mobile) {
     border-bottom: 1px solid rgba(256, 256, 256, .2);
@@ -15,10 +13,8 @@
 
 .stream-banner-details {
   margin-bottom: 18px;
-  @include flexbox((
-    display: flex,
-    flex-direction: column
-  ));
+  display: flex;
+  flex-direction: column;
 
   .h2,
   .h3 {
@@ -63,18 +59,14 @@
 }
 
 .stream-banner-controls {
-  @include flexbox((
-    display: flex,
-    flex-direction: column,
-    align-items: center
-  ));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .stream-banner-station > .ember-basic-dropdown > .ember-power-select-trigger {
-  @include flexbox((
-    display: flex,
-    align-items: center
-  ));
+  display: flex;
+  align-items: center;
   background: transparent;
   height: auto;
   text-align: left;
@@ -107,10 +99,8 @@
 
 .stream-banner-recently {
   @include fontsize(12);
-  @include flexbox((
-    display: inline-flex,
-    align-items: center
-  ));
+  display: inline-flex;
+  align-items: center;
   font-weight: 600;
 
   svg {
@@ -147,10 +137,8 @@
   color: $wqxrblue;
   font-weight: 600;
   position: relative;
-  @include flexbox((
-    display: flex,
-    align-items: baseline
-  ));
+  display: flex;
+  align-items: baseline;
 
   .icon {
     margin-left: 5px;
