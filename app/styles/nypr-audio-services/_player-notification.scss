@@ -10,7 +10,7 @@
   display: flex;
   align-content: center;
   padding: 0 21px;
-  z-index: $nypr-player-zindex;
+  z-index: $zIndex--persistent-player;
 }
 
 .player-notification-link {

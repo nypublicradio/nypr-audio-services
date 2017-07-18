@@ -58,7 +58,6 @@
     "ember-hifi": "^1.10.1",
     "liquid-fire": "0.27.2",
     "nypr-metrics": "git+ssh://git@github.com/nypublicradio/nypr-metrics",
-    "nypr-player": "git+ssh://git@github.com/nypublicradio/nypr-player",
     "nypr-ui": "git+ssh://git@github.com/nypublicradio/nypr-ui#nypr-audio-services"
   },
   "keywords": [
