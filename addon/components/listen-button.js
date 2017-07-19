@@ -57,7 +57,7 @@ export default Component.extend({
   playState: computed('isPlaying', 'isPaused', 'isLoading', 'wasMeasured', 'isExpandable', function() {
     let { wasMeasured, isExpandable } = getProperties(this, 'wasMeasured', 'isExpandable');
     if (isExpandable && !wasMeasured) {
-      return; // consider it stateless until we measure so we get full width of natural state
+      return STATES.PAUSED; // consider it paused until we measure so we get full width of natural state
     }
 
     if (get(this, 'isLoading')) {
