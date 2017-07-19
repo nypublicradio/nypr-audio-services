@@ -1,1 +1,1 @@
-export { default } from 'nypr-ui/components/stream-banner/controls';
+export { default } from 'nypr-audio-services/components/stream-banner/controls';
