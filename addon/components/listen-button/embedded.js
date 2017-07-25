@@ -22,7 +22,8 @@ export default ListenButton.extend({
   type:         wnycEmbeddedAttr(),
   content:      wnycEmbeddedAttr(),
 
-  layout: hbs `{{listen-button/ui type=type}}
+  layout: hbs`
+    {{listen-button/ui type=type}}
     {{#unless content}}
       {{#if (eq type 'blue-boss')}}Listen{{#if duration}} <span class="text--small dimmed">{{duration}}</span>{{/if}}{{/if}}
     {{else}}
