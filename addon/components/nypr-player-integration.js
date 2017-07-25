@@ -15,7 +15,6 @@ export default Ember.Component.extend({
   hifi                 : service(),
   dj                   : service(),
   listenAnalytics      : service(),
-  session              : service(),
 
   /* To determine whether or not to reveal the notification bar. The messaging
     is handled by the autoplay-message component */
