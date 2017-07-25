@@ -56,6 +56,8 @@ export default Ember.Component.extend({
       return `/streams/${get(this, 'currentAudio.id')}`;
     }
   }),
+  
+  autofocus            : true,
 
   image                : reads('currentAudio.imageMain.url'),
   fallbackImage        : reads('currentAudio.headers.brand.logoImage.url'),
