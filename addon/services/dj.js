@@ -128,7 +128,12 @@ export default Ember.Service.extend({
 
     let playRequest = get(this, 'hifi').play(audioUrlPromise, {metadata, position});
     // This should resolve around the same time, and then set the metadata
-    recordRequest.then(story => set(metadata, 'contentModel', story));
+    recordRequest.then(story => {
+      set(metadata, 'contentModel', story);
+      if (story.forListenAction) {
+        story.forListenAction().then(data => set(metadata, 'analytics', data));
+      }
+    });
     playRequest.then(({sound, failures}) => {
       this.set('hasErrors', false);
       listenAnalytics.trackAllCodecFailures(failures, sound);
