@@ -56,7 +56,7 @@
     "ember-cli-htmlbars": "^2.0.1",
     "ember-cli-htmlbars-inline-precompile": "^0.4.3",
     "ember-diff-attrs": "^0.1.2",
-    "ember-hifi": "^1.10.1",
+    "ember-hifi": "^1.11.1",
     "liquid-fire": "0.27.2",
     "nypr-metrics": "nypublicradio/nypr-metrics",
     "nypr-ui": "nypublicradio/nypr-ui#feature/nypr-audio-services"
