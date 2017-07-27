@@ -4719,7 +4719,7 @@ nypr-metrics@nypublicradio/nypr-metrics:
 
 nypr-ui@nypublicradio/nypr-ui#feature/nypr-audio-services:
   version "0.0.0"
-  resolved "https://codeload.github.com/nypublicradio/nypr-ui/tar.gz/f20b2e57fb69097ad984cf00b646e25082f211cd"
+  resolved "https://codeload.github.com/nypublicradio/nypr-ui/tar.gz/6ac94268ae606d9c29647159d0892bdb6b0aeb59"
   dependencies:
     ember-basic-dropdown "0.33.1"
     ember-cli-babel "^6.6.0"
