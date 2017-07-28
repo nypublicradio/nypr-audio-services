@@ -17,11 +17,11 @@ export default Ember.Service.extend(Ember.Evented, {
   /* eslint-enable */
 
   addAction(thing, eventName, info, callback) {
-    assert("passed in object is not Ember.Evented", (thing && thing.on && thing.trigger));
-
     if (typeof(thing) === 'string') {
       thing = Ember.getOwner(this).lookup(thing);
     }
+
+    assert("passed in object is not Ember.Evented", (thing && thing.on && thing.trigger));
 
     let queueName   = this._queueName(thing, eventName);
     let queues      = get(this, 'queues');
