@@ -86,14 +86,13 @@ export default Component.extend({
 
   didUpdateAttrs: diffAttrs('isLive', function(changedAttrs, ...args) {
     this._super(...args);
+    let updateSize = this.get('isLive') || changedAttrs && changedAttrs.isLive && changedAttrs.isLive[0];
 
-    if(changedAttrs && changedAttrs.isLive) {
-      if (changedAttrs.isLive[1]) { // new attr
-        schedule('afterRender', this, () => {
-          let contentWidth = this.element.scrollWidth + parseInt(this.$().css('paddingLeft'), 10) + parseInt(this.$().css('paddingRight'), 10);
-          set(this, 'contentWidth', contentWidth);
-        });
-      }
+    if (updateSize) {
+      schedule('afterRender', this, () => {
+        let contentWidth = this.element.scrollWidth + parseInt(this.$().css('paddingLeft'), 10) + parseInt(this.$().css('paddingRight'), 10);
+        set(this, 'contentWidth', contentWidth);
+      });
     }
   }),
 
