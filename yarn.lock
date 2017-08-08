@@ -2331,7 +2331,7 @@ ember-click-outside@0.1.9:
   resolved "https://registry.yarnpkg.com/ember-click-outside/-/ember-click-outside-0.1.9.tgz#a8bf22739814ae44785919faa62102cf7d70a123"
   dependencies:
     ember-cli-babel "^6.0.0"
-    ember-cli-htmlbars "*"
+    ember-cli-htmlbars "^1.1.1"
 
 ember-composable-helpers@2.0.1:
   version "2.0.1"
@@ -4667,7 +4667,7 @@ number-is-nan@^1.0.0:
 
 nypr-metrics@nypublicradio/nypr-metrics:
   version "0.0.0"
-  resolved "https://codeload.github.com/nypublicradio/nypr-metrics/tar.gz/2aead1add6e84ef8d406ccb7f700753c79495c42"
+  resolved "https://codeload.github.com/nypublicradio/nypr-metrics/tar.gz/b3b481d7456e9e1143f3382e4bf7444c5407a542"
   dependencies:
     ember-cli-babel "^6.0.0"
     ember-cli-htmlbars "^1.1.1"
@@ -4675,7 +4675,7 @@ nypr-metrics@nypublicradio/nypr-metrics:
 
 nypr-ui@nypublicradio/nypr-ui#feature/nypr-audio-services:
   version "0.0.0"
-  resolved "https://codeload.github.com/nypublicradio/nypr-ui/tar.gz/a97c9f5b7d62fefe61d905cf2ea2f75f9eb23348"
+  resolved "https://codeload.github.com/nypublicradio/nypr-ui/tar.gz/afce7bf498b60294a23c8f867a1c22092b9b91f5"
   dependencies:
     ember-basic-dropdown "0.33.1"
     ember-cli-babel "^6.6.0"
