@@ -21,7 +21,7 @@ export default Ember.Component.extend({
      if(changedAttrs && changedAttrs.showTitle) {
        let oldTitle = changedAttrs.showTitle[0],
            newTitle = changedAttrs.showTitle[1];
-       if (newTitle === oldTitle) { return; }
+       if (newTitle === oldTitle || !this.get('isStream')) { return; }
 
        if (this.attrs.trackStreamData) {
          this.attrs.trackStreamData();
