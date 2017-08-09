@@ -41,7 +41,7 @@ test('it shows as playing only when current sound', function(assert) {
   });
 
   assert.equal(this.$('.is-playing').length,  0, 'button should not have is-playing if not current sound');
-  assert.equal(this.$('.is-paused').length,  0, 'button should not have is-paused if not current sound');
+  assert.equal(this.$('.is-paused').length,  1, 'button should have is-paused if not current sound');
 });
 
 test('it shows as loading when in djs list of loading ids', function(assert) {
@@ -54,8 +54,8 @@ test('it shows as loading when in djs list of loading ids', function(assert) {
 
   this.render(hbs`{{listen-button dj=dj itemPK=6444}}`);
   assert.equal(this.$('.is-playing').length,  0, 'button should have is-playing class if playing and current sound');
-  assert.equal(this.$('.is-paused').length,  0, 'button should not have is-paused class if playing and current sound');
   assert.equal(this.$('.is-loading').length,  1, 'button should not have is-loading class if playing and current sound');
+  assert.equal(this.$('.is-paused').length,  0, 'button should not have is-paused class if loading and current sound');
 });
 
 test('button can be set to inactive manually, where it will not change state on the current sound', function(assert) {
@@ -69,7 +69,7 @@ test('button can be set to inactive manually, where it will not change state on 
 
   this.render(hbs`{{listen-button dj=dj itemPK=6444 isCurrentSound=false}}`);
   assert.equal(this.$('.is-playing').length,  0, 'button should not have is-playing class');
-  assert.equal(this.$('.is-paused').length,  0, 'button should not have is-paused class');
+  assert.equal(this.$('.is-paused').length,  1, 'button should have is-paused class');
   assert.equal(this.$('.is-loading').length,  0, 'button should not have is-loading class');
 });
 
