@@ -55,9 +55,9 @@ test('it shows as loading when in djs list of loading ids', function(assert) {
   this.set('dj', DJ);
 
   this.render(hbs`{{listen-button dj=dj itemPK=6444}}`);
-  assert.equal(this.$('.is-playing').length,  0, 'button should have is-playing class if playing and current sound');
-  assert.equal(this.$('.is-loading').length,  1, 'button should not have is-loading class if playing and current sound');
+  assert.equal(this.$('.is-playing').length,  0, 'button should have is-playing class if loading and current sound');
   assert.equal(this.$('.is-paused').length,  0, 'button should not have is-paused class if loading and current sound');
+  assert.equal(this.$('.is-loading').length,  1, 'button should have is-loading class if loading and current sound');
   assert.equal(this.$('.is-current-sound').length,  0, 'button should not have is-current-sound if loading and not current sound');
 });
 
