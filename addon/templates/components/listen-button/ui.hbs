@@ -1,5 +1,7 @@
 {{#unless (eq type 'vanilla')}}
-  <label class="visuallyhidden" id="playpause-label">Play/Pause</label>
+  {{#unless outerBlock}}
+    <label class="visuallyhidden" id="playpause-label">Play/Pause</label>
+  {{/unless}}
   {{nypr-svg className="icon icon--play" icon=playIcon}}
   {{nypr-svg className="icon icon--pause" icon=pauseIcon}}
   <i class="listen-spinner"></i>
