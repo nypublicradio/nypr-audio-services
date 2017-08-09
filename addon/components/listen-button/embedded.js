@@ -17,6 +17,7 @@ function wnycEmbeddedAttr() {
 export default ListenButton.extend({
   itemPK:       wnycEmbeddedAttr(),
   itemTitle:    wnycEmbeddedAttr(),
+  itemShow:     wnycEmbeddedAttr(),
   duration:     wnycEmbeddedAttr(),
   playContext:  wnycEmbeddedAttr(),
   type:         wnycEmbeddedAttr(),
