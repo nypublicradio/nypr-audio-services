@@ -39,11 +39,13 @@ export default Component.extend({
   isExpandable:         match('type', /(blue|gray|red)-(minion|boss)/),
   'aria-label':         readOnly('title'),
   'data-test-selector': 'listen-button',
+  'data-story'        : readOnly('itemTitle'),
+  'data-show'         : readOnly('itemShow'),
 
   tagName:              'button',
   classNames:           ['listen-button'],
   classNameBindings:    ['isHovering', 'type', 'isCurrentSound', 'isErrored', 'playState'],
-  attributeBindings:    ['aria-label', 'title', 'disabled', 'data-test-selector', 'style'],
+  attributeBindings:    ['aria-label', 'title', 'disabled', 'data-test-selector', 'style', 'data-story', 'data-show'],
 
   title: computed('itemTitle', function() {
     return `Listen to ${get(this, 'itemTitle')}`;
