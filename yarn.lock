@@ -4667,7 +4667,7 @@ number-is-nan@^1.0.0:
 
 nypr-metrics@nypublicradio/nypr-metrics:
   version "0.0.0"
-  resolved "https://codeload.github.com/nypublicradio/nypr-metrics/tar.gz/eec0f6f6dd5aee31959290e69eb7bbf6f3167aea"
+  resolved "https://codeload.github.com/nypublicradio/nypr-metrics/tar.gz/8599db798c812bd9fceeb83f91abcc24c9d9b53b"
   dependencies:
     ember-cli-babel "^6.0.0"
     ember-cli-htmlbars "^1.1.1"
