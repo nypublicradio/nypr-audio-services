@@ -70,6 +70,8 @@ export default Component.extend({
     }
     else if (get(this, 'isPaused')){
       return STATES.PAUSED;
+    } else {
+      return STATES.PAUSED; // JIC
     }
   }),
 
