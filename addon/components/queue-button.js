@@ -43,18 +43,20 @@ export default Component.extend({
     if (get(this, 'isErrored')) {
       return;
     }
+    let itemPK      = get(this, 'itemPK');
+    let playContext = get(this, 'playContext') || get(this, 'region');
     let newWidth;
     let oldWidth;
 
     if (get(this, 'inQueue')) {
-      get(this, 'queue').removeFromQueueById(get(this, 'itemPK'));
+      get(this, 'queue').removeFromQueueById(itemPK);
       newWidth = 98;
       oldWidth = 106;
     } else {
       // TODO: addToQueue is potentially async, so we update UI synchronously,
       // but there must be a better/embery way
       set(this, 'inQueue', true);
-      get(this, 'queue').addToQueueById(get(this, 'itemPK'), get(this, 'region'));
+      get(this, 'queue').addToQueueById(itemPK, playContext);
       newWidth = 106;
       oldWidth = 98;
     }
