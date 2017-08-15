@@ -14,8 +14,8 @@ function wnycEmbeddedAttr() {
 }
 
 export default QueueButton.extend({
-  itemPK:     wnycEmbeddedAttr(),
-  itemTitle:  wnycEmbeddedAttr(),
-  type:       wnycEmbeddedAttr(),
-  playContext:     wnycEmbeddedAttr()
+  itemPK:      wnycEmbeddedAttr(),
+  itemTitle:   wnycEmbeddedAttr(),
+  type:        wnycEmbeddedAttr(),
+  playContext: wnycEmbeddedAttr()
 });
