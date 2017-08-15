@@ -48,7 +48,7 @@ export default Service.extend({
     return get(this, 'store').findRecord('story', id);
   },
 
-  addToQueueById(id, region) {
+  addToQueueById(id, playContext) {
     let pending = this.get('pending');
     pending.push(id);
 
@@ -66,7 +66,7 @@ export default Service.extend({
       queue.pushObject(story);
       session.set('data.queue', queue);
 
-      this.get('listenAnalytics').trackAddToQueue(story, region);
+      this.get('listenAnalytics').trackAddToQueue(story, playContext);
 
       return story;
     });

@@ -45,12 +45,12 @@ export default Component.extend({
       let metrics = this.get('metrics');
 
       let story = data.story;
-      let {region, analyticsCode, type, shareText} = story.get('shareMetadata');
+      let {analyticsCode, type, shareText} = story.get('shareMetadata');
 
       metrics.trackEvent('GoogleAnalytics', {
         category: 'Persistent Player',
         action: `Shared Story "${shareText}"`,
-        label: `${region}|${analyticsCode}|${type}|${sharedFrom}`,
+        label: `Queue|${analyticsCode}|${type}|${sharedFrom}`,
       });
     }
   },

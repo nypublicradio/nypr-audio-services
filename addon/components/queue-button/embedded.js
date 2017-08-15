@@ -17,5 +17,5 @@ export default QueueButton.extend({
   itemPK:     wnycEmbeddedAttr(),
   itemTitle:  wnycEmbeddedAttr(),
   type:       wnycEmbeddedAttr(),
-  region:     wnycEmbeddedAttr()
+  playContext:     wnycEmbeddedAttr()
 });

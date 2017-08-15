@@ -112,7 +112,7 @@ export default Component.extend({
   },
 
   play() {
-    let playContext     = get(this, 'playContext') || get(this, 'region');
+    let playContext     = get(this, 'playContext');
     let itemPk          = get(this, 'itemPK');
     set(this, 'buttonLoading', true);
     get(this,'dj').play(itemPk, {playContext}).then(() => {

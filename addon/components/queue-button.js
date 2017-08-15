@@ -44,7 +44,7 @@ export default Component.extend({
       return;
     }
     let itemPK      = get(this, 'itemPK');
-    let playContext = get(this, 'playContext') || get(this, 'region');
+    let playContext = get(this, 'playContext');
     let newWidth;
     let oldWidth;
 
