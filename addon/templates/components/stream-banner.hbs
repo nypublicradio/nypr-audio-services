@@ -5,7 +5,7 @@
       {{yield activeStream (hash
         header=(component 'stream-banner/station' activeStream=activeStream streams=streams)
         details=(component 'stream-banner/details' activeStream=activeStream)
-        controls=(component 'stream-banner/controls' audio=audio activeStream=activeStream)
+        controls=(component 'stream-banner/controls' activeStream=activeStream)
       )}}
     {{else}}
     Loading...
