@@ -5,20 +5,20 @@ This repo is the home of all audio-related controls in use by the web-clients. I
 
 ## components
 * `listen-button`
- * The primary UI widget through which users will start playback
- * Includes multiple variations that are controlled by a type parameter, which controls a set of CSS classes and inheritance
- * The bouncing animation is controlled by JS and based on a run-time measurement of the button's DOM dimensions
- * Includes a nested component which is configured to replace server-rendered HTML with an ember component
+  * The primary UI widget through which users will start playback
+  * Includes multiple variations that are controlled by a type parameter, which controls a set of CSS classes and inheritance
+  * The bouncing animation is controlled by JS and based on a run-time measurement of the button's DOM dimensions
+  * Includes a nested component which is configured to replace server-rendered HTML with an ember component
 * `queue-button`
- * The primary UI widget for adding and removing a piece of audio to a local queue
+  * The primary UI widget for adding and removing a piece of audio to a local queue
 * `player-notification`
- * slide up notification bar used to display messages from the player
+  * slide up notification bar used to display messages from the player
 * `nypr-player-integration`
- * translates property names from story and stream model attributes to unified keys that the player can consume
+  * translates property names from story and stream model attributes to unified keys that the player can consume
 * `stream-banner`
- * sophisticated UI widget to display and play stream objects and their metadata
+  * sophisticated UI widget to display and play stream objects and their metadata
 * `clear-history`
- * UI for the clearHistory method on the listen-history service
+  * UI for the clearHistory method on the listen-history service
 * `player-history`
 * `player-queue`
 * `queue-history`
@@ -27,9 +27,9 @@ This repo is the home of all audio-related controls in use by the web-clients. I
 
 ## services
 * `dj`
- * orchestrates play requests and fetches records if passed an id
+  * orchestrates play requests and fetches records if passed an id
 * `action-queue`
- * allows for event listeners to order up by priority and prevent subsequent listeners from running
+  * allows for event listeners to order up by priority and prevent subsequent listeners from running
  
 ## Installation
 ```sh
