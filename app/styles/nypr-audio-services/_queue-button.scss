@@ -1,0 +1,43 @@
+@import "nypr-ui/vars";
+@import "nypr-ui/buttons";
+
+.queue-button {
+  @include btn;
+  @include btn--strongtext;
+  @include btn--smalltext;
+  @include thickbtn;
+  line-height: 34px;
+
+  &.queue-button--fancyfeature {
+    @include white-btn-jshover;
+  }
+
+  &.queue-button--storyheader {
+    @include gray-btn-jshover;
+
+    @include mq($medium-and-up) {
+      @include white-btn-jshover;
+    }
+  }
+
+  &.just-gray {
+    @include gray-btn-jshover;
+  }
+
+  &.small-blue {
+    @include btn-size(44px);
+
+    &:focus,
+    &:hover {
+      border-color: rgba($darkgray, 0.2);
+      color: $lightgray;
+      opacity: 1;
+    }
+
+    &.is-hovering {
+      border-color: rgba($darkgray, 0.2);
+      color: $lightgray;
+      opacity: 1;
+    }
+  }
+}
