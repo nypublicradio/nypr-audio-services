@@ -1,6 +1,7 @@
 @import "nypr-ui/vars";
 @import "nypr-ui/buttons";
 @import "nypr-ui/mixins/animation";
+@import "nypr-ui/utils";
 
 @mixin listen-btn-transitions {
   white-space: nowrap; // helps transitions
@@ -338,6 +339,10 @@
       right: 0;
       margin: auto;
       transition: opacity 0.3s ease-in-out, fill 0.2s ease-in-out;
+    }
+    
+    > .visuallyhidden {
+      @include visuallyhidden;
     }
 
     .icon--pause,
