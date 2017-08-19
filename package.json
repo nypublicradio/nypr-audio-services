@@ -60,7 +60,7 @@
     "ember-hifi": "^1.11.1",
     "liquid-fire": "0.27.2",
     "nypr-metrics": "nypublicradio/nypr-metrics",
-    "nypr-ui": "nypublicradio/nypr-ui"
+    "nypr-ui": "nypublicradio/nypr-ui#isolation-updates"
   },
   "keywords": [
     "ember-addon"

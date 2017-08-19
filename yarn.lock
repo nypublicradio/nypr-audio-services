@@ -4691,9 +4691,9 @@ nypr-metrics@nypublicradio/nypr-metrics:
     ember-cli-htmlbars "^1.1.1"
     ember-cli-htmlbars-inline-precompile "^0.4.0"
 
-nypr-ui@nypublicradio/nypr-ui:
+nypr-ui@nypublicradio/nypr-ui#isolation-updates:
   version "0.0.0"
-  resolved "https://codeload.github.com/nypublicradio/nypr-ui/tar.gz/9caa7f9c19e8d905a4365f00f7fe4040208fc8a3"
+  resolved "https://codeload.github.com/nypublicradio/nypr-ui/tar.gz/cd45c031b2eb2a15c3592e1a032e1bfc9a28a44f"
   dependencies:
     ember-basic-dropdown "0.33.1"
     ember-cli-babel "^6.6.0"
