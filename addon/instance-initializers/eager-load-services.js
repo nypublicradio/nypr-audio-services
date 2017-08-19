@@ -2,7 +2,7 @@
 // needing the consumer to inject it somewhere
 
 export function initialize(appInstance) {
-  // appInstance.inject('controller:application', '_listenHistory', 'service:listen-history');
+  appInstance.inject('controller:application', '_listenHistory', 'service:listen-history');
 
   // We don't just want to look it up (like so: appInstance.lookup('service:listen-analytics'))
   // because then hifi will initialize itself using the nypr-audio-services environment
