@@ -114,8 +114,9 @@ export default Component.extend({
   play() {
     let playContext     = get(this, 'playContext');
     let itemPk          = get(this, 'itemPK');
+    let metadata        = {fromClick: true};
     set(this, 'buttonLoading', true);
-    get(this,'dj').play(itemPk, {playContext}).then(() => {
+    get(this,'dj').play(itemPk, {playContext, metadata}).then(() => {
       set(this, 'buttonLoading', false);
     }).catch(() => {
       set(this, 'buttonLoading', false);
