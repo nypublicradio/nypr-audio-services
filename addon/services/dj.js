@@ -9,7 +9,7 @@ import { and, not, reads } from 'ember-computed';
 stream/story model and DJ will queue it up on the hifi with the appropriate
 metadata inserted */
 
-const STREAMS = ['wqxr', 'q2', 'wqxr-special', 'wnyc-fm939', 'wnyc-am820', 'njpr', 'jonathan-channel'];
+const STREAMS = ['wqxr', 'q2', 'wqxr-special', 'wnyc-fm939', 'wnyc-am820', 'njpr', 'jonathan-channel', 'special-events-stream'];
 
 export default Ember.Service.extend({
   hifi                : service(),
