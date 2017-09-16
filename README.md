@@ -1,6 +1,5 @@
 # nypr-audio-services
 
-This README outlines the details of collaborating on this Ember addon.
 This repo is the home of all audio-related controls in use by the web-clients. It's mostly in the form of components, but there are also a handful of services used in the orchestration of responses to events triggered by ember-hifi.
 
 ## components
