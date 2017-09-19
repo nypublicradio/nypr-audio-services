@@ -17,17 +17,16 @@ export default Ember.Component.extend({
     return Math.floor(difference / 1000);
   }),
 
-  session        : service(),
   store          : service(),
+  bumperState    : service(),
 
-  streamEnabled  : computed('session.data.user-prefs-active-autoplay', function(){
-    const session = get(this, 'session');
-    const pref = get(session, 'data.user-prefs-active-autoplay') || 'default_stream';
+  streamEnabled  : computed('bumperState.autoplayPref', function(){
+    const pref = get(this, 'bumperState.autoplayPref');
     return pref === 'default_stream';
   }),
 
-  preferredStream: computed('session.data.user-prefs-active-stream.slug', function(){
-    const slug = get(this, 'session.data.user-prefs-active-stream.slug') || 'wnyc-fm939';
+  preferredStream: computed('bumperState.autoplaySlug', function(){
+    const slug = get(this, 'bumperState.autoplaySlug');
     return get(this, 'store').peekRecord('stream', slug);
   }),
 
