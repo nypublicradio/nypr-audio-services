@@ -50,9 +50,9 @@
   },
   "dependencies": {
     "ember-cli-babel": "^6.6.0",
-    "ember-cli-compass-compiler": "^0.5.0",
     "ember-cli-htmlbars": "^2.0.1",
     "ember-cli-htmlbars-inline-precompile": "^0.4.3",
+    "ember-cli-sass": "^7.0.0",
     "ember-diff-attrs": "^0.1.2",
     "ember-fetch": "^3.3.0",
     "ember-get-config": "^0.2.2",

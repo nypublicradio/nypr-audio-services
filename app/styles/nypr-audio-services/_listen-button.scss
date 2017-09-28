@@ -1,7 +1,7 @@
-@import "nypr-ui/vars";
-@import "nypr-ui/buttons";
-@import "nypr-ui/mixins/animation";
-@import "nypr-ui/utils";
+@import "../nypr-ui/vars";
+@import "../nypr-ui/buttons";
+@import "../nypr-ui/mixins/animation";
+@import "../nypr-ui/utils";
 
 @mixin listen-btn-transitions {
   white-space: nowrap; // helps transitions
