@@ -44,7 +44,7 @@ export default Component.extend({
 
   tagName:              'button',
   classNames:           ['listen-button'],
-  classNameBindings:    ['isHovering', 'type', 'isCurrentSound', 'isErrored', 'playState', 'isCurrentSound'],
+  classNameBindings:    ['isHovering', 'type', 'isCurrentSound', 'isErrored', 'playState', 'isCurrentSound', 'isLive'],
   attributeBindings:    ['aria-label', 'title', 'disabled', 'data-test-selector', 'style', 'data-story', 'data-show'],
 
   title: computed('itemTitle', function() {
