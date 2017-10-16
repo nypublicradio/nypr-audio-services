@@ -16,16 +16,17 @@ export default Ember.Component.extend({
   songDetails   : null,
 
   didReceiveAttrs: diffAttrs('showTitle', function(changedAttrs, ...args) {
-     this._super(...args);
+    this._super(...args);
+    let isInitialRender = changedAttrs === null;
 
-     if(changedAttrs && changedAttrs.showTitle) {
-       let oldTitle = changedAttrs.showTitle[0],
-           newTitle = changedAttrs.showTitle[1];
-       if (newTitle === oldTitle || !this.get('isStream')) { return; }
+    let showTitleChanged = changedAttrs
+      && changedAttrs.showTitle
+      && changedAttrs.showTitle[0] !== changedAttrs.showTitle[1];
 
-       if (this.attrs.trackStreamData) {
-         this.attrs.trackStreamData();
-       }
+    if (isInitialRender || showTitleChanged) {
+     if (this.attrs.titleDidChange) {
+       this.attrs.titleDidChange();
      }
-   })
+    }
+  })
 });

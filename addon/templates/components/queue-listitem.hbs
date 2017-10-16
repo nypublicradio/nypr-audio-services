@@ -46,7 +46,7 @@
         playContext=playContext
         itemPK=story.id
         itemTitle=story.title
-        itemShow=story.showTitle}}
+        itemShow=(or story.showTitle story.headers.brand.title)}}
     </div>
   {{/g.right}}
 {{/holygrail-layout}}
