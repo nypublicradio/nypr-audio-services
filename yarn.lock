@@ -4865,9 +4865,9 @@ number-is-nan@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
 
-nypr-metrics@nypublicradio/nypr-metrics:
-  version "0.0.0"
-  resolved "https://codeload.github.com/nypublicradio/nypr-metrics/tar.gz/86377b5feb6bf75b14ef4ac30401f718c0b3fecb"
+nypr-metrics@~0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/nypr-metrics/-/nypr-metrics-0.0.1.tgz#5954087401a04f3cf19c878191d6b638cbbd1b20"
   dependencies:
     ember-cli-babel "^6.0.0"
     ember-cli-htmlbars "^1.1.1"
