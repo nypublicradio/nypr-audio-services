@@ -1,6 +1,6 @@
-import Component from 'ember-component';
-import service from 'ember-service/inject';
-import { readOnly } from 'ember-computed';
+import Component from '@ember/component';
+import { inject as service } from '@ember/service';
+import { readOnly } from '@ember/object/computed';
 import layout from '../templates/components/player-history';
 
 export default Component.extend({

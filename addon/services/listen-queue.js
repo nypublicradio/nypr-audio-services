@@ -1,11 +1,8 @@
-import Service from 'ember-service';
-import service from 'ember-service/inject';
-import { equal, alias } from 'ember-computed';
-import get from 'ember-metal/get';
-import Ember from 'ember';
-const {
-  A:emberArray
-} = Ember;
+import { bind } from '@ember/runloop';
+import { A as emberArray } from '@ember/array';
+import Service, { inject as service } from '@ember/service';
+import { equal, alias } from '@ember/object/computed';
+import { get } from '@ember/object';
 
 export default Service.extend({
   session           : service(),
@@ -24,7 +21,7 @@ export default Service.extend({
 
     this.set('items', this.getWithDefault('session.data.queue', emberArray()));
 
-    actionQueue.addAction(hifi, 'audio-ended', {priority: 2, name: 'queue'},Ember.run.bind(this, this.onTrackFinished));
+    actionQueue.addAction(hifi, 'audio-ended', {priority: 2, name: 'queue'},bind(this, this.onTrackFinished));
 
     hifi.on('audio-played', (sound) => {
       let playContext = get(sound, 'metadata.playContext');
@@ -61,7 +58,7 @@ export default Service.extend({
         this._removePending(id);
       }
       let session = get(this, 'session');
-      let queue = Ember.A(session.getWithDefault('data.queue', []).slice());
+      let queue = emberArray(session.getWithDefault('data.queue', []).slice());
 
       queue.pushObject(story);
       session.set('data.queue', queue);
@@ -76,8 +73,8 @@ export default Service.extend({
 
   removeFromQueueById(id) {
     let session = get(this, 'session');
-    let queue = Ember.A(session.getWithDefault('data.queue', []));
-    let newQueue = Ember.A(queue.rejectBy('id', id));
+    let queue = emberArray(session.getWithDefault('data.queue', []));
+    let newQueue = emberArray(queue.rejectBy('id', id));
 
     this._removePending(id);
 
@@ -103,7 +100,7 @@ export default Service.extend({
   },
 
   _removePending(id) {
-    let pending = Ember.A(this.get('pending'));
+    let pending = emberArray(this.get('pending'));
     let pendingIndex = pending.indexOf(id);
     if (pendingIndex !== -1) {
       pending.removeAt(pendingIndex);

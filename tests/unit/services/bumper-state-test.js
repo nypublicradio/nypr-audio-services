@@ -1,11 +1,10 @@
+import EmberObject, { get, set } from '@ember/object';
+import { A } from '@ember/array';
+import Service from '@ember/service';
 import { moduleFor, test } from 'ember-qunit';
-import Ember from 'ember';
 import { startMirage } from 'dummy/initializers/ember-cli-mirage';
 import wait from 'ember-test-helpers/wait';
-import get from 'ember-metal/get';
-import set from 'ember-metal/set';
 import sinon from 'sinon';
-const { A, Service } = Ember;
 import hifiNeeds from 'dummy/tests/helpers/hifi-needs';
 
 moduleFor('service:bumper-state', 'Unit | Service | bumper state', {
@@ -35,7 +34,7 @@ moduleFor('service:bumper-state', 'Unit | Service | bumper state', {
       }
     });
 
-    const sessionStub = Ember.Service.extend({
+    const sessionStub = Service.extend({
       data: {
         'user-prefs-active-autoplay': 'default_stream',
         'user-prefs-active-stream': {slug: 'wnyc-fm939', name: 'WNYC 93.9 FM'},
@@ -71,7 +70,7 @@ test('getBumperUrl returns the queue bumper url for the queue when pref is set t
   const [first, second] = this.server.createList('story', 2);
 
   return wait().then(() => {
-    set(bumper, 'session.data.queue', [Ember.Object.create(first), Ember.Object.create(second)]);
+    set(bumper, 'session.data.queue', [EmberObject.create(first), EmberObject.create(second)]);
     set(bumper, 'session.data.user-prefs-active-autoplay', 'queue');
 
     const expectedBumperURL = 'http://audio-bumper.com/thucyides.mp3';
@@ -87,7 +86,7 @@ test('getBumperUrl returns the bumper url when the pref is set to default_stream
 
   let wnycStream;
   sinon.stub(bumper, 'getStream').callsFake(function(slug) {
-    wnycStream = Ember.Object.create({slug: slug, audioBumper: "http://test.example"});
+    wnycStream = EmberObject.create({slug: slug, audioBumper: "http://test.example"});
     return wnycStream;
   });
 
@@ -104,7 +103,7 @@ test('getBumperUrl returns the wqxr bumper url when the prefs are set to default
 
   let retreivedStream;
   sinon.stub(bumper, 'getStream').callsFake(function(slug) {
-    retreivedStream = Ember.Object.create({slug: slug, audioBumper: "http://test.example"});
+    retreivedStream = EmberObject.create({slug: slug, audioBumper: "http://test.example"});
     return retreivedStream;
   });
 
@@ -121,7 +120,7 @@ test('getAutoplayItem the default stream slug when pref is default_stream', func
 
   let retreivedStream;
   sinon.stub(bumper, 'getStream').callsFake(function(slug) {
-    retreivedStream = Ember.Object.create({slug: slug, audioBumper: "http://test.example"});
+    retreivedStream = EmberObject.create({slug: slug, audioBumper: "http://test.example"});
     return retreivedStream;
   });
 
@@ -197,7 +196,7 @@ test('with the bumper-state enabled, the bumper will act on a finished track eve
   bumper.set('bumperDidPlay', false);
   let hifi = bumper.get('hifi');
 
-  let dummySound = Ember.Object.create({
+  let dummySound = EmberObject.create({
     metadata: {
       contentId: "111",
       contentModelType: 'story',
@@ -229,7 +228,7 @@ test('after a bumper plays, continuous play will start', function(assert) {
   bumper.set('bumperDidPlay', true);
   let hifi = bumper.get('hifi');
 
-  let dummySound = Ember.Object.create({
+  let dummySound = EmberObject.create({
     metadata: {
       playContext: 'Continuous Play',
       contentId: "111",
@@ -241,11 +240,11 @@ test('after a bumper plays, continuous play will start', function(assert) {
   });
 
   sinon.stub(bumper, 'getAutoplayItem').callsFake(function() {
-    return Ember.Object.create({
+    return EmberObject.create({
       metadata: {
         contentId: 'test'
       }
-    })
+    });
   });
 
   hifi.trigger('audio-ended', dummySound);

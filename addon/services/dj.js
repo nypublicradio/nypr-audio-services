@@ -1,9 +1,9 @@
-import Ember from 'ember';
-import service from 'ember-service/inject';
+import { A } from '@ember/array';
+import { bind } from '@ember/runloop';
+import Service, { inject as service } from '@ember/service';
 import RSVP from 'rsvp';
-import get from 'ember-metal/get';
-import set from 'ember-metal/set';
-import { and, not, reads } from 'ember-computed';
+import { get, set } from '@ember/object';
+import { and, not, reads } from '@ember/object/computed';
 
 /* DJ knows how to play anything. Pass it a stream/story PK, or pass it a
 stream/story model and DJ will queue it up on the hifi with the appropriate
@@ -11,7 +11,7 @@ metadata inserted */
 
 const STREAMS = ['wqxr', 'q2', 'wqxr-special', 'wnyc-fm939', 'wnyc-am820', 'njpr', 'jonathan-channel', 'special-events-stream'];
 
-export default Ember.Service.extend({
+export default Service.extend({
   hifi                : service(),
   store               : service(),
   actionQueue         : service(),
@@ -37,7 +37,7 @@ export default Ember.Service.extend({
     let hifi        = get(this, 'hifi');
     hifi.on('current-sound-changed', () => this.set('playedOnce', true));
 
-    actionQueue.addAction(hifi, 'audio-ended', {priority: 1, name: 'segmented-audio'}, Ember.run.bind(this, this.playSegmentedAudio));
+    actionQueue.addAction(hifi, 'audio-ended', {priority: 1, name: 'segmented-audio'}, bind(this, this.playSegmentedAudio));
 
     this.set('currentlyLoadingIds', []);
     this.initCurrentLoadingIdsWatcher();
@@ -46,7 +46,7 @@ export default Ember.Service.extend({
   initCurrentLoadingIdsWatcher() {
     let hifi = get(this, 'hifi');
     hifi.on('new-load-request', ({loadPromise, options}) => {
-      let currentlyLoadingIds = Ember.A(get(this, 'currentlyLoadingIds'));
+      let currentlyLoadingIds = A(get(this, 'currentlyLoadingIds'));
       let id = String(get(options, 'metadata.contentId'));
 
       if (id) {

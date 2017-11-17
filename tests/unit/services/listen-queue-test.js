@@ -1,8 +1,9 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
+import Service from '@ember/service';
 import { moduleFor, test } from 'ember-qunit';
 import { startMirage } from 'dummy/initializers/ember-cli-mirage';
 import hifiNeeds from 'dummy/tests/helpers/hifi-needs';
-import get from 'ember-metal/get';
+import { get } from '@ember/object';
 import RSVP from 'rsvp';
 import sinon from 'sinon';
 
@@ -18,12 +19,12 @@ moduleFor('service:listen-queue', 'Unit | Service | listen queue', {
   beforeEach() {
     this.server = startMirage();
 
-    const sessionStub = Ember.Service.extend({
+    const sessionStub = Service.extend({
       data: {},
       authorize: function() {}
     });
 
-    const dummyStub = Ember.Service.extend({
+    const dummyStub = Service.extend({
 
     });
 
@@ -63,7 +64,7 @@ test('a story can be added to the queue by id', function(assert) {
 
   this.server.createList('story', 2);
 
-  Ember.run(() => {
+  run(() => {
     service.addToQueueById(1);
     service.addToQueueById(2);
   });
@@ -87,7 +88,7 @@ test('a story can be removed from the queue by id', function(assert) {
 
   let [ story1, story2 ] = this.server.createList('story', 2);
 
-  Ember.run(() => {
+  run(() => {
     service.addToQueueById(story1.id);
     service.addToQueueById(story2.id);
     service.removeFromQueueById(story1.id);
@@ -102,7 +103,7 @@ test('a story already loaded can be removed from the queue by id', function(asse
   let session = service.get('session');
   session.set('data.queue', [ {id: 1} ]);
 
-  Ember.run(() => {
+  run(() => {
     service.removeFromQueueById(1);
   });
 
@@ -116,7 +117,7 @@ test('hyperactive adds and removes should still work', function(assert) {
 
   let [s1, s2, s3, s4, s5] = this.server.createList('story', 5);
 
-  Ember.run(() => {
+  run(() => {
     service.addToQueueById(s1.id);
     service.addToQueueById(s2.id);
     service.addToQueueById(s3.id);
@@ -143,13 +144,13 @@ test('can replace the queue in one action', function(assert) {
   let [ story1, story2, story3 ] = this.server.createList('story', 3);
   let newOrder = [ story3, story2, story1 ];
 
-  Ember.run(() => {
+  run(() => {
     service.addToQueueById(story1.id);
     service.addToQueueById(story2.id);
     service.addToQueueById(story3.id);
   });
 
-  Ember.run(() => {
+  run(() => {
     service.reset(newOrder);
   });
   assert.deepEqual(service.get('items'), newOrder);
@@ -162,7 +163,7 @@ test('can retrieve the next item', function(assert) {
 
   let story1 = this.server.create('story');
 
-  Ember.run(() => {
+  run(() => {
     service.addToQueueById(story1.id);
   });
 

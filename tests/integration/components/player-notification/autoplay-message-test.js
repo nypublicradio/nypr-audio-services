@@ -1,9 +1,9 @@
+import Service from '@ember/service';
 import { moduleForComponent, test } from 'ember-qunit';
 import { startMirage } from 'dummy/initializers/ember-cli-mirage';
 import hbs from 'htmlbars-inline-precompile';
-import Ember from 'ember';
 
-const sessionStub = Ember.Service.extend({
+const sessionStub = Service.extend({
   data: {
     'user-prefs-active-stream': {slug: 'wnyc-fm939', name: 'WNYC 93.9 FM'},
     'user-prefs-active-autoplay': 'default_stream'

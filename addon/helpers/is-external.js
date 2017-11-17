@@ -1,4 +1,4 @@
-import { helper } from 'ember-helper';
+import { helper } from '@ember/component/helper';
 
 export function isExternal([ url ]) {
   let urlParser = document.createElement('a');

@@ -1,6 +1,5 @@
 import QueueButton from 'nypr-audio-services/components/queue-button';
-import computed from 'ember-computed';
-import get from 'ember-metal/get';
+import { get, computed } from '@ember/object';
 
 function wnycEmbeddedAttr() {
   return computed('embeddedAttrs', {

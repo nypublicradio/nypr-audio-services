@@ -1,8 +1,10 @@
+import { later, next } from '@ember/runloop';
+import Evented from '@ember/object/evented';
+import EmberObject from '@ember/object';
 import { moduleFor, test } from 'ember-qunit';
 import RSVP from 'rsvp';
-import Ember from 'ember';
 
-const TestObject = Ember.Object.extend(Ember.Evented, { });
+const TestObject = EmberObject.extend(Evented, { });
 
 moduleFor('service:action-queue', 'Unit | Service | action queue', {
   beforeEach() {
@@ -14,7 +16,7 @@ test('addAction requires that object be Evented', function(assert) {
   let service = this.subject();
 
   assert.throws(function() {
-    service.addAction(Ember.Object.create({}), 'audio-whatever', {}, function() {});
+    service.addAction(EmberObject.create({}), 'audio-whatever', {}, function() {});
   }, Error("Assertion Failed: passed in object is not Ember.Evented"));
 });
 
@@ -27,14 +29,14 @@ test('long running actions work as expected', function(assert) {
   service.addAction(hifiService, 'audio-finished', {priority: 1}, function() {
     return new RSVP.Promise((resolve, reject) => {
       called.push(1);
-      Ember.run.later(reject, 500);
+      later(reject, 500);
     });
   });
 
   service.addAction(hifiService, 'audio-finished', {priority: 2}, function() {
     return new RSVP.Promise((resolve) => {
       called.push(2);
-      Ember.run.later(() => {
+      later(() => {
         resolve(true);
       }, 500);
     });
@@ -138,7 +140,7 @@ test('queue can be run multiple times', function(assert) {
 
   service.afterRun(hifiService, 'audio-finished', afterRun);
   hifiService.trigger('audio-finished');
-  Ember.run.next(() => {
+  next(() => {
     hifiService.trigger('audio-finished');
   });
 });

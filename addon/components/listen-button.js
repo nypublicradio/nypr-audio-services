@@ -1,13 +1,17 @@
-import Ember from 'ember';
-import Component from 'ember-component';
-import computed, { readOnly, not, match, and } from 'ember-computed';
-import get, { getProperties } from 'ember-metal/get';
-import set from 'ember-metal/set';
-import { htmlSafe } from 'ember-string';
-import { schedule } from 'ember-runloop';
+import { A } from '@ember/array';
+import { getWithDefault } from '@ember/object';
+import Component from '@ember/component';
+import {
+  readOnly,
+  not,
+  match,
+  and
+} from '@ember/object/computed';
+import { get, set, getProperties, computed } from '@ember/object';
+import { htmlSafe } from '@ember/string';
+import { schedule } from '@ember/runloop';
+import { inject as service } from '@ember/service';
 import layout from '../templates/components/listen-button';
-import service from 'ember-service/inject';
-const { getWithDefault } = Ember;
 import diffAttrs from 'ember-diff-attrs';
 
 const STATES = {
@@ -29,7 +33,7 @@ export default Component.extend({
   _hifiPaused:          not('dj.isPlaying'),
   isPaused:             and('_hifiPaused', 'isCurrentSound'),
   isLoading:            computed('isCurrentSound', 'buttonLoading', 'dj.currentSound.isLoading', 'dj.currentlyLoadingIds', function() {
-    let currentlyLoadingIds = Ember.A(getWithDefault(this, 'dj.currentlyLoadingIds', []));
+    let currentlyLoadingIds = A(getWithDefault(this, 'dj.currentlyLoadingIds', []));
 
     return get(this, 'buttonLoading') ||
            currentlyLoadingIds.includes(String(get(this, 'itemPK'))) ||

@@ -1,21 +1,22 @@
-import Ember from 'ember';
-import service from 'ember-service/inject';
-import computed, { readOnly, not, or, and} from 'ember-computed';
-import get, { getProperties } from 'ember-metal/get';
+import EmberObject from '@ember/object';
+import { bind, next } from '@ember/runloop';
+import Service, { inject as service } from '@ember/service';
+import { readOnly, not, or, and, gt } from '@ember/object/computed';
+import { get, getProperties, computed } from '@ember/object';
 import ENV from 'ember-get-config';
 
 /* TODO: this needs a refactor. */
 
-export default Ember.Service.extend({
+export default Service.extend({
   init() {
     this._super(...arguments);
 
     let actionQueue = get(this, 'actionQueue');
     let hifi = get(this, 'hifi');
-    actionQueue.addAction(hifi, 'audio-ended', {priority: 4, name: 'bumper-play'}, Ember.run.bind(this, this.playBumperAction));
-    actionQueue.addAction(hifi, 'audio-ended', {priority: 5, name: 'continuous-play'}, Ember.run.bind(this, this.autoplayAction));
+    actionQueue.addAction(hifi, 'audio-ended', {priority: 4, name: 'bumper-play'}, bind(this, this.playBumperAction));
+    actionQueue.addAction(hifi, 'audio-ended', {priority: 5, name: 'continuous-play'}, bind(this, this.autoplayAction));
 
-    Ember.run.next(() => {
+    next(() => {
       this.cacheStreamsInStore();
     })
   },
@@ -36,13 +37,13 @@ export default Ember.Service.extend({
   autoplayPref : or('_autoplayPref', '_autoplayPrefDefault'),
   autoplaySlug : or('_autoplaySlug', '_autoplaySlugDefault'),
 
-  durationLoaded: computed.gt('hifi.currentSound.duration', 0),
+  durationLoaded: gt('hifi.currentSound.duration', 0),
   audioLoaded   : not('hifi.isLoading'),
   bumperLoaded  : and('durationLoaded', 'audioLoaded'),
-  bumperPlaying: computed.and('bumperLoaded', 'bumperStarted'),
+  bumperPlaying: and('bumperLoaded', 'bumperStarted'),
   bumperDidPlay: false,
   bumperStarted: false,
-  revealNotificationBar: computed.or('bumperPlaying', 'bumperDidPlay'),
+  revealNotificationBar: or('bumperPlaying', 'bumperDidPlay'),
   autoplayEnabled: computed('autoplayPref', 'queue.items.length', function() {
     const { autoplayPref, queue } = getProperties(this, 'autoplayPref', 'queue');
     // only play the bumper and the continuous play if autoplay pref is enabled
@@ -76,7 +77,7 @@ export default Ember.Service.extend({
       let bumperUrl = this.getBumperUrl();
       let playContext = 'Continuous Play';
       this.set('bumperStarted', true);
-      let bumper = Ember.Object.create({modelName: 'bumper', urls: bumperUrl});
+      let bumper = EmberObject.create({modelName: 'bumper', urls: bumperUrl});
       get(this, 'dj').play(bumper, {playContext, autoPlayChoice});
       return true;
     }

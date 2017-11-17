@@ -1,8 +1,7 @@
-import get from 'ember-metal/get';
-import set from 'ember-metal/set';
-import service from 'ember-service/inject';
-import Component from 'ember-component';
-import computed, { reads } from 'ember-computed';
+import { get, set, computed } from '@ember/object';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
+import { reads } from '@ember/object/computed';
 import layout from '../templates/components/player-queue';
 
 export default Component.extend({

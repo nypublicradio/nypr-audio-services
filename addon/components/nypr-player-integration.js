@@ -1,7 +1,13 @@
-import Ember from 'ember';
-import service from 'ember-service/inject';
-import computed, { reads, or, and, not, equal } from 'ember-computed';
-import get from 'ember-metal/get';
+import Component from '@ember/component';
+import { inject as service } from '@ember/service';
+import {
+  reads,
+  or,
+  and,
+  not,
+  equal
+} from '@ember/object/computed';
+import { get, computed } from '@ember/object';
 import { songMetadata } from 'nypr-audio-services/helpers/song-metadata';
 import layout from '../templates/components/nypr-player-integration';
 
@@ -9,7 +15,7 @@ import layout from '../templates/components/nypr-player-integration';
 isolated and removed to this component. This component basically translates
 our audio logic into dumb arguments for the player to display */
 
-export default Ember.Component.extend({
+export default Component.extend({
   layout,
 
   hifi                 : service(),
