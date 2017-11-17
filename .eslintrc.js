@@ -2,20 +2,16 @@ module.exports = {
   globals: {
     server: true,
   },
-  "env": {
-    "browser": true,
-    "node": true,
-    "embertest": true
+  root: true,
+  parserOptions: {
+    ecmaVersion: 2017,
+    sourceType: 'module'
   },
-  "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "module"
+  extends: 'eslint:recommended',
+  env: {
+    browser: true
   },
-  "extends": "eslint:recommended",
-  "rules": {
+  rules: {
     "no-extra-boolean-cast": ["warn"]
-  },
-  "globals": {
-    "server": true
   }
 };
