@@ -59,3 +59,7 @@ $ ember g nypr-audio-services
 * `ember build`
 
 For more information on using ember-cli, visit [http://ember-cli.com/](http://ember-cli.com/).
+
+## Publishing
+
+This addon is published to npm using semver. See the [wiki](https://wiki2.wnyc.org/index.php?title=WebClient:Developer_Guide) for more instructions.
