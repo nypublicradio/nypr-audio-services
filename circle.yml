@@ -1,22 +1,13 @@
 machine:
   node:
-    version: 6.11.3
+    version: 8
 
 dependencies:
   override:
-    - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-    - echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-    - sudo apt-get update && sudo apt-get install yarn
-    - yarn global add bower:
-        environment:
-          PATH: "/usr/bin:${PATH}"
+    - yarn global add bower
     - bower install
-    - yarn --pure-lockfile:
-        environment:
-          PATH: "/usr/bin:${PATH}"
+    - yarn --pure-lockfile
 
 test:
   override:
-    - yarn test:
-        environment:
-          PATH: "/usr/bin:${PATH}"
+    - yarn test
