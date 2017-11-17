@@ -1,9 +1,11 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
+import EmberObject from '@ember/object';
+import Service from '@ember/service';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import RSVP from 'rsvp';
 
-const djStub = Ember.Service.extend({
+const djStub = Service.extend({
   isReady: true,
   currentlyLoadingIds: []
 });
@@ -23,7 +25,7 @@ test('it renders', function(assert) {
 });
 
 test('it shows as playing only when current sound', function(assert) {
-  let DJ = Ember.Object.create({
+  let DJ = EmberObject.create({
     isReady: true,
     isPlaying: true,
     currentContentId: 6444
@@ -37,7 +39,7 @@ test('it shows as playing only when current sound', function(assert) {
   assert.equal(this.$('.is-paused').length,  0, 'button should not have is-paused class if playing and current sound');
   assert.equal(this.$('.is-loading').length,  0, 'button should not have is-loading class if playing and current sound');
 
-  Ember.run(() => {
+  run(() => {
     DJ.set('currentContentId', 1);
   });
 
@@ -47,7 +49,7 @@ test('it shows as playing only when current sound', function(assert) {
 });
 
 test('it shows as loading when in djs list of loading ids', function(assert) {
-  let DJ = Ember.Object.create({
+  let DJ = EmberObject.create({
     isReady: true,
     currentlyLoadingIds: ["6444"]
   });
@@ -62,7 +64,7 @@ test('it shows as loading when in djs list of loading ids', function(assert) {
 });
 
 test('button can be set to inactive manually, where it will not change state on the current sound', function(assert) {
-  let DJ = Ember.Object.create({
+  let DJ = EmberObject.create({
     isReady: true,
     isPlaying: true,
     currentContentId: 6444
@@ -78,7 +80,7 @@ test('button can be set to inactive manually, where it will not change state on 
 });
 
 test('it shows as paused when current sound is paused', function(assert) {
-  let DJ = Ember.Object.create({
+  let DJ = EmberObject.create({
     isReady: true,
     isPlaying: false,
     currentContentId: 6444
@@ -94,7 +96,7 @@ test('it shows as paused when current sound is paused', function(assert) {
 });
 
 test('it renders as disabled when hifi is not ready', function(assert) {
-  this.set('dj', Ember.Object.create({
+  this.set('dj', EmberObject.create({
     isReady: false
   }));
 
@@ -108,7 +110,7 @@ test('it calls play on dj with info', function(assert) {
   let itemIdentifier = 'test-pk';
   let itemPlayContext = 'queue';
 
-  let DJ = Ember.Object.create({
+  let DJ = EmberObject.create({
     isReady: true,
     play(itemIdOrItem, options) {
       assert.equal(itemIdOrItem, itemIdentifier, "item identifier should be test identifier");

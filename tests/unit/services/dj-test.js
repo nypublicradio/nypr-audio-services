@@ -1,11 +1,13 @@
+import { assign } from '@ember/polyfills';
+import { run } from '@ember/runloop';
+import EmberObject, { get } from '@ember/object';
+import Service from '@ember/service';
 import { moduleFor, test } from 'ember-qunit';
-import Ember from 'ember';
 import { startMirage } from 'dummy/initializers/ember-cli-mirage';
 import sinon from 'sinon';
 import RSVP from 'rsvp';
 import hifiNeeds from 'dummy/tests/helpers/hifi-needs';
 import { dummyHifi } from 'dummy/tests/helpers/hifi-integration-helpers';
-import get from 'ember-metal/get';
 
 const ONE_MINUTE = 1000 * 60;
 
@@ -22,7 +24,7 @@ moduleFor('service:dj', 'Unit | Service | dj', {
   beforeEach() {
     this.server = startMirage();
 
-    const listenAnalyticsStub = Ember.Service.extend({
+    const listenAnalyticsStub = Service.extend({
       trackAllCodecFailures() {},
       trackSoundFailure() {}
     });
@@ -30,7 +32,7 @@ moduleFor('service:dj', 'Unit | Service | dj', {
     /* TODO: Revisit this. This doesn't feel great, but DJ knows about stories
       and we're testing the playing of segmented stories */
 
-    dummySegmentedStory = Ember.Object.create({
+    dummySegmentedStory = EmberObject.create({
       audio: [segmentUrl1, segmentUrl2],
       currentSegment: segmentUrl1,
       modelName: 'story',
@@ -48,7 +50,7 @@ moduleFor('service:dj', 'Unit | Service | dj', {
       segmentedAudio: true
     });
 
-    dummyStory = Ember.Object.create({
+    dummyStory = EmberObject.create({
       audio: storyUrl,
       currentSegment: storyUrl,
       modelName: 'story',
@@ -117,7 +119,7 @@ test('play request sets contentModel after load', function(assert) {
   let service = this.subject();
   let stream = this.server.create('stream', {urls: ['/good/stream/1', '/good/stream/2']});
 
-  Ember.run(() => {
+  run(() => {
     stream.forListenAction = () => RSVP.Promise.resolve({});
 
     sinon.stub(service, 'fetchRecord').callsFake(function() {
@@ -144,7 +146,7 @@ test('can switch from on demand to stream and vice versa', function(assert) {
   const streamUrl = '/good/stream/yeah'
 
   let stream = this.server.create('stream', {urls: [streamUrl]});
-  let story  = Ember.Object.create(Ember.assign(this.server.create('story').attrs, {
+  let story  = EmberObject.create(assign(this.server.create('story').attrs, {
     modelName: 'story',
     resetSegments: () => onDemandUrl,
     getCurrentSegment: () => onDemandUrl
@@ -173,7 +175,7 @@ test('playing segmented audio plays the segments in order', function(assert) {
   let service = this.subject();
   let hifi    = service.get('hifi');
 
-  Ember.run(() => {
+  run(() => {
     hifi.on('current-sound-changed', function(currentSound, previousSound) {
       if (!previousSound) {
         return;

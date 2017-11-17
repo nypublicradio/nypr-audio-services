@@ -1,17 +1,17 @@
+import Service from '@ember/service';
 import { moduleForComponent, test } from 'ember-qunit';
-import { copy } from 'ember-metal/utils';
+import { copy } from '@ember/object/internals';
 import hbs from 'htmlbars-inline-precompile';
-import Ember from 'ember';
 
 moduleForComponent('player-queue', 'Integration | Component | player queue', {
   integration: true,
   beforeEach() {
 
-    const sessionStub = Ember.Service.extend({
+    const sessionStub = Service.extend({
       data: {},
     });
 
-    const metricsStub = Ember.Service.extend({
+    const metricsStub = Service.extend({
       trackEvent() {}
     });
 

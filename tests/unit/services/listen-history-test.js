@@ -1,4 +1,7 @@
-import Ember from 'ember';
+import EmberObject from '@ember/object';
+import Evented from '@ember/object/evented';
+import { makeArray } from '@ember/array';
+import Service from '@ember/service';
 import { moduleFor } from 'ember-qunit';
 import test from 'ember-sinon-qunit/test-support/test';
 import RSVP from 'rsvp';
@@ -9,13 +12,13 @@ moduleFor('service:listen-history', 'Unit | Service | listen-history', {
   needs: [...hifiNeeds],
 
   beforeEach() {
-    const sessionStub = Ember.Service.extend({
+    const sessionStub = Service.extend({
       data: {
-        listens: Ember.makeArray([])
+        listens: makeArray([])
       } // we only really need the data thing
     });
 
-    const hifiStub = Ember.Service.extend(Ember.Evented, {
+    const hifiStub = Service.extend(Evented, {
     });
 
     this.register('service:hifi', hifiStub);
@@ -39,9 +42,9 @@ test('on initialize it listens to hifi track changes', function(assert) {
 
   let storyId = 11;
 
-  let story = Ember.Object.create();
+  let story = EmberObject.create();
 
-  let dummySound = new Ember.Object({
+  let dummySound = new EmberObject({
     metadata: {
       contentModel: story,
       contentModelType: 'story',

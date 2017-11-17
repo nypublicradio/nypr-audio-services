@@ -1,8 +1,7 @@
-import Ember from 'ember';
-import Service from 'ember-service';
-import { readOnly } from 'ember-computed';
-import service from 'ember-service/inject';
-const { get } = Ember;
+import { A } from '@ember/array';
+import { get } from '@ember/object';
+import Service, { inject as service } from '@ember/service';
+import { readOnly } from '@ember/object/computed';
 
 export default Service.extend({
   session: service(),
@@ -28,7 +27,7 @@ export default Service.extend({
 
   addListen(story) {
     let session  = this.get('session');
-    let listens  = Ember.A(session.getWithDefault('data.listens', []).slice());
+    let listens  = A(session.getWithDefault('data.listens', []).slice());
 
     let listen = {
       id: `listen${Date.now()}-${(Math.random() * 100).toFixed()}`,
@@ -41,7 +40,7 @@ export default Service.extend({
 
   removeListenByListenId(id) {
     let session = this.get('session');
-    let listens = Ember.A(session.getWithDefault('data.listens', []).slice());
+    let listens = A(session.getWithDefault('data.listens', []).slice());
 
     let listen = listens.findBy('id', id);
     listens.removeObject(listen);
@@ -50,7 +49,7 @@ export default Service.extend({
 
   removeListenByStoryPk(pk) {
     let session = this.get('session');
-    let listens = Ember.A(session.getWithDefault('data.listens', []).slice());
+    let listens = A(session.getWithDefault('data.listens', []).slice());
 
     let listen = listens.findBy('story.id', pk);
     listens.removeObject(listen);
@@ -68,13 +67,13 @@ export default Service.extend({
 
   historyFor(id) {
     let session = this.get('session');
-    let listens = Ember.A(session.getWithDefault('data.listens', []));
+    let listens = A(session.getWithDefault('data.listens', []));
     return listens.filterBy('story.id', id);
   },
 
   indexByStoryPk(pk) {
     let session = this.get('session');
-    let listens = Ember.A(session.getWithDefault('data.listens', []));
+    let listens = A(session.getWithDefault('data.listens', []));
     let listen = listens.findBy('story.id', pk);
 
     return listens.indexOf(listen);

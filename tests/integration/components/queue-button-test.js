@@ -1,11 +1,12 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
+import Service from '@ember/service';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 moduleForComponent('queue-button', 'Integration | Component | queue button', {
   integration: true,
   beforeEach() {
-    const queueStub = Ember.Service.extend({
+    const queueStub = Service.extend({
       items: [],
       removeFromQueueById() {},
       addToQueueById() {}
@@ -49,10 +50,10 @@ test('queue buttons inQueue prop updates', function(assert) {
   this.render(hbs`{{queue-button itemPK=1}}`);
   assert.equal(this.$('button').attr('data-state'), undefined);
 
-  Ember.run(() => {
+  run(() => {
     this.get('queue.items').pushObject({id: 1});
   });
-  Ember.run(() => {
+  run(() => {
     assert.equal(this.$('button').attr('data-state'), 'in-queue');
   });
 });

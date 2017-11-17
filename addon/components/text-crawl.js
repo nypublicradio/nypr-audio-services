@@ -1,10 +1,10 @@
-import Ember from 'ember';
+import Component from '@ember/component';
 import rsvp from 'rsvp';
-import { scheduleOnce, bind } from 'ember-runloop';
+import { scheduleOnce, bind } from '@ember/runloop';
 const { Promise } = rsvp;
 import layout from '../templates/components/text-crawl';
 
-export default Ember.Component.extend({
+export default Component.extend({
   layout,
   classNames: ['text-crawl'],
   classNameBindings: ['isScrolling'],

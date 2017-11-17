@@ -1,9 +1,14 @@
-import Ember from 'ember';
 import RSVP from 'rsvp';
 import PromiseRace from 'ember-hifi/utils/promise-race';
-const { get, getWithDefault, set, assert } = Ember;
+import { assert } from '@ember/debug';
+import { get, set } from '@ember/object';
+import { getOwner } from '@ember/application';
+import { dasherize } from '@ember/string'
+import Service from '@ember/service';
+import Evented from '@ember/object/evented';
+import { A } from '@ember/array';
 
-export default Ember.Service.extend(Ember.Evented, {
+export default Service.extend(Evented, {
   init() {
     this.set('queues', {});
     this._super(...arguments);
@@ -18,15 +23,15 @@ export default Ember.Service.extend(Ember.Evented, {
 
   addAction(thing, eventName, info, callback) {
     if (typeof(thing) === 'string') {
-      thing = Ember.getOwner(this).lookup(thing);
+      thing = getOwner(this).lookup(thing);
     }
 
     assert("passed in object is not Ember.Evented", (thing && thing.on && thing.trigger));
 
     let queueName   = this._queueName(thing, eventName);
     let queues      = get(this, 'queues');
-    let queue       = getWithDefault(queues, queueName, []);
-    queue.push(Ember.assign(info, {callback: callback}));
+    let queue       = get(queues, queueName) || [];
+    queue.push(Object.assign(info, {callback: callback}));
 
     if (!get(queues, queueName)) {
       let _this = this;
@@ -47,7 +52,7 @@ export default Ember.Service.extend(Ember.Evented, {
   },
 
   _queueName(thing, eventName) {
-    let objectName = Ember.String.dasherize(Ember.toString(thing));
+    let objectName = dasherize(`${thing}`);
     return `${objectName}:${eventName}`;
   },
 
@@ -57,7 +62,7 @@ export default Ember.Service.extend(Ember.Evented, {
 
   _runQueue(queueName, eventData = {}) {
     let queues = get(this, 'queues');
-    let orderedQueue = Ember.A(getWithDefault(queues, queueName, [])).sortBy('priority').slice(); // copy, bro
+    let orderedQueue = A(get(queues, queueName) || []).sortBy('priority').slice(); // copy, bro
 
     this.debug(`[action-queue] Trying action queue of ${orderedQueue.length}`);
     let _this = this;

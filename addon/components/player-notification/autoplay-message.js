@@ -1,10 +1,10 @@
-import Ember from 'ember';
-import service from 'ember-service/inject';
-import get from 'ember-metal/get';
-import computed, { gte, equal, and } from 'ember-computed';
+import Component from '@ember/component';
+import { inject as service } from '@ember/service';
+import { get, computed } from '@ember/object';
+import { gte, equal, and } from '@ember/object/computed';
 import layout from '../../templates/components/player-notification/autoplay-message';
 
-export default Ember.Component.extend({
+export default Component.extend({
   layout,
   tagName        : '',
 

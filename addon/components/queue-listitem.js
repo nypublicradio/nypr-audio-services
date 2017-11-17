@@ -1,5 +1,6 @@
-import Component from 'ember-component';
-import computed, { readOnly } from 'ember-computed';
+import Component from '@ember/component';
+import { readOnly } from '@ember/object/computed';
+import { computed } from '@ember/object';
 import layout from '../templates/components/queue-listitem';
 
 export default Component.extend({

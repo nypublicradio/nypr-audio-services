@@ -1,11 +1,10 @@
+import { A } from '@ember/array';
 import { animate } from 'liquid-fire';
-import service from 'ember-service/inject';
-import Component from 'ember-component';
-import computed, { readOnly, not } from 'ember-computed';
-import get from 'ember-metal/get';
-import set from 'ember-metal/set';
+import { inject as service } from '@ember/service';
+import Component from '@ember/component';
+import { readOnly, not } from '@ember/object/computed';
+import { get, set, computed } from '@ember/object';
 import layout from '../templates/components/queue-button';
-import Ember from 'ember';
 
 export default Component.extend({
   layout,
@@ -21,7 +20,7 @@ export default Component.extend({
 
   inQueue: computed('queue.items.[]', {
     get() {
-      let queue = Ember.A(this.getWithDefault('queue.items', []));
+      let queue = A(this.getWithDefault('queue.items', []));
       let inQueue = queue.findBy('id', get(this, 'itemPK'));
       return inQueue ? true : false;
     },

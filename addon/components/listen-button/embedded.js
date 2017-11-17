@@ -1,6 +1,5 @@
 import ListenButton from '../listen-button';
-import computed from 'ember-computed';
-import get from 'ember-metal/get';
+import { get, computed } from '@ember/object';
 import hbs from 'htmlbars-inline-precompile';
 
 function wnycEmbeddedAttr() {
