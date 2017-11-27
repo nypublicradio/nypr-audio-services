@@ -29,7 +29,7 @@
     "ember-hifi": "^1.11.1",
     "ember-simple-auth": "^1.3.0",
     "liquid-fire": "^0.29.1",
-    "nypr-metrics": "nypublicradio/nypr-metrics#brian-RT-224",
+    "nypr-metrics": "~0.2.0-0",
     "nypr-ui": "nypublicradio/nypr-ui"
   },
   "devDependencies": {
