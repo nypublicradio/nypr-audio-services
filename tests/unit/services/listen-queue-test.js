@@ -14,7 +14,8 @@ moduleFor('service:listen-queue', 'Unit | Service | listen queue', {
     'service:action-queue',
     'service:listen-analytics',
     'service:bumper-state',
-    'service:dj'
+    'service:dj',
+    'service:nypr-metrics/data-layer',
   ],
   beforeEach() {
     this.server = startMirage();
