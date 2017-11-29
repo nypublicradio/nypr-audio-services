@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.0.3
+- [BUGFIX] Corrects nypr-metrics version constraint to ~0.0.0
+
 ## 0.0.2
 - [ENHANCEMENT] Upgrades to ember-cli 2.16
 - [ENHANCEMENT] Don't need to include hls.js or howler.js in bower, hifi provides those
