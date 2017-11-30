@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.2.1
+- [BUGFIX] Includes `wqxr-special2` as a valid stream slug
+
 ## 0.2.0
 - [ENHANCEMENT] Upgrades `nypr-metrics` to `~0.2.0`
 
