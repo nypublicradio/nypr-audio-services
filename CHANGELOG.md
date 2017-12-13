@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.0.5
+- [CHORE] loose versioning on liquid-fire
+
 ## 0.0.4
 - [BUGFIX] Includes `wqxr-special2` as a valid stream slug
 
