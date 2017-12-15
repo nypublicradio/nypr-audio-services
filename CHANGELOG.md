@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.2.2
+- [CHORE] versions nypr-ui
+
 ## 0.2.1
 - [BUGFIX] Includes `wqxr-special2` as a valid stream slug
 
