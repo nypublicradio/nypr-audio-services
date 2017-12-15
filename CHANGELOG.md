@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.0.6
+- [CHORE] versions nypr-ui
+
 ## 0.0.5
 - [CHORE] loose versioning on liquid-fire
 
