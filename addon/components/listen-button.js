@@ -16,6 +16,8 @@ const STATES = {
   LOADING:  'is-loading'
 };
 
+const EXPANDABLE_BUTTONS = /(blue|gray|red)-(minion|boss)|white-hollow-block/;
+
 export default Component.extend({
   layout,
   dj:                   service(),
@@ -36,7 +38,7 @@ export default Component.extend({
            (get(this, 'isCurrentSound') && get(this, 'dj.currentSound.isLoading'));
   }),
 
-  isExpandable:         match('type', /(blue|gray|red)-(minion|boss)/),
+  isExpandable:         match('type', EXPANDABLE_BUTTONS),
   'aria-label':         readOnly('title'),
   'data-test-selector': 'listen-button',
   'data-story'        : readOnly('itemTitle'),
