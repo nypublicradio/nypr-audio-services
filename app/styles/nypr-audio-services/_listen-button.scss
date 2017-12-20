@@ -102,8 +102,11 @@
 
   .listen-ui {
     transform: scale(0.8, 0.8);
-
     margin-right: 0px;
+    
+    .listen-spinner::after {
+      left: -4px;
+    }
   }
 }
 
