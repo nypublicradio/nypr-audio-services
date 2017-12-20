@@ -286,6 +286,27 @@
       opacity: 0.8;
     }
   }
+  
+  &.white-hollow-block {
+    @include btn-minion;
+    
+    @include white-svg;
+    @include white-listen-spinner;
+    
+    @include js-hover(
+      $props: (color, border-color),
+      $base:  (white, rgba(white, 0.6)),
+      $hover: (rgba(white, 0.8), rgba(white, 1))
+    );
+    
+    border-width: 1px;
+    border-radius: 0%;
+    
+    
+    &.is-loading {
+      border-radius: 50%;
+    }
+  }
 
   &.red-hollow-small {
     @include btn-size(24px);
