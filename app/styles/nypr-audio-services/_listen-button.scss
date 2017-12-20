@@ -11,7 +11,8 @@
     opacity $transition-timing,
     background-color $transition-timing,
     border-color $transition-timing,
-    color $transition-timing;
+    color $transition-timing,
+    border-radius $transition-timing;
 
   &.is-loading,
   &.is-playing {
@@ -20,7 +21,8 @@
       opacity $transition-timing,
       background-color $transition-timing,
       border-color $transition-timing,
-      color $transition-timing;
+      color $transition-timing,
+      border-radius $transition-timing;
   }
 }
 
