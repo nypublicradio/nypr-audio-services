@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.0.7
+- [BUGFIX] pass the null value, not the 'null' string into the ALL STREAMS link-to
+
 ## 0.0.6
 - [CHORE] versions nypr-ui
 
