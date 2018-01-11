@@ -1,5 +1,9 @@
 # nypr-audio-services Changelog
 
+## 0.0.8
+- [FEATURE] Adds `white-hollow-block` listen button
+- [BUGFIX] Fixes minion button spinner alignment
+
 ## 0.0.7
 - [BUGFIX] pass the null value, not the 'null' string into the ALL STREAMS link-to
 
