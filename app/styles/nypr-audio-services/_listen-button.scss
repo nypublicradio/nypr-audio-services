@@ -11,7 +11,8 @@
     opacity $transition-timing,
     background-color $transition-timing,
     border-color $transition-timing,
-    color $transition-timing;
+    color $transition-timing,
+    border-radius $transition-timing;
 
   &.is-loading,
   &.is-playing {
@@ -20,7 +21,8 @@
       opacity $transition-timing,
       background-color $transition-timing,
       border-color $transition-timing,
-      color $transition-timing;
+      color $transition-timing,
+      border-radius $transition-timing;
   }
 }
 
@@ -100,8 +102,11 @@
 
   .listen-ui {
     transform: scale(0.8, 0.8);
-
     margin-right: 0px;
+    
+    .listen-spinner::after {
+      left: -4px;
+    }
   }
 }
 
@@ -282,6 +287,27 @@
     &:focus .listen-ui,
     &:active .listen-ui {
       opacity: 0.8;
+    }
+  }
+  
+  &.white-hollow-block {
+    @include btn-minion;
+    
+    @include white-svg;
+    @include white-listen-spinner;
+    
+    @include js-hover(
+      $props: (color, border-color),
+      $base:  (white, rgba(white, 0.6)),
+      $hover: (rgba(white, 0.8), rgba(white, 1))
+    );
+    
+    border-width: 1px;
+    border-radius: 0%;
+    
+    
+    &.is-loading {
+      border-radius: 50%;
     }
   }
 
