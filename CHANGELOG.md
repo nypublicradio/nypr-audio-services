@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.0.9
+- [CHORE] bump nypr-ui to `~0.1.0`
+
 ## 0.0.8
 - [FEATURE] Adds `white-hollow-block` listen button
 - [BUGFIX] Fixes minion button spinner alignment
