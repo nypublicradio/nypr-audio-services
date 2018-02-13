@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.2.6
+- [BUGFIX] Send autoPlayChoice into hifi metadata correctly so nypr-metrics listen analytics can receive it properly
+
 ## 0.2.5
 - [CHORE] bump nypr-ui
 
