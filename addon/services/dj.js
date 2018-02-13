@@ -108,7 +108,7 @@ export default Service.extend({
     let recordRequest   = this.fetchRecord(itemIdOrItem);
     let newPlay         = this.isNewPlay(itemIdOrItem);
 
-    let { playContext, position, metadata = {} } = options;
+    let { playContext, position, autoPlayChoice, metadata = {} } = options;
 
     let audioUrlPromise = recordRequest.then(s => {
       // TODO: Make this consistent between models
@@ -125,6 +125,7 @@ export default Service.extend({
     metadata.contentId = itemId;
     metadata.contentModelType = itemModelName;
     metadata.playContext = playContext;
+    metadata.autoPlayChoice = autoPlayChoice;
 
     let playRequest = get(this, 'hifi').play(audioUrlPromise, {metadata, position});
     // This should resolve around the same time, and then set the metadata
