@@ -26,9 +26,6 @@ export default Service.extend({
   currentContentModel : reads('currentSound.metadata.contentModel'),
   currentContentId    : reads('currentSound.metadata.contentId'),
   currentContentType  : reads('currentSound.metadata.contentModelType'),
-
-  currentlyLoadingIds : [], // so loading buttons can get updated when the request starts
-
   isReady             : reads('hifi.isReady'),
   isPlaying           : reads('hifi.isPlaying'),
 
@@ -39,7 +36,7 @@ export default Service.extend({
 
     actionQueue.addAction(hifi, 'audio-ended', {priority: 1, name: 'segmented-audio'}, bind(this, this.playSegmentedAudio));
 
-    this.set('currentlyLoadingIds', []);
+    this.set('currentlyLoadingIds', []); // so loading buttons can get updated when the request starts
     this.initCurrentLoadingIdsWatcher();
   },
 

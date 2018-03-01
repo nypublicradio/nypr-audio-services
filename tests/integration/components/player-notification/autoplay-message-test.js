@@ -4,10 +4,13 @@ import { startMirage } from 'dummy/initializers/ember-cli-mirage';
 import hbs from 'htmlbars-inline-precompile';
 
 const sessionStub = Service.extend({
-  data: {
-    'user-prefs-active-stream': {slug: 'wnyc-fm939', name: 'WNYC 93.9 FM'},
-    'user-prefs-active-autoplay': 'default_stream'
-  }
+  init() {
+    this._super(...arguments);
+    this.data = {
+      'user-prefs-active-stream': {slug: 'wnyc-fm939', name: 'WNYC 93.9 FM'},
+      'user-prefs-active-autoplay': 'default_stream'
+    }
+  },
 });
 
 moduleForComponent('player-notification/autoplay-message', 'Integration | Component | player notification/autoplay message', {

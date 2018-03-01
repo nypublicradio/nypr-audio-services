@@ -12,8 +12,10 @@ export default Factory.extend({
   title(id) {
     return `Story ${id}`;
   },
-  extendedStory: {
-    body: 'Story body.'
+  extendedStory() {
+    return {
+      body: 'Story body.'
+    }
   },
   commentsEnabled: true,
   dateLineDatetime: faker.date.recent,

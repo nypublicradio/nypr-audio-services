@@ -8,7 +8,10 @@ moduleForComponent('player-queue', 'Integration | Component | player queue', {
   beforeEach() {
 
     const sessionStub = Service.extend({
-      data: {},
+      init() {
+        this._super(...arguments);
+        this.data = {};
+      }
     });
 
     const metricsStub = Service.extend({

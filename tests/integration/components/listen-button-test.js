@@ -7,7 +7,11 @@ import RSVP from 'rsvp';
 
 const djStub = Service.extend({
   isReady: true,
-  currentlyLoadingIds: []
+
+  init() {
+    this._super(...arguments);
+    this.currentlyLoadingIds = [];
+  }
 });
 
 moduleForComponent('listen-button', 'Integration | Component | listen button', {

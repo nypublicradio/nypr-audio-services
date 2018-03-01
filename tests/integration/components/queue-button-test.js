@@ -7,9 +7,13 @@ moduleForComponent('queue-button', 'Integration | Component | queue button', {
   integration: true,
   beforeEach() {
     const queueStub = Service.extend({
-      items: [],
       removeFromQueueById() {},
-      addToQueueById() {}
+      addToQueueById() {},
+
+      init() {
+        this._super(...arguments);
+        this.items = [];
+      }
     });
 
     this.register('service:listen-queue', queueStub);
