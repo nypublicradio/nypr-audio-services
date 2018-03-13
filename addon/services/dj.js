@@ -9,7 +9,7 @@ import { and, not, reads } from '@ember/object/computed';
 stream/story model and DJ will queue it up on the hifi with the appropriate
 metadata inserted */
 
-const STREAMS = ['wqxr', 'q2', 'wqxr-special', 'wnyc-fm939', 'wnyc-am820', 'njpr', 'jonathan-channel', 'special-events-stream', 'wqxr-special2'];
+const STREAMS = ['wqxr', 'q2', 'wqxr-special', 'wnyc-fm939', 'wnyc-am820', 'njpr', 'jonathan-channel', 'special-events-stream', 'wqxr-special2', 'takeaway'];
 
 export default Service.extend({
   hifi                : service(),
