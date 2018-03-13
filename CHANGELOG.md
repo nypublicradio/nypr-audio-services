@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.2.7
+- [BUGFIX] Includes `takeaway` as a valid stream slug
+
 ## 0.2.6
 - [BUGFIX] Send autoPlayChoice into hifi metadata correctly so nypr-metrics listen analytics can receive it properly
 
