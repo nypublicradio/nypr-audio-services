@@ -15,6 +15,7 @@ export default Service.extend({
   isPlayingFromQueue: equal('hifi.currentSound.metadata.playContext', 'queue'),
 
   init() {
+    this._super(...arguments);
     this.set('pending', []);
     let actionQueue = get(this, 'actionQueue');
     let hifi        = get(this, 'hifi');

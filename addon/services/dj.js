@@ -30,6 +30,7 @@ export default Service.extend({
   isPlaying           : reads('hifi.isPlaying'),
 
   init() {
+    this._super(...arguments);
     let actionQueue = get(this, 'actionQueue');
     let hifi        = get(this, 'hifi');
     hifi.on('current-sound-changed', () => this.set('playedOnce', true));
