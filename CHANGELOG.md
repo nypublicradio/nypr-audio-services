@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.3.0
+- [CHORE] Update to Ember 3.0 and new module syntax
+
 ## 0.2.7
 - [BUGFIX] Includes `takeaway` as a valid stream slug
 

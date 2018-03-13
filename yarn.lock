@@ -5825,17 +5825,17 @@ number-is-nan@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
 
-nypr-metrics@~0.2.5:
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/nypr-metrics/-/nypr-metrics-0.2.5.tgz#74eccd1c64fde326aaad92fa761412cabcb34863"
+nypr-metrics@~0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/nypr-metrics/-/nypr-metrics-0.3.0.tgz#4e1d61c4285a308303cb8ac0a283afacd8b6d76b"
   dependencies:
     ember-cli-babel "^6.6.0"
     ember-get-config "^0.2.2"
     ember-metrics "^0.12.1"
 
-nypr-ui@~0.1.0:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/nypr-ui/-/nypr-ui-0.1.5.tgz#2740a6461e346fd882b15cbf7bda39698db3eef3"
+nypr-ui@~0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/nypr-ui/-/nypr-ui-0.2.0.tgz#f182d31faeaab1a9ca765209c90444fa65094b16"
   dependencies:
     ember-basic-dropdown "0.33.1"
     ember-cli-babel "^6.8.0"
