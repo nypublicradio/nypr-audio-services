@@ -13,9 +13,12 @@ moduleFor('service:listen-history', 'Unit | Service | listen-history', {
 
   beforeEach() {
     const sessionStub = Service.extend({
-      data: {
-        listens: makeArray([])
-      } // we only really need the data thing
+      init() {
+        this._super(...arguments);
+        this.data = {
+          listens: makeArray([])
+        }
+      }
     });
 
     const hifiStub = Service.extend(Evented, {

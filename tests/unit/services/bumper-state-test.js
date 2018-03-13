@@ -35,12 +35,15 @@ moduleFor('service:bumper-state', 'Unit | Service | bumper state', {
     });
 
     const sessionStub = Service.extend({
-      data: {
-        'user-prefs-active-autoplay': 'default_stream',
-        'user-prefs-active-stream': {slug: 'wnyc-fm939', name: 'WNYC 93.9 FM'},
-        'queue': {
-          'items': A(),
-        }
+      init() {
+        this._super(...arguments);
+        this.data = {
+          'user-prefs-active-autoplay': 'default_stream',
+          'user-prefs-active-stream': {slug: 'wnyc-fm939', name: 'WNYC 93.9 FM'},
+          'queue': {
+            'items': A(),
+          }
+        };
       },
       authorize: function() {}
     });

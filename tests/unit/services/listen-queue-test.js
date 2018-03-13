@@ -21,7 +21,10 @@ moduleFor('service:listen-queue', 'Unit | Service | listen queue', {
     this.server = startMirage();
 
     const sessionStub = Service.extend({
-      data: {},
+      init() {
+        this._super(...arguments);
+        this.data = {};
+      },
       authorize: function() {}
     });
 

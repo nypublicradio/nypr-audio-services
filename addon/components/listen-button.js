@@ -34,7 +34,7 @@ export default Component.extend({
   isPlaying:            and('dj.isPlaying', 'isCurrentSound'),
   _hifiPaused:          not('dj.isPlaying'),
   isPaused:             and('_hifiPaused', 'isCurrentSound'),
-  isLoading:            computed('isCurrentSound', 'buttonLoading', 'dj.currentSound.isLoading', 'dj.currentlyLoadingIds', function() {
+  isLoading:            computed('isCurrentSound', 'buttonLoading', 'dj.{currentSound.isLoading,currentlyLoadingIds}', function() {
     let currentlyLoadingIds = A(getWithDefault(this, 'dj.currentlyLoadingIds', []));
 
     return get(this, 'buttonLoading') ||

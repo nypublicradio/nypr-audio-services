@@ -24,8 +24,8 @@ export default Component.extend({
       && changedAttrs.showTitle[0] !== changedAttrs.showTitle[1];
 
     if (isInitialRender || showTitleChanged) {
-     if (this.attrs.titleDidChange) {
-       this.attrs.titleDidChange();
+     if (this.get('titleDidChange')) {
+       this.get('titleDidChange')();
      }
     }
   })
