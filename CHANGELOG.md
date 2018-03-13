@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.0.10
+- [BUGFIX] Adds `takeaway` as a valid stream slug
+
 ## 0.0.9
 - [CHORE] bump nypr-ui to `~0.1.0`
 
