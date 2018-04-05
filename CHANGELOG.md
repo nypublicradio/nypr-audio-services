@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.3.1
+- [CHORE] update ember diff attrs to fix deprecation warning
+
 ## 0.3.0
 - [CHORE] Update to Ember 3.0 and new module syntax
 
