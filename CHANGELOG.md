@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.3.2
+- [CHORE] loosen version restraints for in house deps
+
 ## 0.3.1
 - [CHORE] update ember diff attrs to fix deprecation warning
 
