@@ -1,7 +1,0 @@
-{
-  "name": "nypr-audio-services",
-  "dependencies": {
-    "pretender": "~1.1.0",
-    "Faker": "~3.1.0"
-  }
-}
