@@ -1,8 +1,8 @@
 import { bind } from '@ember/runloop';
 import { A as emberArray } from '@ember/array';
 import Service, { inject as service } from '@ember/service';
-import { equal, alias } from '@ember/object/computed';
-import { get } from '@ember/object';
+import { equal } from '@ember/object/computed';
+import { get, computed } from '@ember/object';
 
 export default Service.extend({
   session           : service(),
@@ -11,7 +11,11 @@ export default Service.extend({
   hifi              : service(),
   dj                : service(),
   listenAnalytics   : service(),
-  items             : alias('session.data.queue'),
+  items             : computed('session.data.queue', function() {
+    let session = get(this, 'session');
+    let queue = emberArray(session.getWithDefault('data.queue', []).slice());
+    return queue.map(s => this.get('store').peekRecord('story', s.data.id));
+  }),
   isPlayingFromQueue: equal('hifi.currentSound.metadata.playContext', 'queue'),
 
   init() {
@@ -19,8 +23,6 @@ export default Service.extend({
     this.set('pending', []);
     let actionQueue = get(this, 'actionQueue');
     let hifi        = get(this, 'hifi');
-
-    this.set('items', this.getWithDefault('session.data.queue', emberArray()));
 
     actionQueue.addAction(hifi, 'audio-ended', {priority: 2, name: 'queue'},bind(this, this.onTrackFinished));
 
