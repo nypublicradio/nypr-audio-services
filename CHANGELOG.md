@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.3.3
+- [ENHANCEMENT] transform stories serialized in the store into ember data records
+
 ## 0.3.2
 - [CHORE] loosen version restraints for in house deps
 
