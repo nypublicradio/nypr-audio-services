@@ -51,8 +51,12 @@ moduleFor('service:listen-queue', 'Unit | Service | listen queue', {
 
 const findRecordStub = function(id) {
   return RSVP.Promise.resolve({
-    id: id,
-    title: `title-${id}`
+    data: {
+      id: id,
+      attributes: {
+        title: `title-${id}`
+      }
+    }
   });
 }
 
@@ -63,7 +67,10 @@ test('it exists', function(assert) {
 
 test('a story can be added to the queue by id', function(assert) {
   let service = this.subject({
-    findRecord: findRecordStub
+    findRecord: findRecordStub,
+    store: {
+      peekRecord: sinon.mock().twice()
+    }
   });
 
   this.server.createList('story', 2);
@@ -78,16 +85,22 @@ test('a story can be added to the queue by id', function(assert) {
 
 test('addToQueueById returns a Promise that resolves to the added story', function(assert) {
   let service = this.subject({
-    findRecord: findRecordStub
+    findRecord: findRecordStub,
+    store: {
+      peekRecord: sinon.mock().once()
+    }
   });
 
   service.addToQueueById(1)
-      .then(story => assert.equal(get(story, 'title'), 'title-1'));
+      .then(story => assert.equal(get(story, 'data.attributes.title'), 'title-1'));
 });
 
 test('a story can be removed from the queue by id', function(assert) {
   let service = this.subject({
-    findRecord: findRecordStub
+    findRecord: findRecordStub,
+    store: {
+      peekRecord: sinon.mock().twice()
+    }
   });
 
   let [ story1, story2 ] = this.server.createList('story', 2);
@@ -142,11 +155,14 @@ test('hyperactive adds and removes should still work', function(assert) {
 
 test('can replace the queue in one action', function(assert) {
   let service = this.subject({
-    findRecord: findRecordStub
+    findRecord: findRecordStub,
+    store: {
+      peekRecord: sinon.mock().thrice().returnsArg(1)
+    }
   });
 
   let [ story1, story2, story3 ] = this.server.createList('story', 3);
-  let newOrder = [ story3, story2, story1 ];
+  let newOrder = [ story3, story2, story1 ].map(s => this.server.serializerOrRegistry.serialize(s));
 
   run(() => {
     service.addToQueueById(story1.id);
@@ -157,22 +173,25 @@ test('can replace the queue in one action', function(assert) {
   run(() => {
     service.reset(newOrder);
   });
-  assert.deepEqual(service.get('items'), newOrder);
+  assert.deepEqual(service.get('items'), newOrder.map(s => s.data.id));
 });
 
 test('can retrieve the next item', function(assert) {
-  let service = this.subject({
-    findRecord: findRecordStub
-  });
-
   let story1 = this.server.create('story');
+
+  let service = this.subject({
+    findRecord: findRecordStub,
+    store: {
+      peekRecord: sinon.stub().returns({data: {id: story1.id}})
+    }
+  });
 
   run(() => {
     service.addToQueueById(story1.id);
   });
 
   let nextUp = service.nextItem();
-  assert.equal(nextUp.id, story1.id);
+  assert.equal(nextUp.data.id, story1.id);
 });
 
 test('find record calls into the store with correct arguments', function(assert) {

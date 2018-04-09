@@ -14,7 +14,7 @@ export default Service.extend({
   items             : computed('session.data.queue', function() {
     let session = get(this, 'session');
     let queue = emberArray(session.getWithDefault('data.queue', []).slice());
-    return queue.map(s => this.get('store').peekRecord('story', s.data.id));
+    return emberArray(queue.map(s => this.get('store').peekRecord('story', s.data.id)));
   }),
   isPlayingFromQueue: equal('hifi.currentSound.metadata.playContext', 'queue'),
 
@@ -92,11 +92,10 @@ export default Service.extend({
   },
 
   nextItem() {
-    let session = get(this, 'session');
-    let queue = session.getWithDefault('data.queue', []);
+    let items = this.get('items')
 
-    if (queue.length > 0) {
-      return get(queue, 'firstObject');
+    if (items.length > 0) {
+      return get(items, 'firstObject');
     } else {
       return null;
     }
