@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.3.4
+- [CHORE] upgrade ember-responsive
+
 ## 0.3.3
 - [ENHANCEMENT] transform stories serialized in the store into ember data records
 
