@@ -1,6 +1,6 @@
 {{#text-crawl watch=currentAudio}}
   {{!-- Show Link --}}
-  {{#if (and showTitle media.isNyprPlayerMediumAndUp)}}
+  {{#if (and showTitle (media 'isNyprPlayerMediumAndUp'))}}
     <a href='{{showUrl}}'
        title='{{showTitle}}'
        class='nypr-player-link'
@@ -32,7 +32,7 @@
     {{songDetails}}
   {{/if}}
 
-  {{#if (and showTitle media.isNyprPlayerSmallOnly)}}
+  {{#if (and showTitle (media 'isNyprPlayerSmallOnly'))}}
     {{#if (or storyTitle songDetails)}} - {{/if}}
     <a href='{{showUrl}}'
        title='{{showTitle}}'
