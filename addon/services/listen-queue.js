@@ -1,8 +1,8 @@
 import { bind } from '@ember/runloop';
 import { A as emberArray } from '@ember/array';
 import Service, { inject as service } from '@ember/service';
-import { equal } from '@ember/object/computed';
-import { get, computed } from '@ember/object';
+import { equal, reads } from '@ember/object/computed';
+import { get } from '@ember/object';
 
 export default Service.extend({
   session           : service(),
@@ -11,11 +11,7 @@ export default Service.extend({
   hifi              : service(),
   dj                : service(),
   listenAnalytics   : service(),
-  items             : computed('session.data.queue', function() {
-    let session = get(this, 'session');
-    let queue = emberArray(session.getWithDefault('data.queue', []).slice());
-    return emberArray(queue.map(s => this.get('store').peekRecord('story', s.data.id)));
-  }),
+  items             : reads('session.data.queue'),
   isPlayingFromQueue: equal('hifi.currentSound.metadata.playContext', 'queue'),
 
   init() {
