@@ -45,14 +45,11 @@ export default Component.extend({
   isExpandable:         match('type', EXPANDABLE_BUTTONS),
   'aria-label':         readOnly('title'),
   'data-test-selector': 'listen-button',
-  'data-story'        : readOnly('itemTitle'),
-  'data-show'         : readOnly('itemShow'),
-  'data-stream'       : readOnly('itemStream'),
 
   tagName:              'button',
   classNames:           ['listen-button'],
   classNameBindings:    ['isHovering', 'type', 'isCurrentSound', 'isErrored', 'playState', 'isCurrentSound', 'isLive'],
-  attributeBindings:    ['aria-label', 'title', 'disabled', 'data-test-selector', 'style', 'data-story', 'data-show', 'data-stream'],
+  attributeBindings:    ['aria-label', 'title', 'disabled', 'data-test-selector', 'style', 'data-action', 'data-label'],
 
   title: computed('itemTitle', function() {
     return `Listen to ${get(this, 'itemTitle')}`;
