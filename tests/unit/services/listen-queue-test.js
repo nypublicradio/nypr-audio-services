@@ -1,23 +1,16 @@
 import { run } from '@ember/runloop';
 import Service from '@ember/service';
-import { moduleFor, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 import { startMirage } from 'dummy/initializers/ember-cli-mirage';
-import hifiNeeds from 'dummy/tests/helpers/hifi-needs';
 import { get } from '@ember/object';
 import RSVP from 'rsvp';
 import sinon from 'sinon';
 
-moduleFor('service:listen-queue', 'Unit | Service | listen queue', {
-  needs: [
-    ...hifiNeeds,
-    'service:session',
-    'service:action-queue',
-    'service:listen-analytics',
-    'service:bumper-state',
-    'service:dj',
-    'service:nypr-metrics/data-layer',
-  ],
-  beforeEach() {
+module('Unit | Service | listen queue', function(hooks) {
+  setupTest(hooks);
+
+  hooks.beforeEach(function() {
     this.server = startMirage();
 
     const sessionStub = Service.extend({
@@ -32,175 +25,176 @@ moduleFor('service:listen-queue', 'Unit | Service | listen queue', {
 
     });
 
-    this.register('service:dj', dummyStub);
-    this.inject.service('dj', { as: 'dj'  });
+    this.owner.register('service:dj', dummyStub);
+    this.dj = this.owner.lookup('service:dj');
 
-    this.register('service:data-pipeline', dummyStub);
-    this.inject.service('data-pipeline', { as: 'dataPipeline'  });
+    this.owner.register('service:data-pipeline', dummyStub);
+    this.dataPipeline = this.owner.lookup('service:data-pipeline');
 
-    this.register('service:metrics', dummyStub);
-    this.inject.service('metrics', { as: 'metrics'  });
+    this.owner.register('service:metrics', dummyStub);
+    this.metrics = this.owner.lookup('service:metrics');
 
-    this.register('service:session', sessionStub);
-    this.inject.service('session', { as: 'session'  });
-  },
-  afterEach() {
+    this.owner.register('service:session', sessionStub);
+    this.session = this.owner.lookup('service:session');
+  });
+
+  hooks.afterEach(function() {
     this.server.shutdown();
-  }
-});
+  });
 
-const findRecordStub = function(id) {
-  return RSVP.Promise.resolve({
-    data: {
-      id: id,
-      attributes: {
-        title: `title-${id}`
+  const findRecordStub = function(id) {
+    return RSVP.Promise.resolve({
+      data: {
+        id: id,
+        attributes: {
+          title: `title-${id}`
+        }
       }
-    }
-  });
-}
+    });
+  }
 
-test('it exists', function(assert) {
-  let service = this.subject();
-  assert.ok(service);
-});
-
-test('a story can be added to the queue by id', function(assert) {
-  let service = this.subject({
-    findRecord: findRecordStub,
-    store: {
-      peekRecord: sinon.mock().twice()
-    }
+  test('it exists', function(assert) {
+    let service = this.owner.lookup('service:listen-queue');
+    assert.ok(service);
   });
 
-  this.server.createList('story', 2);
+  test('a story can be added to the queue by id', function(assert) {
+    let service = this.owner.factoryFor('service:listen-queue').create({
+      findRecord: findRecordStub,
+      store: {
+        peekRecord: sinon.mock().twice()
+      }
+    });
 
-  run(() => {
-    service.addToQueueById(1);
-    service.addToQueueById(2);
+    this.server.createList('story', 2);
+
+    run(() => {
+      service.addToQueueById(1);
+      service.addToQueueById(2);
+    });
+
+    assert.equal(service.get('items').length, 2);
   });
 
-  assert.equal(service.get('items').length, 2);
-});
+  test('addToQueueById returns a Promise that resolves to the added story', function(assert) {
+    let service = this.owner.factoryFor('service:listen-queue').create({
+      findRecord: findRecordStub,
+      store: {
+        peekRecord: sinon.mock().once()
+      }
+    });
 
-test('addToQueueById returns a Promise that resolves to the added story', function(assert) {
-  let service = this.subject({
-    findRecord: findRecordStub,
-    store: {
-      peekRecord: sinon.mock().once()
-    }
+    service.addToQueueById(1)
+        .then(story => assert.equal(get(story, 'data.attributes.title'), 'title-1'));
   });
 
-  service.addToQueueById(1)
-      .then(story => assert.equal(get(story, 'data.attributes.title'), 'title-1'));
-});
+  test('a story can be removed from the queue by id', function(assert) {
+    let service = this.owner.factoryFor('service:listen-queue').create({
+      findRecord: findRecordStub,
+      store: {
+        peekRecord: sinon.mock().twice()
+      }
+    });
 
-test('a story can be removed from the queue by id', function(assert) {
-  let service = this.subject({
-    findRecord: findRecordStub,
-    store: {
-      peekRecord: sinon.mock().twice()
-    }
+    let [ story1, story2 ] = this.server.createList('story', 2);
+
+    run(() => {
+      service.addToQueueById(story1.id);
+      service.addToQueueById(story2.id);
+      service.removeFromQueueById(story1.id);
+    });
+
+    assert.equal(service.get('items').length, 1);
   });
 
-  let [ story1, story2 ] = this.server.createList('story', 2);
+  test('a story already loaded can be removed from the queue by id', function(assert) {
+    let service = this.owner.lookup('service:listen-queue');
 
-  run(() => {
-    service.addToQueueById(story1.id);
-    service.addToQueueById(story2.id);
-    service.removeFromQueueById(story1.id);
+    let session = service.get('session');
+    session.set('data.queue', [ {id: 1} ]);
+
+    run(() => {
+      service.removeFromQueueById(1);
+    });
+
+    assert.equal(service.get('items').length, 0);
   });
 
-  assert.equal(service.get('items').length, 1);
-});
+  test('hyperactive adds and removes should still work', function(assert) {
+    let service = this.owner.factoryFor('service:listen-queue').create({
+      findRecord: findRecordStub
+    });
 
-test('a story already loaded can be removed from the queue by id', function(assert) {
-  let service = this.subject();
+    let [s1, s2, s3, s4, s5] = this.server.createList('story', 5);
 
-  let session = service.get('session');
-  session.set('data.queue', [ {id: 1} ]);
+    run(() => {
+      service.addToQueueById(s1.id);
+      service.addToQueueById(s2.id);
+      service.addToQueueById(s3.id);
+      service.removeFromQueueById(s3.id);
+      service.addToQueueById(s4.id);
+      service.removeFromQueueById(s2.id);
+      service.addToQueueById(s5.id);
+      service.removeFromQueueById(s1.id);
+      service.addToQueueById(s2.id);
+    });
 
-  run(() => {
-    service.removeFromQueueById(1);
+    let queue = service.get('items');
+    assert.equal(queue.length, 3);
+    // assert.equal(queue[0].id, s4.id)
+    // assert.equal(queue[1].id, s5.id)
+    // assert.equal(queue[2].id, s2.id)
   });
 
-  assert.equal(service.get('items').length, 0);
-});
+  test('can replace the queue in one action', function(assert) {
+    let service = this.owner.factoryFor('service:listen-queue').create({
+      findRecord: findRecordStub,
+      store: {
+        peekRecord: sinon.mock().thrice().returnsArg(1)
+      }
+    });
 
-test('hyperactive adds and removes should still work', function(assert) {
-  let service = this.subject({
-    findRecord: findRecordStub
+    let [ story1, story2, story3 ] = this.server.createList('story', 3);
+    let newOrder = [ story3, story2, story1 ].map(s => this.server.serializerOrRegistry.serialize(s));
+
+    run(() => {
+      service.addToQueueById(story1.id);
+      service.addToQueueById(story2.id);
+      service.addToQueueById(story3.id);
+    });
+
+    run(() => {
+      service.reset(newOrder);
+    });
   });
 
-  let [s1, s2, s3, s4, s5] = this.server.createList('story', 5);
-
-  run(() => {
-    service.addToQueueById(s1.id);
-    service.addToQueueById(s2.id);
-    service.addToQueueById(s3.id);
-    service.removeFromQueueById(s3.id);
-    service.addToQueueById(s4.id);
-    service.removeFromQueueById(s2.id);
-    service.addToQueueById(s5.id);
-    service.removeFromQueueById(s1.id);
-    service.addToQueueById(s2.id);
-  });
-
-  let queue = service.get('items');
-  assert.equal(queue.length, 3);
-  // assert.equal(queue[0].id, s4.id)
-  // assert.equal(queue[1].id, s5.id)
-  // assert.equal(queue[2].id, s2.id)
-});
-
-test('can replace the queue in one action', function(assert) {
-  let service = this.subject({
-    findRecord: findRecordStub,
-    store: {
-      peekRecord: sinon.mock().thrice().returnsArg(1)
-    }
-  });
-
-  let [ story1, story2, story3 ] = this.server.createList('story', 3);
-  let newOrder = [ story3, story2, story1 ].map(s => this.server.serializerOrRegistry.serialize(s));
-
-  run(() => {
-    service.addToQueueById(story1.id);
-    service.addToQueueById(story2.id);
-    service.addToQueueById(story3.id);
-  });
-
-  run(() => {
-    service.reset(newOrder);
-  });
   assert.deepEqual(service.get('items'), newOrder.map(s => s.data.id));
-});
+  test('can retrieve the next item', function(assert) {
+    let story1 = this.server.create('story');
 
-test('can retrieve the next item', function(assert) {
-  let story1 = this.server.create('story');
+    let service = this.owner.factoryFor('service:listen-queue').create({
+      findRecord: findRecordStub,
+      store: {
+        peekRecord: sinon.stub().returns({data: {id: story1.id}})
+      }
+    });
 
-  let service = this.subject({
-    findRecord: findRecordStub,
-    store: {
-      peekRecord: sinon.stub().returns({data: {id: story1.id}})
-    }
+    run(() => {
+      service.addToQueueById(story1.id);
+    });
+
+    let nextUp = service.nextItem();
+    assert.equal(nextUp.data.id, story1.id);
   });
 
-  run(() => {
-    service.addToQueueById(story1.id);
+  test('find record calls into the store with correct arguments', function(assert) {
+    let service = this.owner.factoryFor('service:listen-queue').create({});
+
+    let mock = sinon.mock(service.get('store'));
+    mock.expects("findRecord").once().withArgs('story', 1);
+
+    service.findRecord(1);
+
+    assert.ok(mock.verify());
   });
-
-  let nextUp = service.nextItem();
-  assert.equal(nextUp.data.id, story1.id);
-});
-
-test('find record calls into the store with correct arguments', function(assert) {
-  let service = this.subject({});
-
-  let mock = sinon.mock(service.get('store'));
-  mock.expects("findRecord").once().withArgs('story', 1);
-
-  service.findRecord(1);
-
-  assert.ok(mock.verify());
 });
