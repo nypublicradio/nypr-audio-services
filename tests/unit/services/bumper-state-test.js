@@ -149,7 +149,6 @@ module('Unit | Service | bumper state', function(hooks) {
       let actualState = get(bumper, 'autoplayEnabled');
       assert.equal(actualState, false);
     });
-  });
 
   test('if the queue has items, and the preference is set to queue, the bumper service will be enabled', function(assert) {
     const bumper = this.owner.factoryFor('service:bumper-state').create({});
