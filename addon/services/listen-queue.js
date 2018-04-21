@@ -88,7 +88,7 @@ export default Service.extend({
   },
 
   nextItem() {
-    let items = this.get('items')
+    let items = this.get('items') || [];
 
     if (items.length > 0) {
       return get(items, 'firstObject');
