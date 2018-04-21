@@ -166,9 +166,9 @@ module('Unit | Service | listen queue', function(hooks) {
     run(() => {
       service.reset(newOrder);
     });
+    assert.deepEqual(service.get('items').map(s => s.data.id), newOrder.map(s => s.data.id));
   });
 
-  assert.deepEqual(service.get('items'), newOrder.map(s => s.data.id));
   test('can retrieve the next item', function(assert) {
     let story1 = this.server.create('story');
 
