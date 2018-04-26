@@ -40,17 +40,5 @@ export default Component.extend({
     reorderItems(reorderedItems/*, droppedItem*/) {
       get(this, 'queue').reset(reorderedItems);
     },
-    trackShare(data, sharedFrom) {
-      let metrics = this.get('metrics');
-
-      let story = data.story;
-      let {analyticsCode, type, shareText} = story.get('shareMetadata');
-
-      metrics.trackEvent('GoogleAnalytics', {
-        category: 'Persistent Player',
-        action: `Shared Story "${shareText}"`,
-        label: `Queue|${analyticsCode}|${type}|${sharedFrom}`,
-      });
-    }
   },
 });

@@ -11,10 +11,6 @@
         dataId=props.currentContentId
         isCurrent=true
         story=props.currentContentModel
-        shareAction=(action 'trackShare'
-          (hash
-            story = story
-          ))
         playContext='queue'}}
     </div>
   </div>
@@ -29,11 +25,6 @@
       playContext='queue'
       draggable=true
       removeAction=(action 'removeFromQueue')
-      shareAction=(action 'trackShare'
-        (hash
-          story = story
-        ))
-
     }}
   {{/sortable-item}}
 {{else}}
