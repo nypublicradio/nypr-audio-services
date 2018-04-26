@@ -76,10 +76,6 @@ export default Component.extend({
   showQueue            : false,
 
   actions: {
-    onDismissNotification() {
-      this.set('didDismiss', true);
-      get(this, 'listenAnalytics').trackDismissAutoplayNotification();
-    },
     onPlay() {
       // handled by listen analytics
     },
