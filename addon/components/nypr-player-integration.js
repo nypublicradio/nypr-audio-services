@@ -62,7 +62,7 @@ export default Component.extend({
       return `/streams/${get(this, 'currentAudio.id')}`;
     }
   }),
-  
+
   autofocus            : true,
 
   image                : reads('currentAudio.imageMain.url'),
