@@ -2,24 +2,24 @@
   LIVE NOW on <a href={{streamScheduleUrl}}
    target={{if (is-external streamScheduleUrl) '_blank'}}
    rel={{if (is-external streamScheduleUrl) 'noopener'}}
-   data-tracking-category='Persistent Player'
-   data-tracking-action='Click Through to Schedule'
-   data-tracking-label='{{streamName}}'>{{streamName}}</a>
+   class="gtm__click-tracking"
+   data-action='Click Through to Schedule'
+   data-label='player'>{{streamName}}</a>
 </span>
 <span class="nypr-player-stream-info-station-links">
   <a href={{streamScheduleUrl}}
      title='Schedule'
      target={{if (is-external streamScheduleUrl) '_blank'}}
      rel={{if (is-external streamScheduleUrl) 'noopener'}}
-     data-tracking-category='Persistent Player'
-     data-tracking-action='Click Through to Schedule'
-     data-tracking-label='{{streamName}}'>SCHEDULE</a>
+     class="gtm__click-tracking"
+     data-action='Click Through to Schedule'
+     data-label='player'>SCHEDULE</a>
   {{#if streamPlaylistUrl}}
   <a href={{streamPlaylistUrl}}
      title='Music Playlist'
-     data-tracking-category='Persistent Player'
-     data-tracking-action='Click Through to Music Playlist'
-     data-tracking-label='{{streamName}}'>MUSIC PLAYLIST</a>
+     class="gtm__click-tracking"
+     data-action='Click Through to Music Playlist'
+     data-label='player'>MUSIC PLAYLIST</a>
   {{/if}}
   {{#link-to 'stream' (query-params modal=null) title='All Live Streams'}}ALL LIVE STREAMS{{/link-to}}
 </span>
