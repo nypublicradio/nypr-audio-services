@@ -4,22 +4,20 @@
       <div class="text flush queueitem-title">
         <span class="queueitem-itemtitle">
           <a href='{{story.url}}?modal=null'
-             title='{{story.title}}'
-             data-tracking-category='Persistent Player'
-             data-tracking-action='Click Through to Story'
-             data-tracking-region='{{region}}'
-             data-tracking-model='{{story.id}}'>{{{story.title}}}</a>
+             title={{story.title}}
+             class="gtm__lick-tracking"
+             data-action="Click Through to Story"
+             data-label="{{story.title}} | {{story.showTitle}}">{{{story.title}}}</a>
         </span>
         <span class="queueitem-duration">{{story.audioDurationReadable}}</span>
       </div>
       {{#if story.headers.brand.url}}
         <div class="text text--medium text--gray flush queueitem-showtitle">
           <a href='{{story.headers.brand.url}}?modal=null'
-             title='{{story.headers.brand.title}}'
-             data-tracking-category='Persistent Player'
-             data-tracking-action='Click Through to Show "{{story.headers.brand.title}}"'
-             data-tracking-region='{{region}}'
-             data-tracking-model='{{story.id}}'>{{{story.headers.brand.title}}}</a>
+             title={{story.showTitle}}
+             class="gtm__click-tracking"
+             data-action='Click Through to Show'
+             data-label="{{story.title}} | {{story.showTitle}}">{{{story.showTitle}}}</a>
         </div>
       {{/if}}
       <div class="queueitem-controls">
