@@ -19,7 +19,8 @@
   align-self: center;
   margin: 0 0 0 10px;
   min-width: 70px;
-  &:hover {
+  &:hover,
+  &:focus {
     border-bottom-color: rgba($gold, .8);
   }
 }
@@ -29,7 +30,7 @@
   align-self: center;
   padding: 10px;
 
-  path {
+  svg {
     fill: white;
     pointer-events: none;
   }
