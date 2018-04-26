@@ -23,12 +23,17 @@
         </div>
       {{/if}}
       <div class="queueitem-controls">
-        {{nypr-share-button
+        {{#nypr-share-button
           classNames="queueitem-sharebutton"
-          shareText = story.shareMetadata.shareText
-          shareUrl  = story.shareMetadata.shareUrl
-          onShare   = (action (optional shareAction))
-        }}
+          shareText=story.shareMetadata.shareText
+          shareUrl=story.shareMetadata.shareUrl
+          data-action=(concat 'Shared Story "' story.title '" - "' story.showTitle '"' )
+          data-label=playContext
+          as |share|}}
+          {{share.button type='Facebook'}}
+          {{share.button type='Twitter' via='WNYC'}}
+          {{share.button type='Email'}}
+        {{/nypr-share-button}}
         {{#if removeAction}}
           <button class="btn btn--blank btn--playerlight queueitem-deletebutton" {{action removeAction story.id}}>
             {{nypr-svg className="icon" icon="trash"}}
