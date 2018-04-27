@@ -5,7 +5,7 @@
         <span class="queueitem-itemtitle">
           <a href='{{story.url}}?modal=null'
              title={{story.title}}
-             class="gtm__lick-tracking"
+             class="gtm__click-tracking"
              data-action="Click Through to Story"
              data-label="{{story.title}} | {{story.showTitle}}">{{{story.title}}}</a>
         </span>
@@ -25,12 +25,18 @@
           classNames="queueitem-sharebutton"
           shareText=story.shareMetadata.shareText
           shareUrl=story.shareMetadata.shareUrl
-          data-action=(concat 'Shared Story "' story.title '" - "' story.showTitle '"' )
-          data-label=playContext
+          data-action=(concat 'Share from ' playContext)
           as |share|}}
-          {{share.button type='Facebook'}}
-          {{share.button type='Twitter' via='WNYC'}}
-          {{share.button type='Email'}}
+          {{share.button
+            type='Facebook'
+            data-label=(concat story.title ' | ' story.showTitle ' | Facebook')}}
+          {{share.button
+            type='Twitter'
+            via='WNYC'
+            data-label=(concat story.title ' | ' story.showTitle ' | Twitter')}}
+          {{share.button
+            type='Email'
+            data-label=(concat story.title ' | ' story.showTitle ' | Email')}}
         {{/nypr-share-button}}
         {{#if removeAction}}
           <button class="btn btn--blank btn--playerlight queueitem-deletebutton" {{action removeAction story.id}}>
