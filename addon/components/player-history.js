@@ -7,7 +7,6 @@ export default Component.extend({
   layout,
   dj:             service(),
   listenHistory:  service(),
-  metrics:        service(),
 
   listens:        readOnly('listenHistory.items'),
 
