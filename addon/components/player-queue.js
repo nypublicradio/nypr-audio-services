@@ -8,7 +8,6 @@ export default Component.extend({
   layout,
   dj:                 service(),
   queue:              service('listen-queue'),
-  metrics:            service(),
   isSortingEnabled:   true,
   playingFromQueue:   reads('queue.isPlayingFromQueue'),
 
