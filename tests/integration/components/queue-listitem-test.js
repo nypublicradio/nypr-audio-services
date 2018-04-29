@@ -17,6 +17,7 @@ module('Integration | Component | queue listitem', function(hooks) {
     this.set('story', {
       headers: {brand: {title: 'Show Title', url: '/'}},
       title: 'Story Title',
+      showTitle: 'Show Title',
       audioDurationReadable: '3 min'
     });
     await render(hbs`{{queue-listitem story=story}}`);
@@ -42,6 +43,7 @@ module('Integration | Component | queue listitem', function(hooks) {
     this.set('story', {
       headers: {brand: {title: 'The <em>New</em> Show', url: '/'}},
       title: 'The <strong>Big</strong> Story',
+      showTitle: 'The <em>New</em> Show',
     });
     await render(hbs`{{queue-listitem story=story}}`);
 
