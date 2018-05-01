@@ -10,7 +10,6 @@ export default Service.extend({
   actionQueue       : service(),
   hifi              : service(),
   dj                : service(),
-  listenAnalytics   : service(),
   items             : reads('session.data.queue'),
   isPlayingFromQueue: match('hifi.currentSound.metadata.playContext', /queue/),
 
@@ -44,7 +43,7 @@ export default Service.extend({
     return get(this, 'store').findRecord('story', id);
   },
 
-  addToQueueById(id, playContext) {
+  addToQueueById(id) {
     let pending = this.get('pending');
     pending.push(id);
 
