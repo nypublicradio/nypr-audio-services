@@ -62,8 +62,6 @@ export default Service.extend({
       queue.pushObject(story);
       session.set('data.queue', queue);
 
-      this.get('listenAnalytics').trackAddToQueue(story, playContext);
-
       return story;
     });
 
