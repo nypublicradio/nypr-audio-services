@@ -73,9 +73,9 @@ export default Service.extend({
   playBumperAction(sound) {
     let playContext = get(sound, 'metadata.playContext');
     let autoPlayChoice = get(this, 'autoplayChoice');
-    if (this.get('autoplayEnabled') && playContext !== 'Continuous Play') {
+    if (this.get('autoplayEnabled') && playContext !== 'Audio Bumper') {
       let bumperUrl = this.getBumperUrl();
-      let playContext = 'Continuous Play';
+      let playContext = 'Audio Bumper';
       this.set('bumperStarted', true);
       let bumper = EmberObject.create({modelName: 'bumper', urls: bumperUrl});
       get(this, 'dj').play(bumper, {playContext, autoPlayChoice});
@@ -87,9 +87,9 @@ export default Service.extend({
     let playContext = get(sound, 'metadata.playContext');
     const autoplayPref = get(this, 'autoplayPref');
 
-    if (this.get('autoplayEnabled') && playContext === 'Continuous Play'){
+    if (this.get('autoplayEnabled') && playContext === 'Audio Bumper'){
       this.set('bumperDidPlay', true);
-      let playContext = autoplayPref === 'default_stream' ? 'Continuous Play' : 'queue';
+      let playContext = autoplayPref === 'default_stream' ? 'continuous stream' : 'continuous queue';
       let nextItem    = this.getAutoplayItem();
       get(this, 'dj').play(nextItem, {playContext});
       return true;
