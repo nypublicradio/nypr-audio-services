@@ -17,15 +17,8 @@ module('Integration | Component | player queue', function(hooks) {
       }
     });
 
-    const metricsStub = Service.extend({
-      trackEvent() {}
-    });
-
     this.owner.register('service:session', sessionStub);
     this.session = this.owner.lookup('service:session');
-
-    this.owner.register('service:metrics', metricsStub);
-    this.metrics = this.owner.lookup('service:metrics');
   });
 
 

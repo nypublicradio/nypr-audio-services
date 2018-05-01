@@ -21,12 +21,6 @@ module('Unit | Service | bumper state', function(hooks) {
 
     });
 
-    const metricsStub = Service.extend({
-      trackEvent() {
-
-      }
-    });
-
     const sessionStub = Service.extend({
       init() {
         this._super(...arguments);
@@ -46,9 +40,7 @@ module('Unit | Service | bumper state', function(hooks) {
     this.owner.register('service:features', FeatureStub);
     this.owner.register('service:session', sessionStub);
     this.owner.register('service:data-pipeline', dummyStub);
-    this.owner.register('service:metrics', metricsStub);
     this.dataPipeline = this.owner.lookup('service:dataPipeline');
-    this.metrics = this.owner.lookup('service:metrics');
     this.session = this.owner.lookup('service:session');
     this.features = this.owner.lookup('service:features');
   });
