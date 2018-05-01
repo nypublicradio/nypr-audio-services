@@ -31,9 +31,6 @@ module('Unit | Service | listen queue', function(hooks) {
     this.owner.register('service:data-pipeline', dummyStub);
     this.dataPipeline = this.owner.lookup('service:data-pipeline');
 
-    this.owner.register('service:metrics', dummyStub);
-    this.metrics = this.owner.lookup('service:metrics');
-
     this.owner.register('service:session', sessionStub);
     this.session = this.owner.lookup('service:session');
   });
