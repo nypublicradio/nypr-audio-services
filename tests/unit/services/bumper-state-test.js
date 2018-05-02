@@ -10,12 +10,6 @@ module('Unit | Service | bumper state', function(hooks) {
   setupTest(hooks);
 
   hooks.beforeEach(function() {
-    const FeatureStub = Service.extend({
-      isEnabled() {
-        return true;
-      }
-    });
-
     const dummyStub = Service.extend({
 
     });
