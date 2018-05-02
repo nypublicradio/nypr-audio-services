@@ -5673,9 +5673,9 @@ number-is-nan@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
 
-nypr-metrics@>=0.3.0:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/nypr-metrics/-/nypr-metrics-0.3.1.tgz#917d61ad0f7fc5ffd7409a560f8a64588663c576"
+nypr-metrics@0.4.0-beta.1:
+  version "0.4.0-beta.1"
+  resolved "https://registry.yarnpkg.com/nypr-metrics/-/nypr-metrics-0.4.0-beta.1.tgz#7ce652ca85c6dead9ba24edce553115d9438bef2"
   dependencies:
     ember-cli-babel "^6.6.0"
     ember-get-config "^0.2.2"
