@@ -200,7 +200,7 @@ module('Unit | Service | bumper state', function(hooks) {
 
     let dummySound = EmberObject.create({
       metadata: {
-        playContext: 'Continuous Play',
+        playContext: 'Audio Bumper',
         contentId: "111",
         contentModelType: 'bumper',
         contentModel: {
