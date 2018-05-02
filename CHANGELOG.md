@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.4.0-beta
+- [ENHANCMENT] major analytics upgrade
+
 ## 0.3.5
 - [BUGFIX] do not transform serialied stories from 0.3.3. the problem was in how ember simple auth replaces the session store in testing
 
