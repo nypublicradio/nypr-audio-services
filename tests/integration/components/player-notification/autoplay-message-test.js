@@ -2,7 +2,6 @@ import Service from '@ember/service';
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
-import { startMirage } from 'dummy/initializers/ember-cli-mirage';
 import hbs from 'htmlbars-inline-precompile';
 
 const sessionStub = Service.extend({
@@ -26,11 +25,6 @@ module('Integration | Component | player notification/autoplay message', functio
   hooks.beforeEach(function() {
     this.owner.register('service:session', sessionStub);
     this.session = this.owner.lookup('service:session');
-    this.server = startMirage();
-  });
-
-  hooks.afterEach(function() {
-    this.server.shutdown();
   });
 
   test('it renders with the bumper duration countdown with stream message if stream is enabled', async function(assert) {

@@ -2,7 +2,6 @@ import { run } from '@ember/runloop';
 import Service from '@ember/service';
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import { startMirage } from 'dummy/initializers/ember-cli-mirage';
 import { get } from '@ember/object';
 import RSVP from 'rsvp';
 import sinon from 'sinon';
@@ -11,8 +10,6 @@ module('Unit | Service | listen queue', function(hooks) {
   setupTest(hooks);
 
   hooks.beforeEach(function() {
-    this.server = startMirage();
-
     const sessionStub = Service.extend({
       init() {
         this._super(...arguments);
@@ -33,10 +30,6 @@ module('Unit | Service | listen queue', function(hooks) {
 
     this.owner.register('service:session', sessionStub);
     this.session = this.owner.lookup('service:session');
-  });
-
-  hooks.afterEach(function() {
-    this.server.shutdown();
   });
 
   const findRecordStub = function(id) {
