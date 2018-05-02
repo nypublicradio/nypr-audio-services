@@ -4,7 +4,6 @@ import Service from '@ember/service';
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
 import { settled } from '@ember/test-helpers';
-import { startMirage } from 'dummy/initializers/ember-cli-mirage';
 import sinon from 'sinon';
 
 module('Unit | Service | bumper state', function(hooks) {
@@ -35,18 +34,10 @@ module('Unit | Service | bumper state', function(hooks) {
       authorize: function() {}
     });
 
-    this.server = startMirage();
-
-    this.owner.register('service:features', FeatureStub);
     this.owner.register('service:session', sessionStub);
     this.owner.register('service:data-pipeline', dummyStub);
     this.dataPipeline = this.owner.lookup('service:dataPipeline');
     this.session = this.owner.lookup('service:session');
-    this.features = this.owner.lookup('service:features');
-  });
-
-  hooks.afterEach(function() {
-    this.server.shutdown();
   });
 
   test('getBumperUrl returns the queue bumper url for the queue when pref is set to queue', function(assert) {
