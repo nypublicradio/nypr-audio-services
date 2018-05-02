@@ -4,7 +4,6 @@ import EmberObject, { get } from '@ember/object';
 import Service from '@ember/service';
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import { startMirage } from 'dummy/initializers/ember-cli-mirage';
 import sinon from 'sinon';
 import RSVP from 'rsvp';
 import { dummyHifi } from 'dummy/tests/helpers/hifi-integration-helpers';
@@ -21,8 +20,6 @@ module('Unit | Service | dj', function(hooks) {
   setupTest(hooks);
 
   hooks.beforeEach(function() {
-    this.server = startMirage();
-
     const listenAnalyticsStub = Service.extend({
       trackAllCodecFailures() {},
       trackSoundFailure() {}
@@ -68,10 +65,6 @@ module('Unit | Service | dj', function(hooks) {
     this.listenAnalytics = this.owner.lookup('service:listenAnalytics');
     this.owner.register('service:hifi', dummyHifi);
     this.hifi = this.owner.lookup('service:hifi');
-  });
-
-  hooks.afterEach(function() {
-    this.server.shutdown();
   });
 
   test('it exists', function(assert) {
