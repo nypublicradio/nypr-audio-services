@@ -14,16 +14,10 @@ export default Component.extend({
   'aria-label':       readOnly('title'),
 
   tagName:            'button',
-  classNames:         ['queue-button', 'gtm__click-tracking'],
+  classNames:         ['queue-button'],
   classNameBindings:  ['type', 'isHovering'],
-  attributeBindings:  ['aria-label', 'title', 'disabled', 'data-state', 'data-action', 'data-label'],
+  attributeBindings:  ['aria-label', 'title', 'disabled', 'data-state'],
 
-  'data-action': computed('inQueue', function() {
-    return get(this, 'inQueue') ? 'Remove Story from Queue' : 'Add Story to Queue';
-  }),
-  'data-label': computed(function() {
-    return `${this.get('itemTitle')} | ${this.get('itemShow')} | ${this.get('playContext')}`;
-  }),
   inQueue: computed('queue.items.[]', {
     get() {
       let queue = A(this.getWithDefault('queue.items', []));
