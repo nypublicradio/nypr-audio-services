@@ -1,25 +1,16 @@
 <span class="nypr-player-stream-info-station-info">
   LIVE NOW on <a href={{streamScheduleUrl}}
    target={{if (is-external streamScheduleUrl) '_blank'}}
-   rel={{if (is-external streamScheduleUrl) 'noopener'}}
-   class="gtm__click-tracking"
-   data-action='Click Through to Schedule'
-   data-label='player'>{{streamName}}</a>
+   rel={{if (is-external streamScheduleUrl) 'noopener'}}>{{streamName}}</a>
 </span>
 <span class="nypr-player-stream-info-station-links">
   <a href={{streamScheduleUrl}}
      title='Schedule'
      target={{if (is-external streamScheduleUrl) '_blank'}}
-     rel={{if (is-external streamScheduleUrl) 'noopener'}}
-     class="gtm__click-tracking"
-     data-action='Click Through to Schedule'
-     data-label='player'>SCHEDULE</a>
+     rel={{if (is-external streamScheduleUrl) 'noopener'}}>SCHEDULE</a>
   {{#if streamPlaylistUrl}}
   <a href={{streamPlaylistUrl}}
-     title='Music Playlist'
-     class="gtm__click-tracking"
-     data-action='Click Through to Music Playlist'
-     data-label='player'>MUSIC PLAYLIST</a>
+     title='Music Playlist'>MUSIC PLAYLIST</a>
   {{/if}}
   {{#link-to 'stream' (query-params modal=null) title='All Live Streams'}}ALL LIVE STREAMS{{/link-to}}
 </span>

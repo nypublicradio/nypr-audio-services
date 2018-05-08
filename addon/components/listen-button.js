@@ -47,15 +47,9 @@ export default Component.extend({
   'data-test-selector': 'listen-button',
 
   tagName:              'button',
-  classNames:           ['listen-button', 'gtm__click-tracking'],
+  classNames:           ['listen-button'],
   classNameBindings:    ['isHovering', 'type', 'isCurrentSound', 'isErrored', 'playState', 'isCurrentSound', 'isLive'],
-  attributeBindings:    ['aria-label', 'title', 'disabled', 'data-test-selector', 'style', 'data-action', 'data-label'],
-
-  // override in the template for streams and other action types
-  'data-action': 'Clicked Play/Pause On Demand',
-  'data-label': computed('itemTitle', 'itemShow', function() {
-    return `${this.get('itemTitle')} | ${this.get('itemShow')}`
-  }),
+  attributeBindings:    ['aria-label', 'title', 'disabled', 'data-test-selector', 'style'],
 
   title: computed('itemTitle', function() {
     return `Listen to ${get(this, 'itemTitle')}`;
