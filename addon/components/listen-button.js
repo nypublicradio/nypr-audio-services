@@ -88,7 +88,7 @@ export default Component.extend({
   }),
 
   width: computed('playState', 'contentWidth', 'isExpandable', function() {
-    if (!this.element || !get(this, 'isExpandable')) {
+    if (typeof FastBoot !== 'undefined' || !this.element || !get(this, 'isExpandable')) {
       return false;
     }
 
