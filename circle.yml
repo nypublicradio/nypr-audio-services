@@ -254,7 +254,7 @@ workflows:
       - install:
           filters:
             branches:
-              only: qa-build
+              only: master
       - test:
           requires:
             - install
@@ -276,6 +276,3 @@ workflows:
       - test_new_sounds:
           requires:
             - setup_test_clients
-
-
-
