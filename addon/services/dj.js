@@ -146,5 +146,12 @@ export default Service.extend({
 
   pause() {
     get(this, 'hifi').pause();
+  },
+
+  addBrowserId(id) {
+    get(this, 'hifi').on('pre-load', strategy => {
+      let { url } = strategy;
+      strategy.url = `${url}?browser_id=${id}`;
+    });
   }
 });
