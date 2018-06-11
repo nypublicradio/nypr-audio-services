@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.3.7
+- [ENHANCEMENT] adds `addBrowserId` method to `dj` service
+
 ## 0.3.6
 - [BUGFIX] Move ember-responsive from devDependencies to dependencies
 
