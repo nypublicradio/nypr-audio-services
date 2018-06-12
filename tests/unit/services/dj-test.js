@@ -244,3 +244,15 @@ test('can pass extra metadata in a play request along to hifi', function(assert)
     assert.ok(sound.get('metadata.contentModelType') !== undefined, "it should not overwrite dj's options");
   });
 });
+
+test('addBrowserId sets up correct listener', function(assert) {
+  const ID = 'foo';
+  const URLS = ['foo.mp3', 'bar.mp3'];
+  let service = this.subject();
+  let hifi = service.get('hifi');
+  service.addBrowserId(ID);
+
+  hifi.trigger('pre-load', URLS);
+
+  assert.deepEqual(URLS, ['foo.mp3?browser_id=foo', 'bar.mp3?browser_id=foo'], 'updates values in place');
+});
