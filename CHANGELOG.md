@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.3.8
+- [BUGFIX] update `addBrowserId` to update passed urlsToTry array in place
+
 ## 0.3.7
 - [ENHANCEMENT] adds `addBrowserId` method to `dj` service
 
