@@ -149,9 +149,8 @@ export default Service.extend({
   },
 
   addBrowserId(id) {
-    get(this, 'hifi').on('pre-load', strategy => {
-      let { url } = strategy;
-      strategy.url = `${url}?browser_id=${id}`;
+    get(this, 'hifi').on('pre-load', urlsToTry => {
+      urlsToTry.forEach((url, i) => urlsToTry[i] = `${url}?browser_id=${id}`);
     });
   }
 });
