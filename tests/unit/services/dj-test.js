@@ -247,12 +247,12 @@ test('can pass extra metadata in a play request along to hifi', function(assert)
 
 test('addBrowserId sets up correct listener', function(assert) {
   const ID = 'foo';
-  const URLS = ['foo.mp3', 'bar.mp3'];
+  const URLS = ['foo.mp3', 'bar.mp3', {url: 'baz.mp3', mimeType: 'audio/mpeg'}];
   let service = this.subject();
   let hifi = service.get('hifi');
   service.addBrowserId(ID);
 
   hifi.trigger('pre-load', URLS);
 
-  assert.deepEqual(URLS, ['foo.mp3?browser_id=foo', 'bar.mp3?browser_id=foo'], 'updates values in place');
+  assert.deepEqual(URLS, ['foo.mp3?browser_id=foo', 'bar.mp3?browser_id=foo', {url: 'baz.mp3?browser_id=foo', mimeType: 'audio/mpeg'}], 'updates values in place');
 });

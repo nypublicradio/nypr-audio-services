@@ -150,7 +150,15 @@ export default Service.extend({
 
   addBrowserId(id) {
     get(this, 'hifi').on('pre-load', urlsToTry => {
-      urlsToTry.forEach((url, i) => urlsToTry[i] = `${url}?browser_id=${id}`);
+      urlsToTry.forEach((val, i) => {
+        // `val` can be a string value or an object with a `url` key
+        if (val.url) {
+          val.url = `${val.url}?browser_id=${id}`;
+        } else {
+          val = `${val}?browser_id=${id}`;
+        }
+        urlsToTry[i] = val;
+      });
     });
   }
 });
