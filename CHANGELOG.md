@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.3.9
+- [BUGFIX] update `addBrowserId` to accomodate for url objects as well as string values
+
 ## 0.3.8
 - [BUGFIX] update `addBrowserId` to update passed urlsToTry array in place
 
