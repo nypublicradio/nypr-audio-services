@@ -235,16 +235,16 @@ module('Unit | Service | dj', function(hooks) {
       assert.ok(sound.get('metadata.contentModelType') !== undefined, "it should not overwrite dj's options");
     });
   });
-});
 
-test('addBrowserId sets up correct listener', function(assert) {
-  const ID = 'foo';
-  const URLS = ['foo.mp3', 'bar.mp3', {url: 'baz.mp3', mimeType: 'audio/mpeg'}];
-  let service = this.subject();
-  let hifi = service.get('hifi');
-  service.addBrowserId(ID);
+  test('addBrowserId sets up correct listener', function(assert) {
+    const ID = 'foo';
+    const URLS = ['foo.mp3', 'bar.mp3', {url: 'baz.mp3', mimeType: 'audio/mpeg'}];
+    let service = this.owner.lookup('service:dj');
+    let hifi = service.get('hifi');
+    service.addBrowserId(ID);
 
-  hifi.trigger('pre-load', URLS);
+    hifi.trigger('pre-load', URLS);
 
-  assert.deepEqual(URLS, ['foo.mp3?browser_id=foo', 'bar.mp3?browser_id=foo', {url: 'baz.mp3?browser_id=foo', mimeType: 'audio/mpeg'}], 'updates values in place');
+    assert.deepEqual(URLS, ['foo.mp3?browser_id=foo', 'bar.mp3?browser_id=foo', {url: 'baz.mp3?browser_id=foo', mimeType: 'audio/mpeg'}], 'updates values in place');
+  });
 });
