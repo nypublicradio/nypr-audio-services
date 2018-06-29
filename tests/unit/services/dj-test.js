@@ -235,30 +235,31 @@ module('Unit | Service | dj', function(hooks) {
       assert.ok(sound.get('metadata.contentModelType') !== undefined, "it should not overwrite dj's options");
     });
   });
-});
 
-test('addBrowserId sets up correct listener', function(assert) {
-  const ID = 'foo';
-  const URLS = ['foo.mp3', 'bar.mp3', {url: 'baz.mp3', mimeType: 'audio/mpeg'}];
-  let service = this.subject();
-  let hifi = service.get('hifi');
-  service.addBrowserId(ID);
+  test('addBrowserId sets up correct listener', function(assert) {
+    const ID = 'foo';
+    const URLS = ['foo.mp3', 'bar.mp3', {url: 'baz.mp3', mimeType: 'audio/mpeg'}];
+    let service = this.owner.lookup('service:dj');
+    let hifi = service.get('hifi');
+    service.addBrowserId(ID);
 
-  hifi.trigger('pre-load', URLS);
+    hifi.trigger('pre-load', URLS);
 
-  assert.deepEqual(URLS, ['foo.mp3?nyprBrowserId=foo', 'bar.mp3?nyprBrowserId=foo', {url: 'baz.mp3?nyprBrowserId=foo', mimeType: 'audio/mpeg'}], 'updates values in place');
-});
+    assert.deepEqual(URLS, ['foo.mp3?nyprBrowserId=foo', 'bar.mp3?nyprBrowserId=foo', {url: 'baz.mp3?nyprBrowserId=foo', mimeType: 'audio/mpeg'}], 'updates values in place');
+    assert.deepEqual(URLS, ['foo.mp3?nyprBrowserId=foo', 'bar.mp3?nyprBrowserId=foo', {url: 'baz.mp3?nyprBrowserId=foo', mimeType: 'audio/mpeg'}], 'updates values in place');
+  });
 
-test('addBrowserId does not add a nyprBrowserId param if it already exists', function(assert) {
-  const ID = '123';
-  const URLS = [`foo.mp3?nyprBrowserId=${ID}`, 'bar.mp3?aisCookie=456', 'baz.mp3?cookie=789?bad=param'];
-  let service = this.subject();
-  let hifi = service.get('hifi');
+  test('addBrowserId does not add a nyprBrowserId param if it already exists', function(assert) {
+    const ID = '123';
+    const URLS = [`foo.mp3?nyprBrowserId=${ID}`, 'bar.mp3?aisCookie=456', 'baz.mp3?cookie=789?bad=param'];
+    let service = this.subject();
+    let hifi = service.get('hifi');
 
-  service.addBrowserId(ID);
-  hifi.trigger('pre-load', URLS);
+    service.addBrowserId(ID);
+    hifi.trigger('pre-load', URLS);
 
-  assert.deepEqual(URLS[0], `foo.mp3?nyprBrowserId=${ID}`, 'if a url has a browser id param, a second param is not added');
-  assert.deepEqual(URLS[1], `bar.mp3?aisCookie=456&nyprBrowserId=${ID}`, 'if a query param already exists that is not nyprBrowserId, append nyprBrowserId');
-  assert.deepEqual(URLS[2], `baz.mp3?cookie=789&bad=param&nyprBrowserId=${ID}`, 'it fixes malformed query params');
+    assert.deepEqual(URLS[0], `foo.mp3?nyprBrowserId=${ID}`, 'if a url has a browser id param, a second param is not added');
+    assert.deepEqual(URLS[1], `bar.mp3?aisCookie=456&nyprBrowserId=${ID}`, 'if a query param already exists that is not nyprBrowserId, append nyprBrowserId');
+    assert.deepEqual(URLS[2], `baz.mp3?cookie=789&bad=param&nyprBrowserId=${ID}`, 'it fixes malformed query params');
+  });
 });
