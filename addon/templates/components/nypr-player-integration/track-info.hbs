@@ -3,9 +3,11 @@
   {{#if (and showTitle (media 'isNyprPlayerMediumAndUp'))}}
     <a href={{showUrl}}
        title={{showTitle}}
-       class='nypr-player-link'
+       class='nypr-player-link gtm__click-tracking'
        target={{if (is-external showUrl) '_blank'}}
-       rel={{if (is-external showUrl) 'noopener'}}>{{{showTitle}}}</a>
+       rel={{if (is-external showUrl) 'noopener'}}
+       data-action='Click Through to Show'
+       data-label='{{storyTitle}} | {{showTitle}}'>{{{showTitle}}}</a>
     {{#if (or storyTitle songDetails)}} - {{/if}}
   {{/if}}
 
@@ -13,10 +15,12 @@
   {{#if storyTitle}}
     <a href={{storyUrl}}
        title={{storyTitle}}
-       class='nypr-player-link'
+       class='nypr-player-link gtm__click-tracking'
        target={{if (is-external storyUrl) '_blank'}}
        rel={{if (is-external storyUrl) 'noopener'}}
-       data-test-selector="nypr-player-story-title">{{{storyTitle}}}</a>
+       data-test-selector="nypr-player-story-title"
+       data-action='Click Through to Story'
+       data-label='{{storyTitle}} | {{showTitle}}'>{{{storyTitle}}}</a>
   {{/if}}
 
   {{!-- Song Info --}}
@@ -28,8 +32,10 @@
     {{#if (or storyTitle songDetails)}} - {{/if}}
     <a href={{showUrl}}
        title={{showTitle}}
-       class='nypr-player-link'
+       class='nypr-player-link gtm__click-tracking'
        target={{if (is-external showUrl) '_blank'}}
-       rel={{if (is-external showUrl) 'noopener'}}>{{{showTitle}}}</a>
+       rel={{if (is-external showUrl) 'noopener'}}
+       data-action='Click Through to Show'
+       data-label='{{storyTitle}} | {{showTitle}}'>{{{showTitle}}}</a>
   {{/if}}
 {{/text-crawl}}
