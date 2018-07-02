@@ -52,7 +52,9 @@ export default Component.extend({
   attributeBindings:    ['aria-label', 'title', 'disabled', 'data-test-selector', 'style', 'data-action', 'data-label'],
 
   // override in the template for streams and other action types
-  'data-action': 'Clicked Play/Pause On Demand',
+  'data-action': computed('playContext', function() {
+    return `Clicked Play/Pause On Demand: ${this.get('playContext')}`;
+  }),
   'data-label': computed('itemTitle', 'itemShow', function() {
     return `${this.get('itemTitle')} | ${this.get('itemShow')}`
   }),
