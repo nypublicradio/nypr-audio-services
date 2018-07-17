@@ -154,11 +154,11 @@ export default Service.extend({
         // `val` can be a string value or an object with a `url` key
         let url = typeof val === 'string' ? val : val.url;
         let parts = url.split('?');
-        if (parts[1] && !parts[1].match('browser_id')) {
+        if (parts[1] && !parts[1].match('nyprBrowserId')) {
           // there's a query string that doesn't have browser_id
-          url += `&browser_id=${id}`;
+          url += `&nyprBrowserId=${id}`;
         } else if (!parts[1]){ // no query
-          url += `?browser_id=${id}`;
+          url += `?nyprBrowserId=${id}`;
         }
         if (val.url) {
           val.url = url;
