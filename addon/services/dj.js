@@ -152,10 +152,18 @@ export default Service.extend({
     get(this, 'hifi').on('pre-load', urlsToTry => {
       urlsToTry.forEach((val, i) => {
         // `val` can be a string value or an object with a `url` key
+        let url = typeof val === 'string' ? val : val.url;
+        let parts = url.split('?');
+        if (parts[1] && !parts[1].match('browser_id')) {
+          // there's a query string that doesn't have browser_id
+          url += `&browser_id=${id}`;
+        } else if (!parts[1]){ // no query
+          url += `?browser_id=${id}`;
+        }
         if (val.url) {
-          val.url = `${val.url}?browser_id=${id}`;
+          val.url = url;
         } else {
-          val = `${val}?browser_id=${id}`;
+          val = url;
         }
         urlsToTry[i] = val;
       });

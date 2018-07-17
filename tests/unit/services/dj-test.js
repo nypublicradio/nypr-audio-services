@@ -256,3 +256,16 @@ test('addBrowserId sets up correct listener', function(assert) {
 
   assert.deepEqual(URLS, ['foo.mp3?browser_id=foo', 'bar.mp3?browser_id=foo', {url: 'baz.mp3?browser_id=foo', mimeType: 'audio/mpeg'}], 'updates values in place');
 });
+
+test('addBrowserId does not add a browser_id param if it already exists', function(assert) {
+  const ID = '123';
+  const URLS = [`foo.mp3?browser_id=${ID}`, 'bar.mp3?aisCookie=456'];
+  let service = this.subject();
+  let hifi = service.get('hifi');
+
+  service.addBrowserId(ID);
+  hifi.trigger('pre-load', URLS);
+
+  assert.deepEqual(URLS[0], `foo.mp3?browser_id=${ID}`, 'if a url has a browser id param, a second param is not added');
+  assert.deepEqual(URLS[1], `bar.mp3?aisCookie=456&browser_id=${ID}`, 'if a query param already exists that is not browser_id, append browser_id');
+});
