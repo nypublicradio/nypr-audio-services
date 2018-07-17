@@ -154,6 +154,12 @@ export default Service.extend({
         // `val` can be a string value or an object with a `url` key
         let url = typeof val === 'string' ? val : val.url;
         let parts = url.split('?');
+        if (parts.length > 2) {
+          // malformed query
+          let [base, ...query] = parts;
+          parts = [base, query.join('&')];
+          url = `${base}?${parts[1]}`;
+        }
         if (parts[1] && !parts[1].match('nyprBrowserId')) {
           // there's a query string that doesn't have browser_id
           url += `&nyprBrowserId=${id}`;

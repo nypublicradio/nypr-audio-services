@@ -259,7 +259,7 @@ test('addBrowserId sets up correct listener', function(assert) {
 
 test('addBrowserId does not add a nyprBrowserId param if it already exists', function(assert) {
   const ID = '123';
-  const URLS = [`foo.mp3?nyprBrowserId=${ID}`, 'bar.mp3?aisCookie=456'];
+  const URLS = [`foo.mp3?nyprBrowserId=${ID}`, 'bar.mp3?aisCookie=456', 'baz.mp3?cookie=789?bad=param'];
   let service = this.subject();
   let hifi = service.get('hifi');
 
@@ -268,4 +268,5 @@ test('addBrowserId does not add a nyprBrowserId param if it already exists', fun
 
   assert.deepEqual(URLS[0], `foo.mp3?nyprBrowserId=${ID}`, 'if a url has a browser id param, a second param is not added');
   assert.deepEqual(URLS[1], `bar.mp3?aisCookie=456&nyprBrowserId=${ID}`, 'if a query param already exists that is not nyprBrowserId, append nyprBrowserId');
+  assert.deepEqual(URLS[2], `baz.mp3?cookie=789&bad=param&nyprBrowserId=${ID}`, 'it fixes malformed query params');
 });
