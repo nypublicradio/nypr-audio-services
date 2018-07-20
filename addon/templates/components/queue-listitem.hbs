@@ -29,14 +29,14 @@
           as |share|}}
           {{share.button
             type='Facebook'
-            data-label=(concat story.title ' | ' story.showTitle ' | Facebook')}}
+            data-label=(concat story.title ' | ' (or story.showTitle story.channelTitle) ' | Facebook')}}
           {{share.button
             type='Twitter'
             via='WNYC'
-            data-label=(concat story.title ' | ' story.showTitle ' | Twitter')}}
+            data-label=(concat story.title ' | ' (or story.showTitle story.channelTitle) ' | Twitter')}}
           {{share.button
             type='Email'
-            data-label=(concat story.title ' | ' story.showTitle ' | Email')}}
+            data-label=(concat story.title ' | ' (or story.showTitle story.channelTitle) ' | Email')}}
         {{/nypr-share-button}}
         {{#if removeAction}}
           <button class="btn btn--blank btn--playerlight queueitem-deletebutton" {{action removeAction story.id}}>
