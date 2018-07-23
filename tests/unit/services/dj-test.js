@@ -252,7 +252,7 @@ module('Unit | Service | dj', function(hooks) {
   test('addBrowserId does not add a nyprBrowserId param if it already exists', function(assert) {
     const ID = '123';
     const URLS = [`foo.mp3?nyprBrowserId=${ID}`, 'bar.mp3?aisCookie=456', 'baz.mp3?cookie=789?bad=param'];
-    let service = this.subject();
+    let service = this.owner.lookup('service:dj');
     let hifi = service.get('hifi');
 
     service.addBrowserId(ID);
