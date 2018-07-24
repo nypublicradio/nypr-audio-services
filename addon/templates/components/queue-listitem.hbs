@@ -29,14 +29,14 @@
           as |share|}}
           {{share.button
             type='Facebook'
-            data-label=(concat story.title ' | ' (or story.showTitle story.channelTitle) ' | Facebook')}}
+            data-label=(concat story.title ' | ' (or story.showTitle story.channelTitle 'NPR Article') ' | Facebook')}}
           {{share.button
             type='Twitter'
             via='WNYC'
-            data-label=(concat story.title ' | ' (or story.showTitle story.channelTitle) ' | Twitter')}}
+            data-label=(concat story.title ' | ' (or story.showTitle story.channelTitle 'NPR Article') ' | Twitter')}}
           {{share.button
             type='Email'
-            data-label=(concat story.title ' | ' (or story.showTitle story.channelTitle) ' | Email')}}
+            data-label=(concat story.title ' | ' (or story.showTitle story.channelTitle 'NPR Article') ' | Email')}}
         {{/nypr-share-button}}
         {{#if removeAction}}
           <button class="btn btn--blank btn--playerlight queueitem-deletebutton" {{action removeAction story.id}}>
@@ -55,7 +55,7 @@
         playContext=playContext
         itemPK=story.id
         itemTitle=story.title
-        itemShow=(or story.showTitle story.headers.brand.title)}}
+        itemShow=(or story.showTitle story.channelTitle 'NPR Article')}}
     </div>
   {{/g.right}}
 {{/holygrail-layout}}
