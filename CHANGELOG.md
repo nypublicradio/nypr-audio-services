@@ -1,6 +1,6 @@
 # nypr-audio-services Changelog
 
-## 0.4.0-beta
+## 0.4.0
 - [ENHANCMENT] major analytics upgrade
 
 ## 0.3.9
