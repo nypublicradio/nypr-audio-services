@@ -243,7 +243,7 @@ workflows:
       - install:
           filters:
             branches:
-              only: master
+              ignore: master
       - test:
           requires:
             - install
