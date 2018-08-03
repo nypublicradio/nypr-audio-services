@@ -1,4 +1,5 @@
 {{#power-select
+  selectedItemComponent=selectedItemComponent
   triggerComponent='stream-banner/trigger'
   renderInPlace=true
   searchEnabled=false
@@ -7,5 +8,5 @@
   options=streams
   onchange=(action (mut activeStream))
   as |stream|}}
-  {{stream.name}}
+  {{yield stream}}
 {{/power-select}}

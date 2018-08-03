@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.4.0
+- [ENHANCMENT] major analytics upgrade
+
 ## 0.3.9
 - [BUGFIX] update `addBrowserId` to accomodate for url objects as well as string values
 

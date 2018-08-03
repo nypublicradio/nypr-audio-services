@@ -14,10 +14,16 @@ export default Component.extend({
   'aria-label':       readOnly('title'),
 
   tagName:            'button',
-  classNames:         ['queue-button'],
+  classNames:         ['queue-button', 'gtm__click-tracking'],
   classNameBindings:  ['type', 'isHovering'],
-  attributeBindings:  ['aria-label', 'title', 'disabled', 'data-state'],
+  attributeBindings:  ['aria-label', 'title', 'disabled', 'data-state', 'data-action', 'data-label'],
 
+  'data-action': computed('inQueue', function() {
+    return get(this, 'inQueue') ? 'Remove Story from Queue' : 'Add Story to Queue';
+  }),
+  'data-label': computed(function() {
+    return `${this.get('itemTitle')} | ${this.get('itemShow')} | ${this.get('playContext')}`;
+  }),
   inQueue: computed('queue.items.[]', {
     get() {
       let queue = A(this.getWithDefault('queue.items', []));
@@ -43,7 +49,6 @@ export default Component.extend({
       return;
     }
     let itemPK      = get(this, 'itemPK');
-    let playContext = get(this, 'playContext');
     let newWidth;
     let oldWidth;
 
@@ -55,7 +60,7 @@ export default Component.extend({
       // TODO: addToQueue is potentially async, so we update UI synchronously,
       // but there must be a better/embery way
       set(this, 'inQueue', true);
-      get(this, 'queue').addToQueueById(itemPK, playContext);
+      get(this, 'queue').addToQueueById(itemPK);
       newWidth = 106;
       oldWidth = 98;
     }

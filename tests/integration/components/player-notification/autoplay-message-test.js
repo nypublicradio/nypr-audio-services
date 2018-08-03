@@ -1,6 +1,7 @@
 import Service from '@ember/service';
-import { moduleForComponent, test } from 'ember-qunit';
-import { startMirage } from 'dummy/initializers/ember-cli-mirage';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 const sessionStub = Service.extend({
@@ -13,131 +14,142 @@ const sessionStub = Service.extend({
   },
 });
 
-moduleForComponent('player-notification/autoplay-message', 'Integration | Component | player notification/autoplay message', {
-  integration: true,
-  beforeEach() {
-    this.register('service:session', sessionStub);
-    this.inject.service('session');
-    this.server = startMirage();
-  },
+module('Integration | Component | player notification/autoplay message', function(hooks) {
+  setupRenderingTest(hooks);
 
-  afterEach() {
-    this.server.shutdown();
-  }
-});
-
-test('it renders with the bumper duration countdown with stream message if stream is enabled', function(assert) {
-  this.server.create('stream', { slug: 'wnyc-fm939', name: 'WNYC 93.9FM', audioBumper: 'blergh' });
-  this.setProperties({
-    duration: 15000,
-    position: 0,
-    audioType: 'bumper',
-    preferredStreamStub: {
-      name: 'WNYC 93.9 FM'
-    },
-    streamEnabledStub: true
+  hooks.beforeEach(function() {
+    this.actions = {};
+    this.send = (actionName, ...args) => this.actions[actionName].apply(this, args);
   });
 
-  this.on('dismiss', function() {
-    assert.equal(this.$('.player-notification').length, 0);
+  hooks.beforeEach(function() {
+    this.owner.register('service:session', sessionStub);
+    this.session = this.owner.lookup('service:session');
   });
 
-  this.render(hbs`{{player-notification/autoplay-message preferredStream=preferredStreamStub streamEnabled=streamEnabledStub duration=duration position=position audioType=audioType}}`);
+  test('it renders with the bumper duration countdown with stream message if stream is enabled', async function(assert) {
+    this.server.create('stream', { slug: 'wnyc-fm939', name: 'WNYC 93.9FM', audioBumper: 'blergh' });
+    this.setProperties({
+      duration: 15000,
+      position: 0,
+      audioType: 'bumper',
+      preferredStreamStub: {
+        name: 'WNYC 93.9 FM'
+      },
+      streamEnabledStub: true
+    });
 
-  let actualText = this.$().text().trim().replace(/\s{2,}/gm, ' ');
-  let expectedText = 'Your episode is over. In 15 seconds, we\'ll tune you to WNYC 93.9 FM. Login to change settings.';
-  assert.equal(actualText, expectedText);
-});
+    this.actions.dismiss = function() {
+      assert.equal(this.$('.player-notification').length, 0);
+    };
 
-test('it renders after the bumper duration countdown with stream message if stream is enabled', function(assert) {
-  this.server.create('stream', { slug: 'wnyc-fm939', name: 'WNYC 93.9FM', audioBumper: 'blerg' });
-  this.setProperties({
-    duration: 15000,
-    position: 15500,
-    audioType: 'bumper',
-    preferredStreamStub: {
-      name: 'WNYC 93.9 FM'
-    },
-    streamEnabledStub: true
+    await render(
+      hbs`{{player-notification/autoplay-message preferredStream=preferredStreamStub streamEnabled=streamEnabledStub duration=duration position=position audioType=audioType}}`
+    );
+
+    let actualText = this.$().text().trim().replace(/\s{2,}/gm, ' ');
+    let expectedText = 'Your episode is over. In 15 seconds, we\'ll tune you to WNYC 93.9 FM. Login to change settings.';
+    assert.equal(actualText, expectedText);
   });
 
-  this.on('dismiss', function() {
-    assert.equal(this.$('.player-notification').length, 0);
+  test('it renders after the bumper duration countdown with stream message if stream is enabled', async function(assert) {
+    this.server.create('stream', { slug: 'wnyc-fm939', name: 'WNYC 93.9FM', audioBumper: 'blerg' });
+    this.setProperties({
+      duration: 15000,
+      position: 15500,
+      audioType: 'bumper',
+      preferredStreamStub: {
+        name: 'WNYC 93.9 FM'
+      },
+      streamEnabledStub: true
+    });
+
+    this.actions.dismiss = function() {
+      assert.equal(this.$('.player-notification').length, 0);
+    };
+
+    await render(
+      hbs`{{player-notification/autoplay-message preferredStream=preferredStreamStub streamEnabled=streamEnabledStub duration=duration position=position audioType=audioType}}`
+    );
+
+    let actualElapsedText = this.$().text().trim().replace(/\s{2,}/gm, ' ');
+    let expectedElapsedText = 'We tuned you to WNYC 93.9 FM after your episode ended. Login to change settings.';
+    assert.equal(actualElapsedText, expectedElapsedText);
   });
 
-  this.render(hbs`{{player-notification/autoplay-message preferredStream=preferredStreamStub streamEnabled=streamEnabledStub duration=duration position=position audioType=audioType}}`);
+  test('it renders with the bumper duration countdown with queue message if stream is disabled', async function(assert) {
+    this.server.create('stream', { slug: 'wnyc-fm939', name: 'WNYC 93.9FM', audioBumper: 'blergh' });
+    this.setProperties({
+      duration: 15000,
+      position: 0,
+      audioType: 'bumper',
+      preferredStreamStub: {
+        name: 'WNYC 93.9 FM'
+      },
+      streamEnabledStub: false
+    });
 
-  let actualElapsedText = this.$().text().trim().replace(/\s{2,}/gm, ' ');
-  let expectedElapsedText = 'We tuned you to WNYC 93.9 FM after your episode ended. Login to change settings.';
-  assert.equal(actualElapsedText, expectedElapsedText);
-});
+    this.actions.dismiss = function() {
+      assert.equal(this.$('.player-notification').length, 0);
+    };
 
-test('it renders with the bumper duration countdown with queue message if stream is disabled', function(assert) {
-  this.server.create('stream', { slug: 'wnyc-fm939', name: 'WNYC 93.9FM', audioBumper: 'blergh' });
-  this.setProperties({
-    duration: 15000,
-    position: 0,
-    audioType: 'bumper',
-    preferredStreamStub: {
-      name: 'WNYC 93.9 FM'
-    },
-    streamEnabledStub: false
+    await render(
+      hbs`{{player-notification/autoplay-message preferredStream=preferredStreamStub streamEnabled=streamEnabledStub duration=duration position=position audioType=audioType}}`
+    );
+
+    let actualText = this.$().text().trim().replace(/\s{2,}/gm, ' ');
+    let expectedText = 'Your episode is over. In 15 seconds, your audio queue will begin to play. Login to change settings.';
+    assert.equal(actualText, expectedText);
   });
 
-  this.on('dismiss', function() {
-    assert.equal(this.$('.player-notification').length, 0);
+  test('it renders after the bumper duration countdown with queue message if stream is disabled', async function(assert) {
+    this.server.create('stream', { slug: 'wnyc-fm939', name: 'WNYC 93.9FM', audioBumper: 'blerg' });
+    this.setProperties({
+      duration: 15000,
+      position: 15500,
+      audioType: 'bumper',
+      preferredStreamStub: {
+        name: 'WNYC 93.9 FM'
+      },
+      streamEnabledStub: false
+    });
+
+    this.actions.dismiss = function() {
+      assert.equal(this.$('.player-notification').length, 0);
+    };
+
+    await render(
+      hbs`{{player-notification/autoplay-message preferredStream=preferredStreamStub streamEnabled=streamEnabledStub duration=duration position=position audioType=audioType}}`
+    );
+
+    let actualElapsedText = this.$().text().trim().replace(/\s{2,}/gm, ' ');
+    let expectedElapsedText = 'We began playing your audio queue after your episode ended. Login to change settings.';
+    assert.equal(actualElapsedText, expectedElapsedText);
   });
 
-  this.render(hbs`{{player-notification/autoplay-message preferredStream=preferredStreamStub streamEnabled=streamEnabledStub duration=duration position=position audioType=audioType}}`);
+  test('it renders with the bumper duration countdown with stream message if stream is enabled when logged in', async function(assert) {
+    this.server.create('stream', { slug: 'wnyc-fm939', name: 'WNYC 93.9FM', audioBumper: 'blergh' });
+    this.setProperties({
+      isLoggedIn: true,
+      duration: 15000,
+      position: 0,
+      audioType: 'bumper',
+      preferredStreamStub: {
+        name: 'WNYC 93.9 FM'
+      },
+      streamEnabledStub: true
+    });
 
-  let actualText = this.$().text().trim().replace(/\s{2,}/gm, ' ');
-  let expectedText = 'Your episode is over. In 15 seconds, your audio queue will begin to play. Login to change settings.';
-  assert.equal(actualText, expectedText);
-});
+    this.actions.dismiss = function() {
+      assert.equal(this.$('.player-notification').length, 0);
+    };
 
-test('it renders after the bumper duration countdown with queue message if stream is disabled', function(assert) {
-  this.server.create('stream', { slug: 'wnyc-fm939', name: 'WNYC 93.9FM', audioBumper: 'blerg' });
-  this.setProperties({
-    duration: 15000,
-    position: 15500,
-    audioType: 'bumper',
-    preferredStreamStub: {
-      name: 'WNYC 93.9 FM'
-    },
-    streamEnabledStub: false
+    await render(
+      hbs`{{player-notification/autoplay-message preferredStream=preferredStreamStub streamEnabled=streamEnabledStub duration=duration position=position audioType=audioType isLoggedIn=isLoggedIn}}`
+    );
+
+    let actualText = this.$().text().trim().replace(/\s{2,}/gm, ' ');
+    let expectedText = 'Your episode is over. In 15 seconds, we\'ll tune you to WNYC 93.9 FM. Change Settings';
+    assert.equal(actualText, expectedText);
   });
-
-  this.on('dismiss', function() {
-    assert.equal(this.$('.player-notification').length, 0);
-  });
-
-  this.render(hbs`{{player-notification/autoplay-message preferredStream=preferredStreamStub streamEnabled=streamEnabledStub duration=duration position=position audioType=audioType}}`);
-
-  let actualElapsedText = this.$().text().trim().replace(/\s{2,}/gm, ' ');
-  let expectedElapsedText = 'We began playing your audio queue after your episode ended. Login to change settings.';
-  assert.equal(actualElapsedText, expectedElapsedText);
-});
-
-test('it renders with the bumper duration countdown with stream message if stream is enabled when logged in', function(assert) {
-  this.server.create('stream', { slug: 'wnyc-fm939', name: 'WNYC 93.9FM', audioBumper: 'blergh' });
-  this.setProperties({
-    isLoggedIn: true,
-    duration: 15000,
-    position: 0,
-    audioType: 'bumper',
-    preferredStreamStub: {
-      name: 'WNYC 93.9 FM'
-    },
-    streamEnabledStub: true
-  });
-
-  this.on('dismiss', function() {
-    assert.equal(this.$('.player-notification').length, 0);
-  });
-
-  this.render(hbs`{{player-notification/autoplay-message preferredStream=preferredStreamStub streamEnabled=streamEnabledStub duration=duration position=position audioType=audioType isLoggedIn=isLoggedIn}}`);
-
-  let actualText = this.$().text().trim().replace(/\s{2,}/gm, ' ');
-  let expectedText = 'Your episode is over. In 15 seconds, we\'ll tune you to WNYC 93.9 FM. Change Settings';
-  assert.equal(actualText, expectedText);
 });

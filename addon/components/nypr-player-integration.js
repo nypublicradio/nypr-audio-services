@@ -62,7 +62,7 @@ export default Component.extend({
       return `/streams/${get(this, 'currentAudio.id')}`;
     }
   }),
-  
+
   autofocus            : true,
 
   image                : reads('currentAudio.imageMain.url'),
@@ -76,10 +76,6 @@ export default Component.extend({
   showQueue            : false,
 
   actions: {
-    onDismissNotification() {
-      this.set('didDismiss', true);
-      get(this, 'listenAnalytics').trackDismissAutoplayNotification();
-    },
     onPlay() {
       // handled by listen analytics
     },

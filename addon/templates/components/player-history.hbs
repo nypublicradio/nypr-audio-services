@@ -9,10 +9,6 @@
      isCurrent=(and (eq index 0) (eq listen.story.id dj.currentContentId))
      dataId=listen.id
      story=listen.story
-     shareAction=(action 'trackShare'
-      (hash
-        story = story
-      ))
      playContext='history'
      removeAction=(action 'removeFromHistory' listen.story.id)}}
   </div>

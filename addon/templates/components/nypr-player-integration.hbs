@@ -11,7 +11,7 @@
   currentAudio          = currentAudio
   currentAudioType      = currentAudioType
   currentAudioId        = currentAudioId
-  
+
   story                 = story
 
   isStream              = isStream
@@ -28,7 +28,8 @@
   onFastForward         = (action 'onFastForward')
   onRewind              = (action 'onRewind')
   onSetPosition         = (action 'onSetPosition')
-  onDismissNotification = (action 'onDismissNotification')
 
   revealNotificationBar = revealNotificationBar
+
+  notification          = (component 'player-notification' didDismiss=didDismiss)
 )}}

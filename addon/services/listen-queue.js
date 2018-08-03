@@ -1,7 +1,7 @@
 import { bind } from '@ember/runloop';
 import { A as emberArray } from '@ember/array';
 import Service, { inject as service } from '@ember/service';
-import { equal, reads } from '@ember/object/computed';
+import { match, reads } from '@ember/object/computed';
 import { get } from '@ember/object';
 
 export default Service.extend({
@@ -10,9 +10,8 @@ export default Service.extend({
   actionQueue       : service(),
   hifi              : service(),
   dj                : service(),
-  listenAnalytics   : service(),
   items             : reads('session.data.queue'),
-  isPlayingFromQueue: equal('hifi.currentSound.metadata.playContext', 'queue'),
+  isPlayingFromQueue: match('hifi.currentSound.metadata.playContext', /queue/),
 
   init() {
     this._super(...arguments);
@@ -24,14 +23,14 @@ export default Service.extend({
 
     hifi.on('audio-played', (sound) => {
       let playContext = get(sound, 'metadata.playContext');
-      if (playContext === 'queue') {
+      if (/queue/.test(playContext)) {
         this.removeFromQueueById(get(sound, 'metadata.contentId'));
       }
     });
   },
 
   onTrackFinished(sound) {
-    if (get(sound, 'metadata.playContext') === 'queue') {
+    if (/queue/.test(get(sound, 'metadata.playContext'))) {
       let nextItem = this.nextItem();
       if (nextItem) {
         get(this, 'dj').play(nextItem, {playContext: 'queue'});
@@ -44,7 +43,7 @@ export default Service.extend({
     return get(this, 'store').findRecord('story', id);
   },
 
-  addToQueueById(id, playContext) {
+  addToQueueById(id) {
     let pending = this.get('pending');
     pending.push(id);
 
@@ -61,8 +60,6 @@ export default Service.extend({
 
       queue.pushObject(story);
       session.set('data.queue', queue);
-
-      this.get('listenAnalytics').trackAddToQueue(story, playContext);
 
       return story;
     });
@@ -88,7 +85,7 @@ export default Service.extend({
   },
 
   nextItem() {
-    let items = this.get('items')
+    let items = this.get('items') || [];
 
     if (items.length > 0) {
       return get(items, 'firstObject');

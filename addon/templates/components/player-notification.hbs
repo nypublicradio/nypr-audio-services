@@ -2,7 +2,11 @@
   {{yield}}
 </p>
 <div class='player-notification-action'>
-  <div class='player-notification-dismiss player-notification-close-icon' {{action 'dismiss'}}>
+  <div
+    class='player-notification-dismiss player-notification-close-icon gtm__click-tracking'
+    data-category='Continuous Play Notification'
+    data-action='Click to Close Notification'
+    {{action (mut didDismiss) true}}>
     {{nypr-svg className="nypr-player-icon" icon='close'}}
   </div>
 </div>
