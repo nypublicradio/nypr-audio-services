@@ -5693,16 +5693,16 @@ number-is-nan@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
 
-nypr-metrics@>=0.4.0:
+nypr-metrics@nypublicradio/nypr-metrics#fastboot:
   version "0.4.0"
-  resolved "https://registry.yarnpkg.com/nypr-metrics/-/nypr-metrics-0.4.0.tgz#c483b3f8b1c0601332d14329adeec6e469227b5c"
+  resolved "https://codeload.github.com/nypublicradio/nypr-metrics/tar.gz/effa9b3010ae96078cebd4784c443f8d8b306c51"
   dependencies:
     ember-cli-babel "^6.6.0"
     ember-get-config "^0.2.2"
 
-nypr-ui@>=0.3.0:
+nypr-ui@nypublicradio/nypr-ui#fastboot:
   version "0.3.0"
-  resolved "https://registry.yarnpkg.com/nypr-ui/-/nypr-ui-0.3.0.tgz#76e4eb992ef28ab24d29ca8314f0fad7d8134af4"
+  resolved "https://codeload.github.com/nypublicradio/nypr-ui/tar.gz/cc592eb777dce500dd1b9def1725e8a59927c965"
   dependencies:
     ember-basic-dropdown "0.34.0"
     ember-burger-menu "^3.1.0"
