@@ -20,10 +20,7 @@ export default Component.extend({
     return '.dontdrag';
   }),
 
-  didReceiveAttrs() {
-    if (typeof window === 'undefined') {
-      return;
-    }
+  didInsertElement() {
     // if this is a touchscreen, disable dragging until we
     // implement hold-to-drag, because dragging blocks
     // scrolling on touch screens.
