@@ -88,7 +88,7 @@ export default Component.extend({
   }),
 
   width: computed('playState', 'contentWidth', 'isExpandable', function() {
-    if (!this.element || !get(this, 'isExpandable')) {
+    if (typeof FastBoot !== 'undefined' || !this.element || !get(this, 'isExpandable')) {
       return false;
     }
 
@@ -102,6 +102,9 @@ export default Component.extend({
 
   didUpdateAttrs: diffAttrs('isLive', function(changedAttrs, ...args) {
     this._super(...args);
+    if (typeof FastBoot !== 'undefined' || !this.element || !get(this, 'isExpandable')) {
+      return false;
+    }
     let updateSize = this.get('isLive') || changedAttrs && changedAttrs.isLive && changedAttrs.isLive[0];
 
     if (updateSize) {
