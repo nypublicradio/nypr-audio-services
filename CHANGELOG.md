@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.5.0
+- [ENHANCEMENT] Fastboot Compatibility
+
 ## 0.4.0
 - [ENHANCEMENT] major analytics upgrade
 - [ENHANCEMENT] fixes failing tests
