@@ -5,17 +5,36 @@
     <h2 class="h2">{{activeStream.currentComposer.name}}</h2>
     <h3 class="h3">{{activeStream.currentPiece}}</h3>
   {{else}}
+    {{!--
+        The show + episode links below are done with regular old HTML anchors
+        below instead of #link-to for two reasons:
+
+          1. The "What's On" API doesn't currently have distinct fields
+          for path/domain or another good way to *build* a path that
+          the Ember client would understand, so we'd have to try to
+          parse it and hope that the containing client's path matches
+          what Publisher thinks the URL should be. All we get from
+          publisher is an absolute URL.
+          2. Shows with different domains can/will show up in here, so
+          we'd need more info to support the logic to construct different
+          links depending on whether or not the showUrl/episodeUrl is
+          'local' to the client or should be handled elsewhere.
+
+        The current web clients are smart enough to figure out that they
+        should handle the link w/o a full reload, so just writing the
+        absolute URL into the href of an anchor handles this use case.
+      --}}
     {{#if activeStream.currentShow.showUrl}}
-      <h2 class="h2"><a href='{{activeStream.currentShow.showUrl}}'>{{activeStream.currentShow.showTitle}}</a></h2>
+      <h2 class="h2"><a href="{{activeStream.currentShow.showUrl}}">{{activeStream.currentShow.showTitle}}</a></h2>
     {{else}}
       <h2 class="h2">{{activeStream.currentShow.showTitle}}</h2>
     {{/if}}
-      {{#if activeStream.currentShow.episodeTitle}}
-        {{#if activeStream.currentShow.episodeUrl}}
-          <h3 class="h3"><a href='{{activeStream.currentShow.episodeUrl}}'>{{activeStream.currentShow.episodeTitle}}</a></h3>
-        {{else}}
-          <h3 class="h3">{{activeStream.currentShow.episodeTitle}}</h3>
-        {{/if}}
+    {{#if activeStream.currentShow.episodeTitle}}
+      {{#if activeStream.currentShow.episodeUrl}}
+        <h3 class="h3"><a href="{{activeStream.currentShow.episodeUrl}}">{{activeStream.currentShow.episodeTitle}}</a></h3>
+      {{else}}
+        <h3 class="h3">{{activeStream.currentShow.episodeTitle}}</h3>
       {{/if}}
+    {{/if}}
   {{/if}}
 {{/if}}
