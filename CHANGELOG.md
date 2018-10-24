@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.5.1
+- [ENHANCEMENT] Link show and/or episode in stream banner if currentShow has URLs for one or both
+
 ## 0.5.0
 - [ENHANCEMENT] Fastboot Compatibility
 
