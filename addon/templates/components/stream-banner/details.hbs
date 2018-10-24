@@ -5,13 +5,17 @@
     <h2 class="h2">{{activeStream.currentComposer.name}}</h2>
     <h3 class="h3">{{activeStream.currentPiece}}</h3>
   {{else}}
-    {{#if activeStream.showURL}}
-      <h2 class="h2">{{#link-to activeStream.showURL}}{{activeStream.currentShow.showTitle}}{{/link-to}}</h2>
+    {{#if activeStream.currentShow.showUrl}}
+      <h2 class="h2"><a href='{{activeStream.currentShow.showUrl}}'>{{activeStream.currentShow.showTitle}}</a></h2>
     {{else}}
       <h2 class="h2">{{activeStream.currentShow.showTitle}}</h2>
     {{/if}}
       {{#if activeStream.currentShow.episodeTitle}}
-        <h3 class="h3">{{activeStream.currentShow.episodeTitle}}</h3>
+        {{#if activeStream.currentShow.episodeUrl}}
+          <h3 class="h3"><a href='{{activeStream.currentShow.episodeUrl}}'>{{activeStream.currentShow.episodeTitle}}</a></h3>
+        {{else}}
+          <h3 class="h3">{{activeStream.currentShow.episodeTitle}}</h3>
+        {{/if}}
       {{/if}}
   {{/if}}
 {{/if}}
