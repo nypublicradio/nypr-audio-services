@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.5.2
+- [CHORE] Add more Publisher stream slugs to special case array
+
 ## 0.5.1
 - [ENHANCEMENT] Link show and/or episode in stream banner if currentShow has URLs for one or both
 
