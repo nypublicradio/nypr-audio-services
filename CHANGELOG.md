@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.5.3
+- [CHORE] update readme, remove unused aliases from circle file.
+
 ## 0.5.2
 - [CHORE] Add more Publisher stream slugs to special case array
 
