@@ -29,7 +29,7 @@ This repo is the home of all audio-related controls in use by the web-clients. I
   * orchestrates play requests and fetches records if passed an id
 * `action-queue`
   * allows for event listeners to order up by priority and prevent subsequent listeners from running
- 
+
 ## Installation
 ```sh
 $ npm i nypublicradio/nypr-audio-services
@@ -41,12 +41,12 @@ $ ember g nypr-audio-services
 * `git clone git@github.com:nypublicradio/nypr-audio-services`
 * `cd nypr-audio-services`
 * `npm install`
-* `bower install`
 
 ## Running
 
 * `ember serve`
 * Visit your app at [http://localhost:4200](http://localhost:4200).
+(this will just be a blank page since there are no templates or routes defined for the dummy app on this addon).
 
 ## Running Tests
 

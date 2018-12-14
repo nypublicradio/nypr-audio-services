@@ -31,24 +31,6 @@ save_node: &save_node
       - node_modules
       - /home/circleci/.cache/Cypress
 
-restore_bower: &restore_bower
-  restore_cache:
-    key: bower-deps-{{ arch }}-{{ checksum "bower.json" }}
-
-install_bower: &install_bower
-  run:
-    name: bower deps
-    command: |
-      if [ ! -d bower_components ]; then
-        npx bower i
-      fi
-
-save_bower: &save_bower
-  save_cache:
-    key: bower-deps-{{ arch }}-{{ checksum "bower.json" }}
-    paths:
-      - bower_components
-
 build_modernizr: &build_modernizr
   run:
     name: Build modernizr
