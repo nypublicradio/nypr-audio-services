@@ -33,7 +33,12 @@ export default Service.extend({
     this._super(...arguments);
     let actionQueue = get(this, 'actionQueue');
     let hifi        = get(this, 'hifi');
-    hifi.on('current-sound-changed', () => this.set('playedOnce', true));
+    hifi.on('current-sound-changed', () => {
+      if (get(this, 'isDestroying') || get(this, 'isDestroyed')) {
+        return;
+      }
+      this.set('playedOnce', true);
+    });
 
     actionQueue.addAction(hifi, 'audio-ended', {priority: 1, name: 'segmented-audio'}, bind(this, this.playSegmentedAudio));
 
