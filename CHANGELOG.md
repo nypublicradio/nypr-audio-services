@@ -1,5 +1,9 @@
 # nypr-audio-services Changelog
 
+## 0.5.4
+- [BUGFIX] guard against setting a value in a hifi event handler
+- [CHORE] remove extraneous package-lock file
+
 ## 0.5.3
 - [CHORE] update readme, remove unused aliases from circle file.
 
