@@ -128,6 +128,7 @@ export default Service.extend({
     metadata.contentId = itemId;
     metadata.contentModelType = itemModelName;
     metadata.playContext = playContext;
+    metadata.position = position;
     metadata.autoPlayChoice = autoPlayChoice;
 
     let playRequest = get(this, 'hifi').play(audioUrlPromise, {metadata, position});
