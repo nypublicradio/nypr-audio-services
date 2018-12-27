@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.5.5
+- [CHORE] use down-caret instead of caret-down to suppress nypr-ui warnings during tests
+
 ## 0.5.4
 - [BUGFIX] guard against setting a value in a hifi event handler
 - [CHORE] remove extraneous package-lock file
