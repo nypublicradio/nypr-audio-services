@@ -10,10 +10,10 @@ module('Integration | Component | nypr player integration/stream info', function
     this.set('streamPlaylistUrl', 'http://streamsplaylist/');
     await render(hbs`{{nypr-player-integration/stream-info streamPlaylistUrl=streamPlaylistUrl}}`);
 
-    assert.equal(this.$('a[title="Music Playlist"]')[0].href, "http://streamsplaylist/");
+    assert.equal(this.$('a[title="Music Play History"]')[0].href, "http://streamsplaylist/");
 
     this.set('streamPlaylistUrl', false);
-    assert.equal(this.$('a[title="Music Playlist"]').length, 0);
+    assert.equal(this.$('a[title="Music Play History"]').length, 0);
   });
 
   test('it shows streamScheduleUrl', async function(assert) {
