@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.5.6
+- [ENHANCEMENT] change Music Playlist to Music Play History on popup player
+
 ## 0.5.5
 - [CHORE] use down-caret instead of caret-down to suppress nypr-ui warnings during tests
 
