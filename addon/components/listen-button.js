@@ -146,8 +146,8 @@ export default Component.extend({
       dj.pause();
     } else {
       this.play();
+      this.listenButtonClickedAction(event);
     }
-    this.listenButtonClickedAction(event);
   },
 
   mouseLeave() {
