@@ -26,6 +26,7 @@ export default Component.extend({
   layout,
   dj:                   service(),
   disabled:             not('dj.isReady'),
+  listenButtonClickedAction: () => {},
 
   isCurrentSound:       computed('dj.currentContentId', 'itemPK', function() {
     return get(this, 'itemPK') === get(this, 'dj.currentContentId');
@@ -146,6 +147,7 @@ export default Component.extend({
     } else {
       this.play();
     }
+    this.listenButtonClickedAction(event);
   },
 
   mouseLeave() {
