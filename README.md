@@ -8,7 +8,7 @@ This repo is the home of all audio-related controls in use by the web-clients. I
   * Includes multiple variations that are controlled by a type parameter, which controls a set of CSS classes and inheritance
   * The bouncing animation is controlled by JS and based on a run-time measurement of the button's DOM dimensions
   * Includes a nested component which is configured to replace server-rendered HTML with an ember component
-  * Includes a callback parameter called `listenButtonClickedAction` to be invoked as a callback when `listen-button` is tapped when in a `play` (as opposed to `pause`) state.
+  * Includes a callback parameter called `playButtonClickedAction` to be invoked as a callback when `listen-button` is tapped when in a `play` (as opposed to `pause`) state.
 * `queue-button`
   * The primary UI widget for adding and removing a piece of audio to a local queue
 * `player-notification`

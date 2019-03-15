@@ -2,7 +2,7 @@
 
 ## 0.5.7
 
-- [ENHANCEMENT] Add an optional `listenButtonClickedAction` parameter to `listen-button` to be invoked as a callback when `listen-button` is tapped when in a `play` (as opposed to `pause`) state.
+- [ENHANCEMENT] Add an optional `playButtonClickedAction` parameter to `listen-button` to be invoked as a callback when `listen-button` is tapped when in a `play` (as opposed to `pause`) state.
 
 ## 0.5.6
 - [ENHANCEMENT] change Music Playlist to Music Play History on popup player
