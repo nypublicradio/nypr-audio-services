@@ -1,5 +1,8 @@
 # nypr-audio-services Changelog
 
+## 0.5.9
+- [ENHANCEMENT] Use more accessible nypr-ui ^0.5.0
+
 ## 0.5.8
 
 - [ENHANCEMENT] Add an optional `playButtonClickedAction` parameter to `listen-button` to be invoked as a callback when `listen-button` is tapped when in a `play` (as opposed to `pause`) state.
