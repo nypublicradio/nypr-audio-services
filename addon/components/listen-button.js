@@ -13,6 +13,7 @@ import { schedule } from '@ember/runloop';
 import { inject as service } from '@ember/service';
 import layout from '../templates/components/listen-button';
 import diffAttrs from 'ember-diff-attrs';
+import jQuery from 'jquery'
 
 const STATES = {
   PLAYING:  'is-playing',
@@ -53,13 +54,32 @@ export default Component.extend({
   attributeBindings:    ['aria-label', 'title', 'disabled', 'data-test-selector', 'style', 'data-action', 'data-label'],
 
   // override in the template for streams and other action types
-  'data-action': computed('playContext', function() {
-    return `Clicked Play/Pause On Demand: ${this.get('playContext')}`;
-  }),
-  'data-label': computed('itemTitle', 'itemShow', function() {
-    return `${this.get('itemTitle')} | ${this.get('itemShow')}`
+  'data-action': computed('dataAction', {
+    get() {
+      if (this._dataAction) {
+       return this._dataAction;
+      }
+
+      return `Clicked Play/Pause On Demand: ${this.get('playContext')}`;
+    },
+    set(key, value) {
+      return this._dataAction = value;
+    }
   }),
 
+  'data-label': computed('itemTitle', 'itemShow',{
+    get() {
+      if (this._dataLabel) {
+       return this._dataLabel;
+      }
+      return `${this.get('itemTitle')} | ${this.get('itemShow')}`
+    },
+    set(key, value) {
+      this._dataLabel = value;
+    }
+  }),
+
+  playButtonClickedAction: function() {},
   title: computed('itemTitle', function() {
     return `Listen to ${get(this, 'itemTitle')}`;
   }),
@@ -110,7 +130,7 @@ export default Component.extend({
 
     if (updateSize) {
       schedule('afterRender', this, () => {
-        let contentWidth = this.element.scrollWidth + parseInt(this.$().css('paddingLeft'), 10) + parseInt(this.$().css('paddingRight'), 10);
+        let contentWidth = this.element.scrollWidth + parseInt(jQuery(this.element).css('paddingLeft'), 10) + parseInt(jQuery(this.element).css('paddingRight'), 10);
         set(this, 'contentWidth', contentWidth);
       });
     }
