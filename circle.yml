@@ -24,12 +24,21 @@ install_node: &install_node
         yarn --pure-lockfile
       fi
 
+install_codeclimate: &install_codeclimate
+  run:
+    name: Install CodeClimate
+    command: |
+      mkdir -p ../codeclimate
+      curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ../codeclimate/cc-test-reporter
+      chmod +x ../codeclimate/cc-test-reporter
+
 save_node: &save_node
   save_cache:
     <<: *node_key
     paths:
       - node_modules
       - /home/circleci/.cache/Cypress
+      - ../codeclimate
 
 build_modernizr: &build_modernizr
   run:
@@ -47,6 +56,7 @@ container_defaults: &defaults
   docker:
     - image: circleci/node:8.12-browsers
       environment:
+        COVERAGE: true
         JOBS: 2
 
 jobs:
@@ -58,6 +68,7 @@ jobs:
 
       - <<: *restore_node
       - <<: *install_node
+      - <<: *install_codeclimate
       - <<: *save_node
 
       - persist_to_workspace:
@@ -74,13 +85,18 @@ jobs:
       - checkout
       - <<: *restore_node
       - run:
+          name: Set up CodeClimate
+          command: ../codeclimate/cc-test-reporter before-build
+      - run:
           name: Run addon tests
           command: |
             sudo yarn global add greenkeeper-lockfile@1
             greenkeeper-lockfile-update
             npx ember test
             greenkeeper-lockfile-upload
-
+      - run:
+          name: Upload CodeClimate test results
+          command: ../codeclimate/cc-test-reporter after-build --exit-code $?
       - store_test_results:
           path: test-results/
 
