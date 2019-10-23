@@ -1,5 +1,9 @@
 # nypr-audio-services
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/6afbef5dc3fef59ec322/maintainability)](https://codeclimate.com/github/nypublicradio/nypr-audio-services/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/6afbef5dc3fef59ec322/test_coverage)](https://codeclimate.com/github/nypublicradio/nypr-audio-services/test_coverage)
+
+
 This repo is the home of all audio-related controls in use by the web-clients. It's mostly in the form of components, but there are also a handful of services used in the orchestration of responses to events triggered by ember-hifi.
 
 ## components
