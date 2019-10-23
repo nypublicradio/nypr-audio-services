@@ -90,10 +90,7 @@ jobs:
       - run:
           name: Run addon tests
           command: |
-            sudo yarn global add greenkeeper-lockfile@1
-            greenkeeper-lockfile-update
             npx ember test
-            greenkeeper-lockfile-upload
       - run:
           name: Upload CodeClimate test results
           command: ../codeclimate/cc-test-reporter after-build --exit-code $?
