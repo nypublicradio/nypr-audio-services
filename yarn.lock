@@ -4257,6 +4257,14 @@ ember-cli-version-checker@^2.0.0, ember-cli-version-checker@^2.1.0, ember-cli-ve
     resolve "^1.3.3"
     semver "^5.3.0"
 
+ember-cli-version-checker@^3.1.2:
+  version "3.1.3"
+  resolved "https://registry.yarnpkg.com/ember-cli-version-checker/-/ember-cli-version-checker-3.1.3.tgz#7c9b4f5ff30fdebcd480b1c06c4de43bb51c522c"
+  integrity sha512-PZNSvpzwWgv68hcXxyjREpj3WWb81A7rtYNQq1lLEgrWIchF8ApKJjWP3NBpHjaatwILkZAV8klair5WFlXAKg==
+  dependencies:
+    resolve-package-path "^1.2.6"
+    semver "^5.6.0"
+
 ember-cli@~3.0.0:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/ember-cli/-/ember-cli-3.0.4.tgz#89275dd59994c64fa0ed5dcec24c83cd2935320b"
@@ -4697,13 +4705,15 @@ ember-sinon@^1.0.0, ember-sinon@~1.0.0:
     ember-cli-babel "^6.3.0"
     sinon "^3.2.1"
 
-ember-sortable@^1.9.0:
-  version "1.12.10"
-  resolved "https://registry.yarnpkg.com/ember-sortable/-/ember-sortable-1.12.10.tgz#3d28ae7cae4cc5fe0e067ff08ee0f5d4d0e8353e"
-  integrity sha512-QYgm5IQtXvbsk9/MOTb/ECGuX57wEsVBuYxdc4OZ+ZXzgx4HnujBDn4zz+0eLFkopVnuqRy7TRMQsZEeMzvTAA==
+ember-sortable@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/ember-sortable/-/ember-sortable-2.1.0.tgz#0d50901fcad42a3412f028822f51b926736471c8"
+  integrity sha512-3oJYI1wbXZkf/24mUKFbeQ7Xm1oUCe8l9el3fOhD7OTVjmIjM73OosS6G3Yw/7VQazbiccBr9JrXowtzHg12IA==
   dependencies:
     ember-cli-babel "^7.1.2"
     ember-cli-htmlbars "^3.0.0"
+    ember-test-selectors "^2.1.0"
+    ember-test-waiters "^1.1.1"
 
 ember-source-channel-url@^1.0.1:
   version "1.2.0"
@@ -4730,6 +4740,21 @@ ember-source@~3.0.0:
     inflection "^1.12.0"
     jquery "^3.2.1"
     resolve "^1.3.3"
+
+ember-test-selectors@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/ember-test-selectors/-/ember-test-selectors-2.1.0.tgz#faebdf06702aaa0bc510d55eb721ce54d2e85793"
+  integrity sha512-c5HmvefmeABH8hg380TSNZiE9VAK1CBeXWrgyXy+IXHtsew4lZHHw7GnqCAqsakxwvmaMARbAKY9KfSAE91s1g==
+  dependencies:
+    ember-cli-babel "^6.8.2"
+    ember-cli-version-checker "^3.1.2"
+
+ember-test-waiters@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/ember-test-waiters/-/ember-test-waiters-1.1.1.tgz#7df6e7a47e0fdca814aa351f7f7f9a006e15fdcd"
+  integrity sha512-ra71ZWTGBGLeDPa308aeAg9+/nYxv2fk4OEzmXdhvbSa5Dtbei94sr5pbLXx2IiK3Re2gDAvDzxg9PVhLy9fig==
+  dependencies:
+    ember-cli-babel "^7.1.2"
 
 ember-text-measurer@^0.4.0:
   version "0.4.1"
@@ -9205,7 +9230,7 @@ resolve-from@^1.0.0:
   resolved "https://registry.yarnpkg.com/resolve-from/-/resolve-from-1.0.1.tgz#26cbfe935d1aeeeabb29bc3fe5aeb01e93d44226"
   integrity sha1-Jsv+k10a7uq7Kbw/5a6wHpPUQiY=
 
-resolve-package-path@^1.0.11, resolve-package-path@^1.2.2:
+resolve-package-path@^1.0.11, resolve-package-path@^1.2.2, resolve-package-path@^1.2.6:
   version "1.2.7"
   resolved "https://registry.yarnpkg.com/resolve-package-path/-/resolve-package-path-1.2.7.tgz#2a7bc37ad96865e239330e3102c31322847e652e"
   integrity sha512-fVEKHGeK85bGbVFuwO9o1aU0n3vqQGrezPc51JGu9UTXpFQfWq5qCeKxyaRUSvephs+06c5j5rPq/dzHGEo8+Q==
