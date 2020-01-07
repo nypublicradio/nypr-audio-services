@@ -1,5 +1,9 @@
 # nypr-audio-services Changelog
 
+## 0.6.0
+- [CHORE] Start tracking test coverage in code climate
+- [CHORE] Upgrade ember-fetch to 6.5
+
 ## 0.5.9
 - [ENHANCEMENT] Use more accessible nypr-ui ^0.5.0
 
