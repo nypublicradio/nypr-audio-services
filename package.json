@@ -57,7 +57,7 @@
     "ember-resolver": "^4.0.0",
     "ember-sinon": "^1.0.0",
     "ember-sinon-qunit": "^2.0.0",
-    "ember-sortable": "^1.9.0",
+    "ember-sortable": "^2.2.0",
     "ember-source": "~3.0.0",
     "ember-source-channel-url": "^1.0.1",
     "ember-truth-helpers": "^2.0.0",
