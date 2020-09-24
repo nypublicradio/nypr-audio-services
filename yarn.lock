@@ -4411,15 +4411,14 @@ ember-get-config@^0.2.2:
     ember-cli-version-checker "^2.1.0"
     ember-factory-for-polyfill "^1.3.1"
 
-ember-hifi@^1.17.0:
+ember-hifi@nypublicradio/ember-hifi#bkammin/WNYC-184_add_id3_tag_event:
   version "1.17.0"
-  resolved "https://registry.yarnpkg.com/ember-hifi/-/ember-hifi-1.17.0.tgz#678a6e9833128ba5ffe38bc55c836ca7d32c771f"
-  integrity sha512-6E7VpvlEsOYTVEVaj4pxGqpUp3E2NZegT5AgxfsPrSaGcTycNxb3ZjeGe+y1ka/UW0diVnwB5bcSspW5xqTKEQ==
+  resolved "https://codeload.github.com/nypublicradio/ember-hifi/tar.gz/0d23223e3093ef322aa09139d6d9f5561a63d133"
   dependencies:
     ember-cli-babel "^7.7.3"
     ember-copy "^1.0.0"
     ember-poll "^1.4.0"
-    hls.js "^0.12.2"
+    hls.js "^0.13.2"
     howler "^2.0.5"
 
 ember-holygrail-layout@^0.3.0:
@@ -6000,10 +5999,10 @@ heimdalljs@^0.3.0:
   dependencies:
     rsvp "~3.2.1"
 
-hls.js@^0.12.2:
-  version "0.12.4"
-  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-0.12.4.tgz#c155b7b2825a11117c111b781973c0ffa759006b"
-  integrity sha512-e8OPxQ60dBVsdkv4atdxR21KzC1mgwspM41qpozpj3Uv1Fz4CaeQy3FWoaV2O+QKKbNRvV5hW+/LipCWdrwnMQ==
+hls.js@^0.13.2:
+  version "0.13.2"
+  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-0.13.2.tgz#3e7dd28e3787c69c6aba42b64b11eb2c3c8c29f1"
+  integrity sha512-sIg2t4uGpWQLzuK1Iid9614WOKqxj4OYg+EbFbhhTDCsxpENBN+Du3yBFnoi+a83DuOOHdiQd1ydnti9loSGXw==
   dependencies:
     eventemitter3 "3.1.0"
     url-toolkit "^2.1.6"
