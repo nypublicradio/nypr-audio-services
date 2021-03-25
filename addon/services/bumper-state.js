@@ -73,7 +73,9 @@ export default Service.extend({
   playBumperAction(sound) {
     let playContext = get(sound, 'metadata.playContext');
     let autoPlayChoice = get(this, 'autoplayChoice');
-    if (this.get('autoplayEnabled') && playContext !== 'audio-bumper') {
+    let currentAudioIsStream = get(this, 'hifi.currentSound.isStream');
+
+    if (this.get('autoplayEnabled') && playContext !== 'audio-bumper' && !currentAudioIsStream) {
       let bumperUrl = this.getBumperUrl();
       let playContext = 'audio-bumper';
       this.set('bumperStarted', true);
