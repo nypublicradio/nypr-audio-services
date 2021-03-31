@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import { inject as service } from '@ember/service';
-import { get, set } from '@ember/object';
+import { set } from '@ember/object';
 import layout from '../templates/components/clear-history';
 
 export default Component.extend({
@@ -20,7 +20,7 @@ export default Component.extend({
       set(this, 'isConfirming', false);
     },
     clearHistory() {
-      get(this, 'listens').clearHistory();
+      this.listens.clearHistory();
       set(this, 'isConfirming', false);
     }
   }

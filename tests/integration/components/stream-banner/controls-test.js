@@ -13,7 +13,7 @@ module('Integration | Component | stream banner/controls', function(hooks) {
 
     await render(hbs`{{stream-banner/controls}}`);
 
-    assert.equal(this.$('button').length, 1);
+    assert.dom('button').exists({ count: 1 });
 
     // Template block usage:
     await render(hbs`
@@ -22,6 +22,6 @@ module('Integration | Component | stream banner/controls', function(hooks) {
       {{/stream-banner/controls}}
     `);
 
-    assert.equal(this.$().text().trim(), 'template block text');
+    assert.dom(this.element).hasText('template block text');
   });
 });

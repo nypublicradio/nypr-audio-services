@@ -12,6 +12,6 @@ module('Integration | Component | embedded listen button', function(hooks) {
 
     await render(hbs`{{listen-button/embedded}}`);
 
-    assert.equal(this.$().text().trim(), 'Play/Pause');
+    assert.dom(this.element).hasText('Play/Pause');
   });
 });

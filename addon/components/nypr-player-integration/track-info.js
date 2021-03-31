@@ -24,9 +24,9 @@ export default Component.extend({
       && changedAttrs.showTitle
       && changedAttrs.showTitle[0] !== changedAttrs.showTitle[1];
 
-    if (this.get('currentAudio') && isInitialRender || showTitleChanged && !isBumper) {
-     if (this.get('titleDidChange')) {
-       this.get('titleDidChange')();
+    if (this.currentAudio && isInitialRender || showTitleChanged && !isBumper) {
+     if (this.titleDidChange) {
+       this.titleDidChange();
      }
     }
   })

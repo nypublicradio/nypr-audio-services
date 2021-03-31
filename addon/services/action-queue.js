@@ -29,7 +29,7 @@ export default Service.extend(Evented, {
     assert("passed in object is not Ember.Evented", (thing && thing.on && thing.trigger));
 
     let queueName   = this._queueName(thing, eventName);
-    let queues      = get(this, 'queues');
+    let queues      = this.queues;
     let queue       = get(queues, queueName) || [];
     queue.push(Object.assign(info, {callback: callback}));
 
@@ -61,7 +61,7 @@ export default Service.extend(Evented, {
   },
 
   _runQueue(queueName, eventData = {}) {
-    let queues = get(this, 'queues');
+    let queues = this.queues;
     let orderedQueue = A(get(queues, queueName) || []).sortBy('priority').slice(); // copy, bro
 
     this.debug(`[action-queue] Trying action queue of ${orderedQueue.length}`);

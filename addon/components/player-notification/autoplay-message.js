@@ -13,7 +13,7 @@ export default Component.extend({
   audioType      : null,
 
   remaining      : computed('{duration,position}', function(){
-    const difference = get(this, 'duration') - get(this, 'position');
+    const difference = this.duration - this.position;
     return Math.floor(difference / 1000);
   }),
 
@@ -27,7 +27,7 @@ export default Component.extend({
 
   preferredStream: computed('bumperState.autoplaySlug', function(){
     const slug = get(this, 'bumperState.autoplaySlug');
-    return get(this, 'store').peekRecord('stream', slug);
+    return this.store.peekRecord('stream', slug);
   }),
 
   timeRemaining  : gte('remaining', 0),
@@ -36,18 +36,18 @@ export default Component.extend({
   didAnimate     : false,
 
   notificationMessage: computed('preSwitch', function() {
-    if (get(this, 'preSwitch')) {
-      return get(this, 'notificationMessagePreSwitch');
+    if (this.preSwitch) {
+      return this.notificationMessagePreSwitch;
     }
     else {
-      return get(this, 'notificationMessagePostSwitch');
+      return this.notificationMessagePostSwitch;
     }
   }),
 
   notificationMessagePreSwitch: computed('streamEnabled', 'preferredStream.name', 'remaining', function() {
-    let remaining = get(this, 'remaining');
+    let remaining = this.remaining;
 
-    if (get(this, 'streamEnabled')) {
+    if (this.streamEnabled) {
       let streamName = get(this, 'preferredStream.name');
       return `Your episode is over. In ${remaining} seconds, we'll tune you to ${streamName}.`;
     }
@@ -57,7 +57,7 @@ export default Component.extend({
   }),
 
   notificationMessagePostSwitch: computed('streamEnabled', 'preferredStream.name', function() {
-    if (get(this, 'streamEnabled')) {
+    if (this.streamEnabled) {
       let streamName = get(this, 'preferredStream.name');
       return `We tuned you to ${streamName} after your episode ended.`;
     }

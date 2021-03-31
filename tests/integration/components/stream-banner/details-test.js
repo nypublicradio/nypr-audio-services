@@ -13,7 +13,7 @@ module('Integration | Component | stream banner/details', function(hooks) {
 
     await render(hbs`{{stream-banner/details}}`);
 
-    assert.equal(this.$().text().trim(), '');
+    assert.dom(this.element).hasText('');
 
     // Template block usage:
     await render(hbs`
@@ -22,6 +22,6 @@ module('Integration | Component | stream banner/details', function(hooks) {
       {{/stream-banner/details}}
     `);
 
-    assert.equal(this.$().text().trim(), 'template block text');
+    assert.dom(this.element).hasText('template block text');
   });
 });

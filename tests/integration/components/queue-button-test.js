@@ -2,7 +2,7 @@ import { run } from '@ember/runloop';
 import Service from '@ember/service';
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
+import { render, click } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 module('Integration | Component | queue button', function(hooks) {
@@ -29,16 +29,16 @@ module('Integration | Component | queue button', function(hooks) {
 
     await render(hbs`{{queue-button}}`);
 
-    assert.equal(this.$().text().trim(), 'Queue');
+    assert.dom(this.element).hasText('Queue');
   });
 
   test('queue button "unqueued" state', async function(assert) {
     this.set('addToQueue', () => assert.ok('calls addToQueue on click'));
     await render(hbs`{{queue-button queue=queue}}`);
 
-    assert.equal(this.$('button').attr('data-state'), undefined);
+    assert.dom('button').doesNotHaveAttribute('data-state');
 
-    this.$('button').click();
+    await click('button');
   });
 
   test('queue button "queued" state', async function(assert) {
@@ -46,21 +46,20 @@ module('Integration | Component | queue button', function(hooks) {
 
     await render(hbs`{{queue-button inQueue=true}}`);
 
-    assert.equal(this.$('button').attr('data-state'), 'in-queue');
+    assert.dom('button').hasAttribute('data-state', 'in-queue');
 
-    this.$('button').click();
+    await click('button');
   });
 
   test('queue buttons inQueue prop updates', async function(assert) {
-
     await render(hbs`{{queue-button itemPK=1}}`);
-    assert.equal(this.$('button').attr('data-state'), undefined);
+    assert.dom('button').doesNotHaveAttribute('data-state');
 
     run(() => {
       this.get('queue.items').pushObject({id: 1});
     });
     run(() => {
-      assert.equal(this.$('button').attr('data-state'), 'in-queue');
+      assert.dom('button').hasAttribute('data-state', 'in-queue');
     });
   });
 });

@@ -12,7 +12,7 @@ module('Integration | Component | player notification', function(hooks) {
 
     await render(hbs`{{player-notification}}`);
 
-    assert.equal(this.$().text().trim(), '');
+    assert.dom(this.element).hasText('');
 
     // Template block usage:
     await render(hbs`
@@ -21,6 +21,6 @@ module('Integration | Component | player notification', function(hooks) {
       {{/player-notification}}
     `);
 
-    assert.equal(this.$().text().trim(), 'template block text');
+    assert.dom(this.element).hasText('template block text');
   });
 });

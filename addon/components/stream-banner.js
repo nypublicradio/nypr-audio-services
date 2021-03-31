@@ -10,6 +10,6 @@ export default Component.extend({
   
   activeStream: reads('streams.firstObject'),
   style: computed('background', function() {
-    return htmlSafe(`background-image: url(${this.get('background')});`);
+    return htmlSafe(`background-image: url(${this.background});`);
   })
 });

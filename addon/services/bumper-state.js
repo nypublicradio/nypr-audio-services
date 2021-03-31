@@ -11,8 +11,8 @@ export default Service.extend({
   init() {
     this._super(...arguments);
 
-    let actionQueue = get(this, 'actionQueue');
-    let hifi = get(this, 'hifi');
+    let actionQueue = this.actionQueue;
+    let hifi = this.hifi;
     actionQueue.addAction(hifi, 'audio-ended', {priority: 4, name: 'bumper-play'}, bind(this, this.playBumperAction));
     actionQueue.addAction(hifi, 'audio-ended', {priority: 5, name: 'continuous-play'}, bind(this, this.autoplayAction));
 
@@ -59,8 +59,8 @@ export default Service.extend({
   }),
 
   autoplayChoice: computed('autoplayPref', 'autoplaySlug', function() {
-    const autoplaySlug = get(this, 'autoplaySlug');
-    const autoplayPref = get(this, 'autoplayPref');
+    const autoplaySlug = this.autoplaySlug;
+    const autoplayPref = this.autoplayPref;
 
     if (autoplayPref === 'default_stream') {
       let stream = this.getStream(autoplaySlug);
@@ -72,46 +72,46 @@ export default Service.extend({
 
   playBumperAction(sound) {
     let playContext = get(sound, 'metadata.playContext');
-    let autoPlayChoice = get(this, 'autoplayChoice');
-    if (this.get('autoplayEnabled') && playContext !== 'audio-bumper') {
+    let autoPlayChoice = this.autoplayChoice;
+    if (this.autoplayEnabled && playContext !== 'audio-bumper') {
       let bumperUrl = this.getBumperUrl();
       let playContext = 'audio-bumper';
       this.set('bumperStarted', true);
       let bumper = EmberObject.create({modelName: 'bumper', urls: bumperUrl});
-      get(this, 'dj').play(bumper, {playContext, autoPlayChoice});
+      this.dj.play(bumper, {playContext, autoPlayChoice});
       return true;
     }
   },
 
   autoplayAction(sound) {
     let playContext = get(sound, 'metadata.playContext');
-    const autoplayPref = get(this, 'autoplayPref');
+    const autoplayPref = this.autoplayPref;
 
-    if (this.get('autoplayEnabled') && playContext === 'audio-bumper'){
+    if (this.autoplayEnabled && playContext === 'audio-bumper'){
       this.set('bumperDidPlay', true);
       let playContext = autoplayPref === 'default_stream' ? 'continuous-stream' : 'continuous-queue';
       let nextItem    = this.getAutoplayItem();
-      get(this, 'dj').play(nextItem, {playContext});
+      this.dj.play(nextItem, {playContext});
       return true;
     }
   },
 
   getAutoplayItem() {
-    const autoplaySlug = get(this, 'autoplaySlug');
-    const autoplayPref = get(this, 'autoplayPref');
+    const autoplaySlug = this.autoplaySlug;
+    const autoplayPref = this.autoplayPref;
 
     if (autoplayPref === 'default_stream') {
       return autoplaySlug;
     }
     else {
-      const queue = get(this, 'queue');
+      const queue = this.queue;
       return queue.nextItem();
     }
   },
 
   getBumperUrl() {
-    const autoplaySlug = get(this, 'autoplaySlug');
-    const autoplayPref = get(this, 'autoplayPref');
+    const autoplaySlug = this.autoplaySlug;
+    const autoplayPref = this.autoplayPref;
 
     let nextItem;
     if (autoplayPref === 'default_stream') {
@@ -127,10 +127,10 @@ export default Service.extend({
   },
 
   getStream(slug) {
-    return get(this, 'store').peekRecord('stream', slug);
+    return this.store.peekRecord('stream', slug);
   },
 
   cacheStreamsInStore() {
-    get(this, 'store').findAll('stream');
+    this.store.findAll('stream');
   }
 });

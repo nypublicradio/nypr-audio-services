@@ -13,7 +13,7 @@ module('Integration | Component | nypr player integration/stream info', function
     assert.equal(this.$('a[title="Music Play History"]')[0].href, "http://streamsplaylist/");
 
     this.set('streamPlaylistUrl', false);
-    assert.equal(this.$('a[title="Music Play History"]').length, 0);
+    assert.dom('a[title="Music Play History"]').doesNotExist();
   });
 
   test('it shows streamScheduleUrl', async function(assert) {

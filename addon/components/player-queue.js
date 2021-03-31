@@ -1,4 +1,4 @@
-import { get, set, computed } from '@ember/object';
+import { set, computed } from '@ember/object';
 import { inject as service } from '@ember/service';
 import Component from '@ember/component';
 import { reads } from '@ember/object/computed';
@@ -14,7 +14,7 @@ export default Component.extend({
   classNames:         ['player-queue'],
 
   sortHandle: computed('isSortingEnabled', function() {
-    if (get(this, 'isSortingEnabled')) {
+    if (this.isSortingEnabled) {
       return '.queueitem';
     }
     return '.dontdrag';
@@ -34,10 +34,10 @@ export default Component.extend({
 
   actions: {
     removeFromQueue(id) {
-      get(this, 'queue').removeFromQueueById(id);
+      this.queue.removeFromQueueById(id);
     },
     reorderItems(reorderedItems/*, droppedItem*/) {
-      get(this, 'queue').reset(reorderedItems);
+      this.queue.reset(reorderedItems);
     },
   },
 });

@@ -15,7 +15,7 @@ export default Service.extend({
   },
 
   listenForTrackChanges() {
-    this.get('hifi').on('current-sound-changed', (currentSound) => {
+    this.hifi.on('current-sound-changed', (currentSound) => {
       let contentModelType = get(currentSound, 'metadata.contentModelType');
       let contentModel     = get(currentSound, 'metadata.contentModel');
 
@@ -26,7 +26,7 @@ export default Service.extend({
   },
 
   addListen(story) {
-    let session  = this.get('session');
+    let session  = this.session;
     let listens  = A(session.getWithDefault('data.listens', []).slice());
 
     let listen = {
@@ -39,7 +39,7 @@ export default Service.extend({
   },
 
   removeListenByListenId(id) {
-    let session = this.get('session');
+    let session = this.session;
     let listens = A(session.getWithDefault('data.listens', []).slice());
 
     let listen = listens.findBy('id', id);
@@ -48,7 +48,7 @@ export default Service.extend({
   },
 
   removeListenByStoryPk(pk) {
-    let session = this.get('session');
+    let session = this.session;
     let listens = A(session.getWithDefault('data.listens', []).slice());
 
     let listen = listens.findBy('story.id', pk);
@@ -57,7 +57,7 @@ export default Service.extend({
   },
 
   clearHistory() {
-    let session = this.get('session');
+    let session = this.session;
     session.set('data.listens', []);
   },
 
@@ -66,13 +66,13 @@ export default Service.extend({
   },
 
   historyFor(id) {
-    let session = this.get('session');
+    let session = this.session;
     let listens = A(session.getWithDefault('data.listens', []));
     return listens.filterBy('story.id', id);
   },
 
   indexByStoryPk(pk) {
-    let session = this.get('session');
+    let session = this.session;
     let listens = A(session.getWithDefault('data.listens', []));
     let listen = listens.findBy('story.id', pk);
 

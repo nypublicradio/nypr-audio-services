@@ -29,7 +29,7 @@ export default Component.extend({
   playButtonClickedAction: () => {},
 
   isCurrentSound:       computed('dj.currentContentId', 'itemPK', function() {
-    return get(this, 'itemPK') === get(this, 'dj.currentContentId');
+    return this.itemPK === get(this, 'dj.currentContentId');
   }),
 
   isPlaying:            and('dj.isPlaying', 'isCurrentSound'),
@@ -38,9 +38,9 @@ export default Component.extend({
   isLoading:            computed('isCurrentSound', 'buttonLoading', 'dj.{currentSound.isLoading,currentlyLoadingIds}', function() {
     let currentlyLoadingIds = A(getWithDefault(this, 'dj.currentlyLoadingIds', []));
 
-    return get(this, 'buttonLoading') ||
-           currentlyLoadingIds.includes(String(get(this, 'itemPK'))) ||
-           (get(this, 'isCurrentSound') && get(this, 'dj.currentSound.isLoading'));
+    return this.buttonLoading ||
+           currentlyLoadingIds.includes(String(this.itemPK)) ||
+           (this.isCurrentSound && get(this, 'dj.currentSound.isLoading'));
   }),
 
   isExpandable:         match('type', EXPANDABLE_BUTTONS),
@@ -54,18 +54,18 @@ export default Component.extend({
 
   // override in the template for streams and other action types
   'data-action': computed('playContext', function() {
-    return `Clicked Play/Pause On Demand: ${this.get('playContext')}`;
+    return `Clicked Play/Pause On Demand: ${this.playContext}`;
   }),
   'data-label': computed('itemTitle', 'itemShow', function() {
-    return `${this.get('itemTitle')} | ${this.get('itemShow')}`
+    return `${this.itemTitle} | ${this.itemShow}`;
   }),
 
   title: computed('itemTitle', function() {
-    return `Listen to ${get(this, 'itemTitle')}`;
+    return `Listen to ${this.itemTitle}`;
   }),
 
   style: computed('width', function() {
-    let width = get(this, 'width');
+    let width = this.width;
     return width ? htmlSafe(`width: ${width}px;`) : null;
   }),
 
@@ -75,13 +75,13 @@ export default Component.extend({
       return STATES.PAUSED; // consider it paused until we measure so we get full width of natural state
     }
 
-    if (get(this, 'isLoading')) {
+    if (this.isLoading) {
       return STATES.LOADING;
     }
-    else if (get(this, 'isPlaying')) {
+    else if (this.isPlaying) {
       return STATES.PLAYING;
     }
-    else if (get(this, 'isPaused')){
+    else if (this.isPaused){
       return STATES.PAUSED;
     } else {
       return STATES.PAUSED; // JIC
@@ -89,24 +89,24 @@ export default Component.extend({
   }),
 
   width: computed('playState', 'contentWidth', 'isExpandable', function() {
-    if (typeof FastBoot !== 'undefined' || !this.element || !get(this, 'isExpandable')) {
+    if (typeof FastBoot !== 'undefined' || !this.element || !this.isExpandable) {
       return false;
     }
 
-    let state = get(this, 'playState');
+    let state = this.playState;
     if (state === STATES.PLAYING || state === STATES.LOADING) {
       return Math.ceil(this.element.getBoundingClientRect().height); // make it a circle, set width = height
     } else {
-      return get(this, 'contentWidth');
+      return this.contentWidth;
     }
   }),
 
   didUpdateAttrs: diffAttrs('isLive', function(changedAttrs, ...args) {
     this._super(...args);
-    if (typeof FastBoot !== 'undefined' || !this.element || !get(this, 'isExpandable')) {
+    if (typeof FastBoot !== 'undefined' || !this.element || !this.isExpandable) {
       return false;
     }
-    let updateSize = this.get('isLive') || changedAttrs && changedAttrs.isLive && changedAttrs.isLive[0];
+    let updateSize = this.isLive || changedAttrs && changedAttrs.isLive && changedAttrs.isLive[0];
 
     if (updateSize) {
       schedule('afterRender', this, () => {
@@ -128,11 +128,11 @@ export default Component.extend({
   },
 
   play() {
-    let playContext     = get(this, 'playContext');
-    let itemPk          = get(this, 'itemPK');
+    let playContext     = this.playContext;
+    let itemPk          = this.itemPK;
     let metadata        = {fromClick: true};
     set(this, 'buttonLoading', true);
-    get(this,'dj').play(itemPk, {playContext, metadata}).then(() => {
+    this.dj.play(itemPk, {playContext, metadata}).then(() => {
       set(this, 'buttonLoading', false);
     }).catch(() => {
       set(this, 'buttonLoading', false);
@@ -141,8 +141,8 @@ export default Component.extend({
   },
 
   click() {
-    let dj = get(this, 'dj');
-    if (get(this, 'isPlaying')) {
+    let dj = this.dj;
+    if (this.isPlaying) {
       dj.pause();
     } else {
       this.play();

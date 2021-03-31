@@ -49,8 +49,8 @@ export default Component.extend({
 
   catalogEntry         : reads('currentAudio.currentPlaylistItem.catalogEntry'),
   songDetails          : computed('catalogEntry', function() {
-    if (this.get('catalogEntry')) {
-      return songMetadata([get(this, 'catalogEntry')]);
+    if (this.catalogEntry) {
+      return songMetadata([this.catalogEntry]);
     }
   }),
 

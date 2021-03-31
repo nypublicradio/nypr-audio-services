@@ -13,7 +13,7 @@ module('Integration | Component | nypr player integration', function(hooks) {
 
     await render(hbs`{{nypr-player-integration}}`);
 
-    assert.equal(this.$().text().trim(), '');
+    assert.dom(this.element).hasText('');
 
     // Template block usage:
     await render(hbs`
@@ -22,6 +22,6 @@ module('Integration | Component | nypr player integration', function(hooks) {
       {{/nypr-player-integration}}
     `);
 
-    assert.equal(this.$().text().trim(), 'template block text');
+    assert.dom(this.element).hasText('template block text');
   });
 });

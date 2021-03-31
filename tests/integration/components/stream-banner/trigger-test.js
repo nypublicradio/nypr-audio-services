@@ -13,6 +13,6 @@ module('Integration | Component | stream banner/trigger', function(hooks) {
 
     await render(hbs`{{stream-banner/trigger}}`);
 
-    assert.equal(this.$('.stream-banner__trigger-label').text().trim(), "Change stream", 'The change stream trigger should display');
+    assert.dom('.stream-banner__trigger-label').hasText('Change stream', 'The change stream trigger should display');
   });
 });
