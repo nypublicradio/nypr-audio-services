@@ -8,7 +8,7 @@ module('Integration | Component | stream banner', function(hooks) {
 
   test('it renders', async function(assert) {
     await render(hbs`{{stream-banner}}`);
-    assert.equal(this.$('.stream-banner').length, 1, 'it should render');
+    assert.dom('.stream-banner').exists({ count: 1 }, 'it should render');
   });
 
   skip('it renders a dropdown of the given stream options');

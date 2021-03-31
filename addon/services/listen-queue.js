@@ -16,8 +16,8 @@ export default Service.extend({
   init() {
     this._super(...arguments);
     this.set('pending', []);
-    let actionQueue = get(this, 'actionQueue');
-    let hifi        = get(this, 'hifi');
+    let actionQueue = this.actionQueue;
+    let hifi        = this.hifi;
 
     actionQueue.addAction(hifi, 'audio-ended', {priority: 2, name: 'queue'},bind(this, this.onTrackFinished));
 
@@ -33,18 +33,18 @@ export default Service.extend({
     if (/queue/.test(get(sound, 'metadata.playContext'))) {
       let nextItem = this.nextItem();
       if (nextItem) {
-        get(this, 'dj').play(nextItem, {playContext: 'queue'});
+        this.dj.play(nextItem, {playContext: 'queue'});
         return true; // stop the following action queues from running
       }
     }
   },
 
   findRecord(id) {
-    return get(this, 'store').findRecord('story', id);
+    return this.store.findRecord('story', id);
   },
 
   addToQueueById(id) {
-    let pending = this.get('pending');
+    let pending = this.pending;
     pending.push(id);
 
     let findPromise = this.findRecord(id);
@@ -55,7 +55,7 @@ export default Service.extend({
       } else {
         this._removePending(id);
       }
-      let session = get(this, 'session');
+      let session = this.session;
       let queue = emberArray(session.getWithDefault('data.queue', []).slice());
 
       queue.pushObject(story);
@@ -68,7 +68,7 @@ export default Service.extend({
   },
 
   removeFromQueueById(id) {
-    let session = get(this, 'session');
+    let session = this.session;
     let queue = emberArray(session.getWithDefault('data.queue', []));
     let newQueue = emberArray(queue.rejectBy('id', id));
 
@@ -80,12 +80,12 @@ export default Service.extend({
   },
 
   reset(newQueue) {
-    let session = get(this, 'session');
+    let session = this.session;
     session.set('data.queue', newQueue);
   },
 
   nextItem() {
-    let items = this.get('items') || [];
+    let items = this.items || [];
 
     if (items.length > 0) {
       return get(items, 'firstObject');
@@ -95,7 +95,7 @@ export default Service.extend({
   },
 
   _removePending(id) {
-    let pending = emberArray(this.get('pending'));
+    let pending = emberArray(this.pending);
     let pendingIndex = pending.indexOf(id);
     if (pendingIndex !== -1) {
       pending.removeAt(pendingIndex);

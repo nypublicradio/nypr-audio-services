@@ -14,7 +14,7 @@ module('Integration | Component | stream banner/station name', function(hooks) {
     this.set('activeStream', {name: 'foo'});
     await render(hbs`{{stream-banner/station-name activeStream=activeStream}}`);
 
-    assert.equal(this.$().text().trim(), 'foo');
+    assert.dom(this.element).hasText('foo');
 
     // // Template block usage:
     // this.render(hbs`

@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
+import { render, findAll } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 const stub = Component.extend({
@@ -21,7 +21,7 @@ module('Integration | Component | text crawl', function(hooks) {
 
     await render(hbs`{{text-crawl}}`);
 
-    assert.ok(this.$('.text-crawl-scroll').length);
+    assert.ok(findAll('.text-crawl-scroll').length);
 
     // Template block usage:
     await render(hbs`
@@ -30,7 +30,7 @@ module('Integration | Component | text crawl', function(hooks) {
       {{/text-crawl}}
     `);
 
-    assert.equal(this.$().text().trim(), 'template block text');
+    assert.dom(this.element).hasText('template block text');
   });
 
   test('it updates the isScrolling property if text is too long', async function(assert) {

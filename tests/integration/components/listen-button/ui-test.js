@@ -12,6 +12,6 @@ module('Integration | Component | listen button/ui', function(hooks) {
 
     await render(hbs`{{listen-button/ui}}`);
 
-    assert.equal(this.$().text().trim(), 'Play/Pause');
+    assert.dom(this.element).hasText('Play/Pause');
   });
 });

@@ -33,15 +33,15 @@ module('Unit | Service | dj', function(hooks) {
       currentSegment: segmentUrl1,
       modelName: 'story',
       resetSegments: function() {
-        return this.get('currentSegment')
+        return this.currentSegment;
       },
       hasNextSegment: () => true,
       getNextSegment: function() {
         this.set('currentSegment', segmentUrl2);
-        return this.get('currentSegment')
+        return this.currentSegment;
       },
       getCurrentSegment: function() {
-         return this.get('currentSegment')
+         return this.currentSegment;
       },
       segmentedAudio: true
     });
@@ -51,11 +51,11 @@ module('Unit | Service | dj', function(hooks) {
       currentSegment: storyUrl,
       modelName: 'story',
       resetSegments: function() {
-        return this.get('currentSegment')
+        return this.currentSegment;
       },
       hasNextSegment: () => false,
       getCurrentSegment: function() {
-         return this.get('currentSegment')
+         return this.currentSegment;
       },
       segmentedAudio: false
     });

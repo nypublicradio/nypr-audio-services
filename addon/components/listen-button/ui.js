@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { get, computed } from '@ember/object';
+import { computed } from '@ember/object';
 import layout from '../../templates/components/listen-button/ui';
 
 const ICON_SUFFIXES = {
@@ -14,12 +14,12 @@ export default Component.extend({
   layout,
   classNames: ['listen-ui'],
   iconSuffix: computed('type', function() {
-    return ICON_SUFFIXES[get(this, 'type')] || '';
+    return ICON_SUFFIXES[this.type] || '';
   }),
   playIcon: computed('iconSuffix', function() {
-    return `play${get(this, 'iconSuffix')}`;
+    return `play${this.iconSuffix}`;
   }),
   pauseIcon: computed('iconSuffix', function() {
-    return `pause${get(this, 'iconSuffix')}`;
+    return `pause${this.iconSuffix}`;
   })
 });

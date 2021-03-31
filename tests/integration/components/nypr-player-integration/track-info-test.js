@@ -10,7 +10,7 @@ module('Integration | Component | nypr player integration/track info', function(
   test('it renders', async function(assert) {
     await render(hbs`{{nypr-player-integration/track-info media=media}}`);
 
-    assert.equal(this.$().text().trim(), '');
+    assert.dom(this.element).hasText('');
   });
 
   test('it displays story title and show title for medium and up', async function(assert) {
@@ -26,7 +26,7 @@ module('Integration | Component | nypr player integration/track info', function(
     );
 
     const expected = 'The Show - The Story';
-    const actual = this.$().text().trim().replace(/\s+/g,' ');
+    const actual = this.element.textContent.trim().replace(/\s+/g,' ');
 
     assert.equal(actual, expected, "overall text should be the same");
 
@@ -49,7 +49,7 @@ module('Integration | Component | nypr player integration/track info', function(
     );
 
     const expected = 'The Story - The Show';
-    const actual = this.$().text().trim().replace(/\s+/g,' ');
+    const actual = this.element.textContent.trim().replace(/\s+/g,' ');
 
     assert.equal(actual, expected, "overall text should be the same");
 
@@ -72,7 +72,7 @@ module('Integration | Component | nypr player integration/track info', function(
     );
 
     const expected = 'The Song Show - title, composer, musician (instrument)';
-    const actual = this.$().text().trim().replace(/\s+/g,' ');
+    const actual = this.element.textContent.trim().replace(/\s+/g,' ');
 
     assert.equal(actual, expected, "overall text should be the same");
 
@@ -89,10 +89,10 @@ module('Integration | Component | nypr player integration/track info', function(
     await render(hbs`{{nypr-player-integration/track-info showTitle=showTitle storyTitle=storyTitle media=media}}`);
 
     const expected = 'The New Show - The Big Story';
-    const actual = this.$().text().trim().replace(/\s+/g,' ');
+    const actual = this.element.textContent.trim().replace(/\s+/g,' ');
 
     assert.equal(actual, expected);
-    assert.equal(this.$('em').length, 1);
-    assert.equal(this.$('strong').length, 1);
+    assert.dom('em').exists({ count: 1 });
+    assert.dom('strong').exists({ count: 1 });
   });
 });

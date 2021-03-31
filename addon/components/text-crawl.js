@@ -9,7 +9,7 @@ export default Component.extend({
   classNames: ['text-crawl'],
   classNameBindings: ['isScrolling'],
   didRender() {
-    let watch = this.get('watch');
+    let watch = this.watch;
     Promise.resolve(watch).then(watch => this.measure(watch));
   },
   measure(watch) {

@@ -40,14 +40,14 @@ module('Integration | Component | player notification/autoplay message', functio
     });
 
     this.actions.dismiss = function() {
-      assert.equal(this.$('.player-notification').length, 0);
+      assert.dom('.player-notification').doesNotExist();
     };
 
     await render(
       hbs`{{player-notification/autoplay-message preferredStream=preferredStreamStub streamEnabled=streamEnabledStub duration=duration position=position audioType=audioType}}`
     );
 
-    let actualText = this.$().text().trim().replace(/\s{2,}/gm, ' ');
+    let actualText = this.element.textContent.trim().replace(/\s{2,}/gm, ' ');
     let expectedText = 'Your episode is over. In 15 seconds, we\'ll tune you to WNYC 93.9 FM. Login to change settings.';
     assert.equal(actualText, expectedText);
   });
@@ -65,14 +65,14 @@ module('Integration | Component | player notification/autoplay message', functio
     });
 
     this.actions.dismiss = function() {
-      assert.equal(this.$('.player-notification').length, 0);
+      assert.dom('.player-notification').doesNotExist();
     };
 
     await render(
       hbs`{{player-notification/autoplay-message preferredStream=preferredStreamStub streamEnabled=streamEnabledStub duration=duration position=position audioType=audioType}}`
     );
 
-    let actualElapsedText = this.$().text().trim().replace(/\s{2,}/gm, ' ');
+    let actualElapsedText = this.element.textContent.trim().replace(/\s{2,}/gm, ' ');
     let expectedElapsedText = 'We tuned you to WNYC 93.9 FM after your episode ended. Login to change settings.';
     assert.equal(actualElapsedText, expectedElapsedText);
   });
@@ -90,14 +90,14 @@ module('Integration | Component | player notification/autoplay message', functio
     });
 
     this.actions.dismiss = function() {
-      assert.equal(this.$('.player-notification').length, 0);
+      assert.dom('.player-notification').doesNotExist();
     };
 
     await render(
       hbs`{{player-notification/autoplay-message preferredStream=preferredStreamStub streamEnabled=streamEnabledStub duration=duration position=position audioType=audioType}}`
     );
 
-    let actualText = this.$().text().trim().replace(/\s{2,}/gm, ' ');
+    let actualText = this.element.textContent.trim().replace(/\s{2,}/gm, ' ');
     let expectedText = 'Your episode is over. In 15 seconds, your audio queue will begin to play. Login to change settings.';
     assert.equal(actualText, expectedText);
   });
@@ -115,14 +115,14 @@ module('Integration | Component | player notification/autoplay message', functio
     });
 
     this.actions.dismiss = function() {
-      assert.equal(this.$('.player-notification').length, 0);
+      assert.dom('.player-notification').doesNotExist();
     };
 
     await render(
       hbs`{{player-notification/autoplay-message preferredStream=preferredStreamStub streamEnabled=streamEnabledStub duration=duration position=position audioType=audioType}}`
     );
 
-    let actualElapsedText = this.$().text().trim().replace(/\s{2,}/gm, ' ');
+    let actualElapsedText = this.element.textContent.trim().replace(/\s{2,}/gm, ' ');
     let expectedElapsedText = 'We began playing your audio queue after your episode ended. Login to change settings.';
     assert.equal(actualElapsedText, expectedElapsedText);
   });
@@ -141,14 +141,14 @@ module('Integration | Component | player notification/autoplay message', functio
     });
 
     this.actions.dismiss = function() {
-      assert.equal(this.$('.player-notification').length, 0);
+      assert.dom('.player-notification').doesNotExist();
     };
 
     await render(
       hbs`{{player-notification/autoplay-message preferredStream=preferredStreamStub streamEnabled=streamEnabledStub duration=duration position=position audioType=audioType isLoggedIn=isLoggedIn}}`
     );
 
-    let actualText = this.$().text().trim().replace(/\s{2,}/gm, ' ');
+    let actualText = this.element.textContent.trim().replace(/\s{2,}/gm, ' ');
     let expectedText = 'Your episode is over. In 15 seconds, we\'ll tune you to WNYC 93.9 FM. Change Settings';
     assert.equal(actualText, expectedText);
   });

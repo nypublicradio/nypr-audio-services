@@ -13,7 +13,7 @@ module('Integration | Component | stream banner/dropdown', function(hooks) {
 
     await render(hbs`{{stream-banner/dropdown}}`);
 
-    assert.equal(this.$().text().trim(), 'Change stream');
+    assert.dom(this.element).hasText('Change stream');
 
     // // Template block usage:
     // this.render(hbs`

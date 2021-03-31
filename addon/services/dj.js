@@ -31,10 +31,10 @@ export default Service.extend({
 
   init() {
     this._super(...arguments);
-    let actionQueue = get(this, 'actionQueue');
-    let hifi        = get(this, 'hifi');
+    let actionQueue = this.actionQueue;
+    let hifi        = this.hifi;
     hifi.on('current-sound-changed', () => {
-      if (get(this, 'isDestroying') || get(this, 'isDestroyed')) {
+      if (this.isDestroying || this.isDestroyed) {
         return;
       }
       this.set('playedOnce', true);
@@ -47,9 +47,9 @@ export default Service.extend({
   },
 
   initCurrentLoadingIdsWatcher() {
-    let hifi = get(this, 'hifi');
+    let hifi = this.hifi;
     hifi.on('new-load-request', ({loadPromise, options}) => {
-      let currentlyLoadingIds = A(get(this, 'currentlyLoadingIds'));
+      let currentlyLoadingIds = A(this.currentlyLoadingIds);
       let id = String(get(options, 'metadata.contentId'));
 
       if (id) {
@@ -76,7 +76,7 @@ export default Service.extend({
   fetchRecord(itemIdOrItem) {
     let modelName = this.itemModelName(itemIdOrItem);
     if (typeof(itemIdOrItem) === 'string') {
-      return get(this, 'store').findRecord(modelName, itemIdOrItem);
+      return this.store.findRecord(modelName, itemIdOrItem);
     }
     else {
       return RSVP.Promise.resolve(itemIdOrItem);
@@ -123,14 +123,14 @@ export default Service.extend({
       }
     });
 
-    let listenAnalytics = get(this, 'listenAnalytics');
+    let listenAnalytics = this.listenAnalytics;
 
     metadata.contentId = itemId;
     metadata.contentModelType = itemModelName;
     metadata.playContext = playContext;
     metadata.autoPlayChoice = autoPlayChoice;
 
-    let playRequest = get(this, 'hifi').play(audioUrlPromise, {metadata, position});
+    let playRequest = this.hifi.play(audioUrlPromise, {metadata, position});
     // This should resolve around the same time, and then set the metadata
     recordRequest.then(story => {
       set(metadata, 'contentModel', story);
@@ -150,11 +150,11 @@ export default Service.extend({
   },
 
   pause() {
-    get(this, 'hifi').pause();
+    this.hifi.pause();
   },
 
   addBrowserId(id) {
-    get(this, 'hifi').on('pre-load', urlsToTry => {
+    this.hifi.on('pre-load', urlsToTry => {
       urlsToTry.forEach((val, i) => {
         // `val` can be a string value or an object with a `url` key
         let url = typeof val === 'string' ? val : val.url;

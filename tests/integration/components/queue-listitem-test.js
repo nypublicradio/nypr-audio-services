@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
+import { render, click } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import sinon from 'sinon';
 
@@ -10,7 +10,7 @@ module('Integration | Component | queue listitem', function(hooks) {
   test('it renders', async function(assert) {
     await render(hbs`{{queue-listitem}}`);
 
-    assert.equal(this.$('.queueitem').length, 1);
+    assert.dom('.queueitem').exists({ count: 1 });
   });
 
   test('it displays the correct metadata', async function(assert) {
@@ -22,9 +22,9 @@ module('Integration | Component | queue listitem', function(hooks) {
     });
     await render(hbs`{{queue-listitem story=story}}`);
 
-    assert.equal(this.$('.queueitem-itemtitle').text().trim(), 'Story Title');
-    assert.equal(this.$('.queueitem-showtitle').text().trim(), 'Show Title');
-    assert.equal(this.$('.queueitem-duration').text().trim(), '3 min');
+    assert.dom('.queueitem-itemtitle').hasText('Story Title');
+    assert.dom('.queueitem-showtitle').hasText('Show Title');
+    assert.dom('.queueitem-duration').hasText('3 min');
   });
 
   test('it calls the removeAction with the story id', async function(assert) {
@@ -33,7 +33,7 @@ module('Integration | Component | queue listitem', function(hooks) {
     this.set('removeAction', remove);
     await render(hbs`{{queue-listitem story=story removeAction=removeAction}}`);
 
-    this.$('.queueitem-deletebutton').click();
+    await click('.queueitem-deletebutton');
 
     assert.ok(remove.calledOnce);
     assert.ok(remove.calledWith(5));
@@ -47,16 +47,16 @@ module('Integration | Component | queue listitem', function(hooks) {
     });
     await render(hbs`{{queue-listitem story=story}}`);
 
-    assert.equal(this.$('.queueitem-itemtitle').text().trim(), 'The Big Story');
-    assert.equal(this.$('.queueitem-showtitle').text().trim(), 'The New Show');
-    assert.equal(this.$('.queueitem-itemtitle strong').length, 1);
-    assert.equal(this.$('.queueitem-showtitle em').length, 1);
+    assert.dom('.queueitem-itemtitle').hasText('The Big Story');
+    assert.dom('.queueitem-showtitle').hasText('The New Show');
+    assert.dom('.queueitem-itemtitle strong').exists({ count: 1 });
+    assert.dom('.queueitem-showtitle em').exists({ count: 1 });
   });
 
   test('it shows the now playing if it is the current item when playing from queue', async function(assert) {
     this.set('playContext', 'queue');
     await render(hbs`{{queue-listitem playContext=playContext isCurrent=true}}`);
 
-    assert.equal(this.$('.queueitem-playingicon').length, 1);
+    assert.dom('.queueitem-playingicon').exists({ count: 1 });
   });
 });

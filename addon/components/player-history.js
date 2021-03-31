@@ -14,7 +14,7 @@ export default Component.extend({
 
   actions: {
     removeFromHistory(pk) {
-      this.get('listenHistory').removeListenByStoryPk(pk);
+      this.listenHistory.removeListenByStoryPk(pk);
     },
   },
 });
