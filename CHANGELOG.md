@@ -1,5 +1,9 @@
 # nypr-audio-services Changelog
 
+## 0.6.1
+
+- [BUGFIX] prevent autoplay continuation when a stream ending triggers an `audio-ended` event (WQXR-207)
+
 ## 0.6.0
 - [CHORE] Start tracking test coverage in code climate
 - [CHORE] Upgrade ember-fetch to 6.5
