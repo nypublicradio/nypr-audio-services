@@ -1,6 +1,6 @@
 {
   "name": "nypr-audio-services",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "NYPR audio services.",
   "keywords": [
     "ember-addon"
