@@ -1,5 +1,9 @@
 # nypr-audio-services Changelog
 
+## 0.6.2
+
+- [CHANGE] remove link to settings path from autoplay notificaton (MEM-131)
+
 ## 0.6.1
 
 - [BUGFIX] prevent autoplay continuation when a stream ending triggers an `audio-ended` event (WQXR-207)
