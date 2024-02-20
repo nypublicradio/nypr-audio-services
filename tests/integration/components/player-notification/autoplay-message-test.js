@@ -48,7 +48,7 @@ module('Integration | Component | player notification/autoplay message', functio
     );
 
     let actualText = this.$().text().trim().replace(/\s{2,}/gm, ' ');
-    let expectedText = 'Your episode is over. In 15 seconds, we\'ll tune you to WNYC 93.9 FM. Login to change settings.';
+    let expectedText = 'Your episode is over. In 15 seconds, we\'ll tune you to WNYC 93.9 FM.';
     assert.equal(actualText, expectedText);
   });
 
@@ -73,7 +73,7 @@ module('Integration | Component | player notification/autoplay message', functio
     );
 
     let actualElapsedText = this.$().text().trim().replace(/\s{2,}/gm, ' ');
-    let expectedElapsedText = 'We tuned you to WNYC 93.9 FM after your episode ended. Login to change settings.';
+    let expectedElapsedText = 'We tuned you to WNYC 93.9 FM after your episode ended.';
     assert.equal(actualElapsedText, expectedElapsedText);
   });
 
@@ -98,7 +98,7 @@ module('Integration | Component | player notification/autoplay message', functio
     );
 
     let actualText = this.$().text().trim().replace(/\s{2,}/gm, ' ');
-    let expectedText = 'Your episode is over. In 15 seconds, your audio queue will begin to play. Login to change settings.';
+    let expectedText = 'Your episode is over. In 15 seconds, your audio queue will begin to play.';
     assert.equal(actualText, expectedText);
   });
 
@@ -123,7 +123,7 @@ module('Integration | Component | player notification/autoplay message', functio
     );
 
     let actualElapsedText = this.$().text().trim().replace(/\s{2,}/gm, ' ');
-    let expectedElapsedText = 'We began playing your audio queue after your episode ended. Login to change settings.';
+    let expectedElapsedText = 'We began playing your audio queue after your episode ended.';
     assert.equal(actualElapsedText, expectedElapsedText);
   });
 
@@ -149,7 +149,7 @@ module('Integration | Component | player notification/autoplay message', functio
     );
 
     let actualText = this.$().text().trim().replace(/\s{2,}/gm, ' ');
-    let expectedText = 'Your episode is over. In 15 seconds, we\'ll tune you to WNYC 93.9 FM. Change Settings';
+    let expectedText = 'Your episode is over. In 15 seconds, we\'ll tune you to WNYC 93.9 FM.';
     assert.equal(actualText, expectedText);
   });
 });

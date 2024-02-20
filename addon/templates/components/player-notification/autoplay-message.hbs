@@ -1,17 +1,1 @@
 {{notificationMessage}}
-
-{{#if isLoggedIn}}
-<a href="/settings"
-    title="Change Settings"
-    data-category="Continuous Play Notification"
-    data-action={{if preSwitch 'Click Through to Settings, Pre' 'Click Through to Settings, Post'}}
-    class='player-notification-link gtm__click-tracking'
-    >Change Settings</a>
-{{else}}
-<a href="/settings"
-    title="Change Settings"
-    data-category="Continuous Play Notification"
-    data-action={{if preSwitch 'Click Through to Settings, Pre' 'Click Through to Settings, Post'}}
-    class='player-notification-link gtm__click-tracking'
-    >Login</a> to change settings.
-{{/if}}
