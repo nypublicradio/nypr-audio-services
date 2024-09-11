@@ -219,6 +219,16 @@
     @include darkergray-svg;
   }
 
+  &.pink-minion {
+    @include btn-minion;
+    @include btn--solid-color(
+      $background-color: $neon-pink,
+      $hover-color: $neon-dark-pink
+    );
+    @include white-listen-spinner;
+    @include white-svg;
+  }
+
   &.blue-hollow {
     @include btn-size(44px);
 
